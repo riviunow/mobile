@@ -6,6 +6,7 @@ import 'package:udetxen/features/auth/screens/login_screen.dart';
 import 'package:udetxen/features/profile/bloc/profile_bloc.dart';
 import 'package:udetxen/shared/constants/urls.dart';
 import 'package:udetxen/shared/services/theme_service.dart';
+import 'package:udetxen/shared/widgets/layouts/authenticated_layout.dart';
 import 'package:udetxen/shared/widgets/loader.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -13,7 +14,7 @@ class ProfileScreen extends StatefulWidget {
 
   static route() {
     return MaterialPageRoute<void>(
-      builder: (_) => const ProfileScreen(),
+      builder: (_) => const AuthenticatedLayout(currentIndex: 2),
     );
   }
 

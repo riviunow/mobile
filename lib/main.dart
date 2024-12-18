@@ -3,6 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'features/auth/bloc/auth_bloc.dart';
 import 'features/auth/services/jwt_service.dart';
+import 'features/exploring/knowledge/blocs/knowledge_bloc.dart';
+import 'features/exploring/knowledge/blocs/knowledge_topic_bloc.dart';
+import 'features/exploring/knowledge/blocs/knowledge_type_bloc.dart';
+import 'features/exploring/knowledge/services/knowledge_service.dart';
+import 'features/exploring/knowledge/services/knowledge_topic_service.dart';
+import 'features/exploring/knowledge/services/knowledge_type_service.dart';
+import 'features/exploring/subject/blocs/subject_bloc.dart';
+import 'features/exploring/subject/services/subject_service.dart';
+import 'features/exploring/track/blocs/list_tracks_bloc.dart';
+import 'features/exploring/track/blocs/track_bloc.dart';
+import 'features/exploring/track/services/track_service.dart';
 import 'features/profile/bloc/profile_bloc.dart';
 import 'shared/widgets/splash_screen.dart';
 import 'features/auth/services/auth_service.dart';
@@ -43,6 +54,26 @@ class MainApp extends StatelessWidget {
                 BlocProvider.of<ProfileBloc>(context),
               );
             },
+          ),
+          BlocProvider(
+            create: (context) => TrackBloc(getIt<TrackService>()),
+          ),
+          BlocProvider(
+            create: (context) => ListTracksBloc(getIt<TrackService>()),
+          ),
+          BlocProvider(
+            create: (context) => SubjectBloc(getIt<SubjectService>()),
+          ),
+          BlocProvider(
+            create: (context) => KnowledgeBloc(getIt<KnowledgeService>()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                KnowledgeTypeBloc(getIt<KnowledgeTypeService>()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                KnowledgeTopicBloc(getIt<KnowledgeTopicService>()),
           ),
         ],
         child: MultiProvider(

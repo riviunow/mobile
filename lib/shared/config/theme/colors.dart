@@ -19,4 +19,5 @@ class AppColors {
   static const Color selectedWidget = Color(0xFF03DAC6); // teal
   static const Color unselectedWidget = Color(0xFF757575); // grey
   static const Color hover = Color(0xFF0000FF); // blue
+  static const Color warning = Color(0xFFFFA500); // orange
 }

@@ -5,6 +5,11 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:udetxen/features/auth/services/auth_service.dart';
 import 'package:udetxen/features/auth/services/jwt_service.dart';
+import 'package:udetxen/features/exploring/knowledge/services/knowledge_service.dart';
+import 'package:udetxen/features/exploring/knowledge/services/knowledge_topic_service.dart';
+import 'package:udetxen/features/exploring/knowledge/services/knowledge_type_service.dart';
+import 'package:udetxen/features/exploring/subject/services/subject_service.dart';
+import 'package:udetxen/features/exploring/track/services/track_service.dart';
 import 'package:udetxen/features/profile/services/profile_service.dart';
 import 'package:udetxen/shared/services/connectivity_service.dart';
 import 'package:udetxen/shared/services/theme_service.dart';
@@ -30,4 +35,9 @@ Future<void> setupLocator() async {
   getIt.registerSingleton<AuthService>(AuthService());
   getIt.registerSingleton<ProfileService>(ProfileService());
   getIt.registerSingleton<JwtService>(JwtService(getIt<SharedPreferences>()));
+  getIt.registerSingleton<TrackService>(TrackService());
+  getIt.registerSingleton<SubjectService>(SubjectService());
+  getIt.registerSingleton<KnowledgeService>(KnowledgeService());
+  getIt.registerSingleton<KnowledgeTypeService>(KnowledgeTypeService());
+  getIt.registerSingleton<KnowledgeTopicService>(KnowledgeTopicService());
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:udetxen/features/exploring/knowledge/screens/search_knowledge_screen.dart';
+import 'package:udetxen/features/exploring/track/screens/home_screen.dart';
 import 'package:udetxen/features/profile/screens/profile_screen.dart';
 
 class AuthenticatedLayout extends StatefulWidget {
@@ -14,7 +16,8 @@ class _AuthenticatedLayoutState extends State<AuthenticatedLayout> {
   late int _selectedIndex;
 
   final List<Widget> _userScreens = [
-    const Scaffold(),
+    const HomeScreen(),
+    const SearchKnowledgeScreen(),
     const ProfileScreen(),
   ];
 
@@ -40,6 +43,10 @@ class _AuthenticatedLayoutState extends State<AuthenticatedLayout> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
