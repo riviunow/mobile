@@ -3,7 +3,7 @@ part of 'index.dart';
 class LearningHistory extends SingleIdEntity {
   final String learningId;
   final Learning? learning;
-  final String learningLevel;
+  final LearningLevel learningLevel;
   final bool isMemorized;
   final String playedGameId;
   final Game? playedGame;
@@ -28,7 +28,7 @@ class LearningHistory extends SingleIdEntity {
       learningId: json['learningId'],
       learning:
           json['learning'] != null ? Learning.fromJson(json['learning']) : null,
-      learningLevel: json['learningLevel'],
+      learningLevel: LearningLevelExtension.fromJson(json['learningLevel']),
       isMemorized: json['isMemorized'],
       playedGameId: json['playedGameId'],
       playedGame:
@@ -42,7 +42,7 @@ class LearningHistory extends SingleIdEntity {
     DateTime? createdAt,
     String? learningId,
     Learning? learning,
-    String? learningLevel,
+    LearningLevel? learningLevel,
     bool? isMemorized,
     String? playedGameId,
     Game? playedGame,

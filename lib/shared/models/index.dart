@@ -1,3 +1,11 @@
+import 'enums/game_option_type.dart';
+import 'enums/learning_level.dart';
+import 'enums/material_type.dart';
+import 'enums/role.dart';
+import 'enums/knowledge_visibility.dart';
+import 'enums/knowledge_level.dart';
+import 'enums/publication_request_status.dart';
+
 part 'single_id_entity.dart';
 part 'single_id_pivot_entity.dart';
 part 'user.dart';

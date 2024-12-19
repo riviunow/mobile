@@ -3,43 +3,44 @@ import 'package:udetxen/shared/models/index.dart';
 import '../models/search_knowledge.dart';
 import '../services/knowledge_service.dart';
 
-abstract class KnowledgeEvent {}
+abstract class SearchKnowledgesEvent {}
 
-class SearchKnowledges extends KnowledgeEvent {
+class SearchKnowledges extends SearchKnowledgesEvent {
   final SearchKnowledgesRequest request;
 
   SearchKnowledges(this.request);
 }
 
-class LoadMoreKnowledges extends KnowledgeEvent {
+class LoadMoreKnowledges extends SearchKnowledgesEvent {
   final SearchKnowledgesRequest request;
 
   LoadMoreKnowledges(this.request);
 }
 
-abstract class KnowledgeState {}
+abstract class SearchKnowledgesState {}
 
-class KnowledgeInitial extends KnowledgeState {}
+class KnowledgeInitial extends SearchKnowledgesState {}
 
-class KnowledgeLoading extends KnowledgeState {}
+class KnowledgeLoading extends SearchKnowledgesState {}
 
-class KnowledgeLoaded extends KnowledgeState {
+class KnowledgeLoaded extends SearchKnowledgesState {
   final List<Knowledge> knowledges;
   final bool hasNext;
 
   KnowledgeLoaded(this.knowledges, this.hasNext);
 }
 
-class KnowledgeError extends KnowledgeState {
+class KnowledgeError extends SearchKnowledgesState {
   final List<String> messages;
 
   KnowledgeError({this.messages = const []});
 }
 
-class KnowledgeBloc extends Bloc<KnowledgeEvent, KnowledgeState> {
+class SearchKnowledgesBloc
+    extends Bloc<SearchKnowledgesEvent, SearchKnowledgesState> {
   final KnowledgeService _knowledgeService;
 
-  KnowledgeBloc(this._knowledgeService) : super(KnowledgeInitial()) {
+  SearchKnowledgesBloc(this._knowledgeService) : super(KnowledgeInitial()) {
     on<SearchKnowledges>((event, emit) async {
       emit(KnowledgeLoading());
       var response = await _knowledgeService.searchKnowledges(event.request);

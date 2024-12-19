@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/exploring/knowledge/widgets/search.filter_widget.dart';
 import 'package:udetxen/shared/widgets/layouts/authenticated_layout.dart';
 import 'package:udetxen/shared/widgets/loader.dart';
-import '../blocs/knowledge_bloc.dart';
+import '../blocs/search_knowledges_bloc.dart';
 import '../models/search_knowledge.dart';
 import '../widgets/search.knowledge_list.dart';
 
@@ -27,7 +27,7 @@ class _SearchKnowledgeScreenState extends State<SearchKnowledgeScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<KnowledgeBloc>().add(SearchKnowledges(_searchRequest));
+    context.read<SearchKnowledgesBloc>().add(SearchKnowledges(_searchRequest));
   }
 
   @override
@@ -56,7 +56,7 @@ class _SearchKnowledgeScreenState extends State<SearchKnowledgeScreen> {
               setState(() {
                 _searchRequest = _searchRequest.copyWith(searchTerm: value);
                 context
-                    .read<KnowledgeBloc>()
+                    .read<SearchKnowledgesBloc>()
                     .add(SearchKnowledges(_searchRequest));
               });
             },
@@ -80,7 +80,7 @@ class _SearchKnowledgeScreenState extends State<SearchKnowledgeScreen> {
                 setState(() {
                   _searchRequest = result;
                   context
-                      .read<KnowledgeBloc>()
+                      .read<SearchKnowledgesBloc>()
                       .add(SearchKnowledges(_searchRequest));
                 });
               }
@@ -91,7 +91,7 @@ class _SearchKnowledgeScreenState extends State<SearchKnowledgeScreen> {
       body: Column(
         children: [
           Expanded(
-            child: BlocBuilder<KnowledgeBloc, KnowledgeState>(
+            child: BlocBuilder<SearchKnowledgesBloc, SearchKnowledgesState>(
               builder: (context, state) {
                 if (state is KnowledgeLoading) {
                   return const Center(child: Loading());
@@ -102,7 +102,7 @@ class _SearchKnowledgeScreenState extends State<SearchKnowledgeScreen> {
                     onLoadMore: () {
                       _searchRequest.copyWith(page: _searchRequest.page + 1);
                       context
-                          .read<KnowledgeBloc>()
+                          .read<SearchKnowledgesBloc>()
                           .add(LoadMoreKnowledges(_searchRequest));
                     },
                   );

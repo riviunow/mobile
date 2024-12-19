@@ -1,7 +1,7 @@
 part of 'index.dart';
 
 class Material extends SingleIdEntity {
-  final String type;
+  final MaterialType type;
   final String content;
   final String knowledgeId;
   final int? order;
@@ -23,7 +23,7 @@ class Material extends SingleIdEntity {
     return Material(
       id: json['id'],
       createdAt: DateTime.parse(json['createdAt']),
-      type: json['type'],
+      type: MaterialTypeExtension.fromJson(json['type']),
       content: json['content'],
       knowledgeId: json['knowledgeId'],
       order: json['order'],
@@ -39,7 +39,7 @@ class Material extends SingleIdEntity {
   Material copyWith({
     String? id,
     DateTime? createdAt,
-    String? type,
+    MaterialType? type,
     String? content,
     String? knowledgeId,
     int? order,

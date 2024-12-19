@@ -3,7 +3,7 @@ part of 'index.dart';
 class GameOption extends SingleIdEntity {
   final String gameKnowledgeSubscriptionId;
   final GameKnowledgeSubscription? gameKnowledgeSubscription;
-  final String type;
+  final GameOptionType type;
   final String value;
   final int group;
   final bool? isCorrect;
@@ -30,7 +30,7 @@ class GameOption extends SingleIdEntity {
           ? GameKnowledgeSubscription.fromJson(
               json['gameKnowledgeSubscription'])
           : null,
-      type: json['type'],
+      type: GameOptionTypeExtension.fromJson(json['type']),
       value: json['value'],
       group: json['group'],
       isCorrect: json['isCorrect'],
@@ -43,7 +43,7 @@ class GameOption extends SingleIdEntity {
     DateTime? createdAt,
     String? gameKnowledgeSubscriptionId,
     GameKnowledgeSubscription? gameKnowledgeSubscription,
-    String? type,
+    GameOptionType? type,
     String? value,
     int? group,
     bool? isCorrect,

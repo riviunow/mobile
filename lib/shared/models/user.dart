@@ -4,7 +4,7 @@ class User extends SingleIdEntity {
   final String userName;
   final String email;
   final String? photoUrl;
-  final String role;
+  final Role role;
   final Authentication? authentication;
   final List<LearningList> learningLists;
   final DateTime? confirmationCodeExpiryTime;
@@ -15,7 +15,7 @@ class User extends SingleIdEntity {
     required this.userName,
     required this.email,
     this.photoUrl,
-    this.role = 'User',
+    this.role = Role.user,
     this.authentication,
     this.learningLists = const [],
     this.confirmationCodeExpiryTime,
@@ -28,7 +28,7 @@ class User extends SingleIdEntity {
       userName: json['userName'],
       email: json['email'],
       photoUrl: json['photoUrl'],
-      role: json['role'],
+      role: RoleExtension.fromJson(json['role']),
       authentication: json['authentication'] != null
           ? Authentication.fromJson(json['authentication'])
           : null,
@@ -47,7 +47,7 @@ class User extends SingleIdEntity {
     String? userName,
     String? email,
     String? photoUrl,
-    String? role,
+    Role? role,
     Authentication? authentication,
     List<LearningList>? learningLists,
     DateTime? confirmationCodeExpiryTime,

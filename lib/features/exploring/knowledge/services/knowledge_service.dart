@@ -14,4 +14,11 @@ class KnowledgeService extends ApiService {
       request.toJson(),
     );
   }
+
+  ApiResponse<Knowledge> getKnowledge(String id) {
+    return get<Knowledge>(
+      HttpRoute.getDetailedKnowledgeByGuid(id),
+      Knowledge.fromJson,
+    );
+  }
 }

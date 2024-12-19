@@ -3,7 +3,7 @@ part of 'index.dart';
 class PublicationRequest extends SingleIdEntity {
   final String knowledgeId;
   final Knowledge? knowledge;
-  final String status;
+  final PublicationRequestStatus status;
 
   PublicationRequest({
     required super.id,
@@ -21,7 +21,7 @@ class PublicationRequest extends SingleIdEntity {
       knowledge: json['knowledge'] != null
           ? Knowledge.fromJson(json['knowledge'])
           : null,
-      status: json['status'],
+      status: PublicationRequestStatusExtension.fromJson(json['status']),
     );
   }
 
@@ -30,7 +30,7 @@ class PublicationRequest extends SingleIdEntity {
     DateTime? createdAt,
     String? knowledgeId,
     Knowledge? knowledge,
-    String? status,
+    PublicationRequestStatus? status,
   }) {
     return PublicationRequest(
       id: id ?? this.id,

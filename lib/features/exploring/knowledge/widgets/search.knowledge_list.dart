@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:udetxen/features/exploring/knowledge/screens/knowledge_detail_screen.dart';
 import 'package:udetxen/shared/models/index.dart';
 import 'package:udetxen/shared/widgets/loader.dart';
 
@@ -39,6 +40,8 @@ class SearchKnowledgeList extends StatelessWidget {
           return Card(
             margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             child: ListTile(
+              onTap: () => Navigator.push(
+                  context, KnowledgeDetailScreen.route(knowledge: knowledge)),
               contentPadding: const EdgeInsets.all(16),
               title: Text(
                 knowledge.title,

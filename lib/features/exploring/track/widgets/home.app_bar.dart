@@ -19,11 +19,18 @@ class HomeAppBar extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircleAvatar(
-                  radius: 20,
-                  backgroundImage:
-                      NetworkImage("${Urls.mediaUrl}/${state.user.photoUrl!}"),
-                ),
+                if (state.user.photoUrl != null)
+                  CircleAvatar(
+                    radius: 20,
+                    backgroundImage: NetworkImage(
+                        "${Urls.mediaUrl}/${state.user.photoUrl!}"),
+                  ),
+                if (state.user.photoUrl == null)
+                  CircleAvatar(
+                    radius: 20,
+                    child: Icon(Icons.person,
+                        size: 20, color: Theme.of(context).primaryColor),
+                  ),
                 const SizedBox(width: 10),
                 Text(state.user.userName, style: const TextStyle(fontSize: 20)),
                 // Add more widgets here if needed

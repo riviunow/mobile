@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:udetxen/features/exploring/knowledge/blocs/knowledge_detail_bloc.dart';
 import 'features/auth/bloc/auth_bloc.dart';
 import 'features/auth/services/jwt_service.dart';
-import 'features/exploring/knowledge/blocs/knowledge_bloc.dart';
+import 'features/exploring/knowledge/blocs/search_knowledges_bloc.dart';
 import 'features/exploring/knowledge/blocs/knowledge_topic_bloc.dart';
 import 'features/exploring/knowledge/blocs/knowledge_type_bloc.dart';
 import 'features/exploring/knowledge/services/knowledge_service.dart';
@@ -65,7 +66,11 @@ class MainApp extends StatelessWidget {
             create: (context) => SubjectBloc(getIt<SubjectService>()),
           ),
           BlocProvider(
-            create: (context) => KnowledgeBloc(getIt<KnowledgeService>()),
+            create: (context) =>
+                SearchKnowledgesBloc(getIt<KnowledgeService>()),
+          ),
+          BlocProvider(
+            create: (context) => KnowledgeDetailBloc(getIt<KnowledgeService>()),
           ),
           BlocProvider(
             create: (context) =>

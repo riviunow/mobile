@@ -2,12 +2,35 @@ part of 'index.dart';
 
 class Knowledge extends SingleIdEntity {
   final String title;
-  final String visibility;
-  final String level;
+  final KnowledgeVisibility visibility;
+  final KnowledgeLevel level;
   final String creatorId;
   final User? creator;
   final PublicationRequest? publicationRequest;
+
   final List<Material> materials;
+  List<Material> get imageMaterials =>
+      materials.where((element) => element.type == MaterialType.image).toList()
+        ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
+  List<Material> get videoMaterials =>
+      materials.where((element) => element.type == MaterialType.video).toList()
+        ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
+  List<Material> get audioMaterials =>
+      materials.where((element) => element.type == MaterialType.audio).toList()
+        ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
+  List<Material> get subTitles => materials
+      .where((element) => element.type == MaterialType.subtitle)
+      .toList()
+    ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
+  List<Material> get restMaterials => materials
+      .where((element) =>
+          element.type != MaterialType.image &&
+          element.type != MaterialType.video &&
+          element.type != MaterialType.audio &&
+          element.type != MaterialType.subtitle)
+      .toList()
+    ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
+
   final List<SubjectKnowledge> subjectKnowledges;
   final List<KnowledgeTypeKnowledge> knowledgeTypeKnowledges;
   final List<KnowledgeTopicKnowledge> knowledgeTopicKnowledges;
@@ -44,8 +67,8 @@ class Knowledge extends SingleIdEntity {
       id: json['id'],
       createdAt: DateTime.parse(json['createdAt']),
       title: json['title'],
-      visibility: json['visibility'],
-      level: json['level'],
+      visibility: KnowledgeVisibilityExtension.fromJson(json['visibility']),
+      level: KnowledgeLevelExtension.fromJson(json['level']),
       creatorId: json['creatorId'],
       creator: json['creator'] != null ? User.fromJson(json['creator']) : null,
       publicationRequest: json['publicationRequest'] != null
@@ -98,8 +121,8 @@ class Knowledge extends SingleIdEntity {
     String? id,
     DateTime? createdAt,
     String? title,
-    String? visibility,
-    String? level,
+    KnowledgeVisibility? visibility,
+    KnowledgeLevel? level,
     String? creatorId,
     User? creator,
     PublicationRequest? publicationRequest,
@@ -138,5 +161,16 @@ class Knowledge extends SingleIdEntity {
           learningListKnowledges ?? this.learningListKnowledges,
       currentUserLearning: currentUserLearning ?? this.currentUserLearning,
     );
+  }
+}
+
+extension on List<Material> {
+  Material? firstWhereOrNull(bool Function(Material element) test) {
+    for (var element in this) {
+      if (test(element)) {
+        return element;
+      }
+    }
+    return null;
   }
 }
