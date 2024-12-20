@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:udetxen/features/exploring/track/widgets/home.app_bar.dart';
 import 'package:udetxen/features/exploring/track/widgets/home.list_tracks.dart';
+import 'package:udetxen/shared/config/service_locator.dart';
 import 'package:udetxen/shared/widgets/layouts/authenticated_layout.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -11,7 +12,9 @@ class HomeScreen extends StatefulWidget {
   }
 
   static Widget getInstance() {
-    return const AuthenticatedLayout();
+    final valueNotifier = getIt<ValueNotifier<(int, int)>>();
+    valueNotifier.value = (0, valueNotifier.value.$2);
+    return getIt<AuthenticatedLayout>();
   }
 
   const HomeScreen({super.key});

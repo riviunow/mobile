@@ -4,19 +4,26 @@ import 'package:provider/provider.dart';
 import 'package:udetxen/features/auth/bloc/auth_bloc.dart';
 import 'package:udetxen/features/auth/screens/login_screen.dart';
 import 'package:udetxen/features/profile/bloc/profile_bloc.dart';
+import 'package:udetxen/shared/config/service_locator.dart';
 import 'package:udetxen/shared/constants/urls.dart';
 import 'package:udetxen/shared/services/theme_service.dart';
 import 'package:udetxen/shared/widgets/layouts/authenticated_layout.dart';
 import 'package:udetxen/shared/widgets/loader.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
-
   static route() {
     return MaterialPageRoute<void>(
-      builder: (_) => const AuthenticatedLayout(currentIndex: 2),
+      builder: (_) => getInstance(),
     );
   }
+
+  static Widget getInstance() {
+    final valueNotifier = getIt<ValueNotifier<(int, int)>>();
+    valueNotifier.value = (3, valueNotifier.value.$2);
+    return getIt<AuthenticatedLayout>();
+  }
+
+  const ProfileScreen({super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();

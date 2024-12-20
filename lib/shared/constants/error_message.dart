@@ -51,6 +51,7 @@ enum ErrorMessage {
   someKnowledgesAreNotReadyToReview,
   knowledgeNotReadyToReview,
   learningNotFound,
+  noLearningsFound,
   requireLearningBeforeReview,
   requireTwoGamesToLearn,
   requireAGameToReview,
@@ -187,6 +188,8 @@ extension ErrorMessageExtension on ErrorMessage {
         return "The knowledge is not ready to review.";
       case ErrorMessage.learningNotFound:
         return "Learning not found.";
+      case ErrorMessage.noLearningsFound:
+        return "No learnings found.";
       case ErrorMessage.requireLearningBeforeReview:
         return "Learning is required before review.";
       case ErrorMessage.requireTwoGamesToLearn:

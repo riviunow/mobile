@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/exploring/knowledge/widgets/search.filter_widget.dart';
+import 'package:udetxen/shared/config/service_locator.dart';
 import 'package:udetxen/shared/widgets/layouts/authenticated_layout.dart';
 import 'package:udetxen/shared/widgets/loader.dart';
 import '../blocs/search_knowledges_bloc.dart';
@@ -10,8 +11,14 @@ import '../widgets/search.knowledge_list.dart';
 class SearchKnowledgeScreen extends StatefulWidget {
   static route() {
     return MaterialPageRoute<void>(
-      builder: (_) => const AuthenticatedLayout(currentIndex: 1),
+      builder: (_) => getInstance(),
     );
+  }
+
+  static Widget getInstance() {
+    final valueNotifier = getIt<ValueNotifier<(int, int)>>();
+    valueNotifier.value = (1, valueNotifier.value.$2);
+    return getIt<AuthenticatedLayout>();
   }
 
   const SearchKnowledgeScreen({super.key});

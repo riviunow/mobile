@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:udetxen/features/exploring/knowledge/blocs/knowledge_detail_bloc.dart';
+import 'package:udetxen/features/learning/knowledge_learning/blocs/unlisted_learnings_bloc.dart';
+import 'package:udetxen/features/learning/learning_list/blocs/add_remove_knowledge_bloc.dart';
+import 'package:udetxen/features/learning/learning_list/blocs/create_learning_list_bloc.dart';
+import 'package:udetxen/features/learning/learning_list/blocs/get_learning_list_by_id_bloc.dart';
+import 'package:udetxen/features/learning/learning_list/blocs/get_learning_lists_bloc.dart';
+import 'package:udetxen/features/learning/learning_list/blocs/remove_learning_list_bloc.dart';
+import 'package:udetxen/features/learning/learning_list/blocs/update_learning_list_bloc.dart';
 import 'features/auth/bloc/auth_bloc.dart';
 import 'features/auth/services/jwt_service.dart';
 import 'features/exploring/knowledge/blocs/search_knowledges_bloc.dart';
@@ -15,6 +22,9 @@ import 'features/exploring/subject/services/subject_service.dart';
 import 'features/exploring/track/blocs/list_tracks_bloc.dart';
 import 'features/exploring/track/blocs/track_bloc.dart';
 import 'features/exploring/track/services/track_service.dart';
+import 'features/learning/knowledge_learning/blocs/current_user_learnings_bloc.dart';
+import 'features/learning/knowledge_learning/services/learning_service.dart';
+import 'features/learning/learning_list/services/learning_list_service.dart';
 import 'features/profile/bloc/profile_bloc.dart';
 import 'shared/widgets/splash_screen.dart';
 import 'features/auth/services/auth_service.dart';
@@ -79,6 +89,38 @@ class MainApp extends StatelessWidget {
           BlocProvider(
             create: (context) =>
                 KnowledgeTopicBloc(getIt<KnowledgeTopicService>()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                GetCurrentUserLearningsBloc(getIt<LearningService>()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                UnlistedLearningsBloc(getIt<LearningService>()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                GetLearningListsBloc(getIt<LearningListService>()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                GetLearningListByIdBloc(getIt<LearningListService>()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                CreateLearningListBloc(getIt<LearningListService>()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                UpdateLearningListBloc(getIt<LearningListService>()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                RemoveLearningListBloc(getIt<LearningListService>()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                AddRemoveKnowledgeBloc(getIt<LearningListService>()),
           ),
         ],
         child: MultiProvider(

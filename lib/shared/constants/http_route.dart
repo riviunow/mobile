@@ -65,10 +65,11 @@ class HttpRoute {
   static String deleteKnowledgeTopic(String id) => "knowledgeTopic/delete/$id";
 
   // Learning
-  static const String learnKnowledge = "learn";
-  static const String getLearningsToReview = "to-review";
-  static const String reviewLearning = "review";
-  static const String getCurrentUserLearnings = "get-learnings";
+  static const String learnKnowledge = "learning/learn";
+  static const String getLearningsToReview = "learning/to-review";
+  static const String reviewLearning = "learning/review";
+  static const String getCurrentUserLearnings = "learning/get-learnings";
+  static const String getUnlistedLearnings = "learning/get-unlisted-learnings";
 
   // Game
   static const String getGames = "list";
@@ -85,12 +86,13 @@ class HttpRoute {
   static String deleteGameOption(String id) => "delete/$id";
 
   // LearningList
-  static const String createLearningList = "create";
-  static const String updateLearningList = "update";
-  static const String addRemoveKnowledgeToLearningList = "add-remove-knowledge";
-  static const String getAllLearningLists = "list";
-  static String getLearningListByGuid(String id) => "detailed/$id";
-  static String deleteLearningList(String id) => "delete/$id";
+  static const String createLearningList = "learningList/create";
+  static const String updateLearningList = "learningList/update";
+  static const String addRemoveKnowledgeToLearningList =
+      "learningList/add-remove-knowledge";
+  static const String getAllLearningLists = "learningList/list";
+  static String getLearningListByGuid(String id) => "learningList/detailed/$id";
+  static String deleteLearningList(String id) => "learningList/delete/$id";
 
   // PublicationRequest
   static const String requestPublishKnowledge = "request-publish";

@@ -2,43 +2,58 @@ import 'package:flutter/material.dart';
 import 'package:udetxen/features/exploring/knowledge/screens/search_knowledge_screen.dart';
 import 'package:udetxen/features/exploring/track/screens/home_screen.dart';
 import 'package:udetxen/features/profile/screens/profile_screen.dart';
+import 'package:udetxen/features/learning/knowledge_learning/screens/screen_view/learning_screen_view.dart';
 
 class AuthenticatedLayout extends StatefulWidget {
-  final int currentIndex;
+  final ValueNotifier<(int, int)> currentIndexNotifier;
 
-  const AuthenticatedLayout({super.key, this.currentIndex = 0});
+  const AuthenticatedLayout({super.key, required this.currentIndexNotifier});
 
   @override
   State<AuthenticatedLayout> createState() => _AuthenticatedLayoutState();
 }
 
 class _AuthenticatedLayoutState extends State<AuthenticatedLayout> {
-  late int _selectedIndex;
-
-  final List<Widget> _userScreens = [
-    const HomeScreen(),
-    const SearchKnowledgeScreen(),
-    const ProfileScreen(),
-  ];
+  late final List<Widget> _userScreens;
 
   @override
   void initState() {
     super.initState();
-    _selectedIndex = widget.currentIndex;
+    widget.currentIndexNotifier.addListener(_onIndexChanged);
+    _userScreens = [
+      const HomeScreen(),
+      const SearchKnowledgeScreen(),
+      LearningScreenView(
+        currentIndexNotifier: widget.currentIndexNotifier,
+      ),
+      const ProfileScreen(),
+    ];
+  }
+
+  @override
+  void dispose() {
+    widget.currentIndexNotifier.removeListener(_onIndexChanged);
+    super.dispose();
+  }
+
+  void _onIndexChanged() {
+    setState(() {});
   }
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    widget.currentIndexNotifier.value =
+        (index, widget.currentIndexNotifier.value.$2);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _userScreens[_selectedIndex],
+      body: IndexedStack(
+        index: widget.currentIndexNotifier.value.$1,
+        children: _userScreens,
+      ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
+        currentIndex: widget.currentIndexNotifier.value.$1,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -47,6 +62,10 @@ class _AuthenticatedLayoutState extends State<AuthenticatedLayout> {
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
             label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book),
+            label: 'Learn',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/profile/screens/profile_screen.dart';
+import 'package:udetxen/shared/config/service_locator.dart';
 import '../../../../shared/constants/urls.dart';
 import '../../../profile/bloc/profile_bloc.dart';
 
@@ -14,7 +14,7 @@ class HomeAppBar extends StatelessWidget {
         if (state is ProfileLoaded) {
           return GestureDetector(
             onTap: () {
-              Navigator.pushReplacement(context, ProfileScreen.route());
+              getIt<ValueNotifier<int>>().value = 3;
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
