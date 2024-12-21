@@ -107,20 +107,25 @@ class MainApp extends StatelessWidget {
                 GetLearningListByIdBloc(getIt<LearningListService>()),
           ),
           BlocProvider(
-            create: (context) =>
-                CreateLearningListBloc(getIt<LearningListService>()),
+            create: (context) => CreateLearningListBloc(
+                getIt<LearningListService>(),
+                BlocProvider.of<GetLearningListsBloc>(context)),
           ),
           BlocProvider(
-            create: (context) =>
-                UpdateLearningListBloc(getIt<LearningListService>()),
+            create: (context) => UpdateLearningListBloc(
+                getIt<LearningListService>(),
+                BlocProvider.of<GetLearningListByIdBloc>(context),
+                BlocProvider.of<GetLearningListsBloc>(context)),
           ),
           BlocProvider(
-            create: (context) =>
-                RemoveLearningListBloc(getIt<LearningListService>()),
+            create: (context) => RemoveLearningListBloc(
+                getIt<LearningListService>(),
+                BlocProvider.of<GetLearningListsBloc>(context)),
           ),
           BlocProvider(
-            create: (context) =>
-                AddRemoveKnowledgeBloc(getIt<LearningListService>()),
+            create: (context) => AddRemoveKnowledgeBloc(
+                getIt<LearningListService>(),
+                BlocProvider.of<GetLearningListByIdBloc>(context)),
           ),
         ],
         child: MultiProvider(

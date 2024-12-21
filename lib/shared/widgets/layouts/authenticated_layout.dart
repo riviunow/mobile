@@ -4,10 +4,32 @@ import 'package:udetxen/features/exploring/track/screens/home_screen.dart';
 import 'package:udetxen/features/profile/screens/profile_screen.dart';
 import 'package:udetxen/features/learning/knowledge_learning/screens/screen_view/learning_screen_view.dart';
 
-class AuthenticatedLayout extends StatefulWidget {
-  final ValueNotifier<(int, int)> currentIndexNotifier;
+class AuthenticatedLayoutSettings {
+  final int initialIndex;
+  final int initialLearningListIndex;
 
-  const AuthenticatedLayout({super.key, required this.currentIndexNotifier});
+  const AuthenticatedLayoutSettings({
+    this.initialIndex = 0,
+    this.initialLearningListIndex = 0,
+  });
+
+  AuthenticatedLayoutSettings copyWith({
+    int? initialIndex,
+    int? initialLearningListIndex,
+    bool? focusSearch,
+  }) {
+    return AuthenticatedLayoutSettings(
+      initialIndex: initialIndex ?? this.initialIndex,
+      initialLearningListIndex:
+          initialLearningListIndex ?? this.initialLearningListIndex,
+    );
+  }
+}
+
+class AuthenticatedLayout extends StatefulWidget {
+  final ValueNotifier<AuthenticatedLayoutSettings> layoutSettings;
+
+  const AuthenticatedLayout({super.key, required this.layoutSettings});
 
   @override
   State<AuthenticatedLayout> createState() => _AuthenticatedLayoutState();
@@ -19,12 +41,12 @@ class _AuthenticatedLayoutState extends State<AuthenticatedLayout> {
   @override
   void initState() {
     super.initState();
-    widget.currentIndexNotifier.addListener(_onIndexChanged);
+    widget.layoutSettings.addListener(_onIndexChanged);
     _userScreens = [
       const HomeScreen(),
       const SearchKnowledgeScreen(),
       LearningScreenView(
-        currentIndexNotifier: widget.currentIndexNotifier,
+        layoutSettings: widget.layoutSettings,
       ),
       const ProfileScreen(),
     ];
@@ -32,28 +54,31 @@ class _AuthenticatedLayoutState extends State<AuthenticatedLayout> {
 
   @override
   void dispose() {
-    widget.currentIndexNotifier.removeListener(_onIndexChanged);
+    widget.layoutSettings.removeListener(_onIndexChanged);
     super.dispose();
   }
 
   void _onIndexChanged() {
-    setState(() {});
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {});
+    });
   }
 
   void _onItemTapped(int index) {
-    widget.currentIndexNotifier.value =
-        (index, widget.currentIndexNotifier.value.$2);
+    widget.layoutSettings.value = widget.layoutSettings.value.copyWith(
+      initialIndex: index,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: IndexedStack(
-        index: widget.currentIndexNotifier.value.$1,
+        index: widget.layoutSettings.value.initialIndex,
         children: _userScreens,
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: widget.currentIndexNotifier.value.$1,
+        currentIndex: widget.layoutSettings.value.initialIndex,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

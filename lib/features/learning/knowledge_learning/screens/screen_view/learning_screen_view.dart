@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:udetxen/features/learning/knowledge_learning/screens/current_user_learning_screen.dart';
 import 'package:udetxen/features/learning/knowledge_learning/screens/unlisted_learning_screen.dart';
-import 'package:udetxen/features/learning/learning_list/screens/learning_list_screen.dart';
+import 'package:udetxen/features/learning/learning_list/screens/learning_lists_screen.dart';
 import 'package:udetxen/shared/config/service_locator.dart';
 import 'package:udetxen/shared/widgets/layouts/authenticated_layout.dart';
 
 class LearningScreenView extends StatefulWidget {
-  final ValueNotifier<(int, int)> currentIndexNotifier;
+  final ValueNotifier<AuthenticatedLayoutSettings> layoutSettings;
 
   static route(int index) {
     return MaterialPageRoute<void>(
@@ -15,11 +15,14 @@ class LearningScreenView extends StatefulWidget {
   }
 
   static Widget getInstance(int index) {
-    getIt<ValueNotifier<(int, int)>>().value = (2, index);
+    getIt<ValueNotifier<AuthenticatedLayoutSettings>>().value =
+        getIt<ValueNotifier<AuthenticatedLayoutSettings>>()
+            .value
+            .copyWith(initialIndex: 2, initialLearningListIndex: index);
     return getIt<AuthenticatedLayout>();
   }
 
-  const LearningScreenView({super.key, required this.currentIndexNotifier});
+  const LearningScreenView({super.key, required this.layoutSettings});
 
   @override
   State<LearningScreenView> createState() => _LearningScreenViewState();
@@ -29,12 +32,12 @@ class _LearningScreenViewState extends State<LearningScreenView> {
   @override
   void initState() {
     super.initState();
-    widget.currentIndexNotifier.addListener(_onIndexChanged);
+    widget.layoutSettings.addListener(_onIndexChanged);
   }
 
   @override
   void dispose() {
-    widget.currentIndexNotifier.removeListener(_onIndexChanged);
+    widget.layoutSettings.removeListener(_onIndexChanged);
     super.dispose();
   }
 
@@ -43,23 +46,24 @@ class _LearningScreenViewState extends State<LearningScreenView> {
   }
 
   void _onItemTapped(int index) {
-    widget.currentIndexNotifier.value =
-        (widget.currentIndexNotifier.value.$1, index);
+    widget.layoutSettings.value = widget.layoutSettings.value.copyWith(
+      initialLearningListIndex: index,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: IndexedStack(
-        index: widget.currentIndexNotifier.value.$2,
+        index: widget.layoutSettings.value.initialLearningListIndex,
         children: const [
           LearningsScreen(),
-          LearningListScreen(),
+          LearningListsScreen(),
           UnlistedLearningsScreen(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: widget.currentIndexNotifier.value.$2,
+        currentIndex: widget.layoutSettings.value.initialLearningListIndex,
         onTap: _onItemTapped,
         items: const [
           BottomNavigationBarItem(

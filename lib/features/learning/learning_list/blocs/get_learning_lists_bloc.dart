@@ -5,7 +5,11 @@ import 'package:udetxen/shared/models/index.dart';
 // Events
 abstract class GetLearningListsEvent {}
 
-class GetLearningListsRequested extends GetLearningListsEvent {}
+class GetLearningListsRequested extends GetLearningListsEvent {
+  final List<LearningList>? learningLists;
+
+  GetLearningListsRequested({this.learningLists = const []});
+}
 
 // States
 abstract class GetLearningListsState {}
@@ -35,6 +39,13 @@ class GetLearningListsBloc
       : super(GetLearningListsInitial()) {
     on<GetLearningListsRequested>((event, emit) async {
       emit(GetLearningListsLoading());
+
+      if (event.learningLists != null) {
+        emit(GetLearningListsSuccess(
+            event.learningLists!.whereType<LearningList>().toList()));
+        return;
+      }
+
       var response = await _learningListService.getLearningLists();
       await response.on(onFailure: (errors, _) {
         emit(GetLearningListsError(messages: errors));

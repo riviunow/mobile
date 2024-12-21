@@ -44,9 +44,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Update Profile'),
-      ),
       body: BlocListener<ProfileBloc, ProfileState>(
         listener: (context, state) {
           if (state is ProfileUpdated) {

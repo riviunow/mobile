@@ -14,8 +14,8 @@ class AudioPlayer extends StatefulWidget {
 
 class _AudioPlayerState extends State<AudioPlayer>
     with SingleTickerProviderStateMixin {
-  late audio_player.AudioPlayer _audioPlayer;
-  late AnimationController _animationController;
+  late final audio_player.AudioPlayer _audioPlayer;
+  late final AnimationController _animationController;
   bool _isPlaying = false;
   bool _hasError = false;
 
@@ -29,6 +29,7 @@ class _AudioPlayerState extends State<AudioPlayer>
     );
 
     _audioPlayer.onPlayerStateChanged.listen((state) {
+      if (!mounted) return;
       setState(() {
         _isPlaying = state == audio_player.PlayerState.playing;
         if (_isPlaying) {
@@ -40,6 +41,7 @@ class _AudioPlayerState extends State<AudioPlayer>
     });
 
     _audioPlayer.setSourceUrl(widget.url).catchError((error) {
+      if (!mounted) return;
       setState(() {
         _hasError = true;
       });
@@ -48,6 +50,7 @@ class _AudioPlayerState extends State<AudioPlayer>
 
   @override
   void dispose() {
+    _audioPlayer.stop();
     _audioPlayer.release();
     _audioPlayer.dispose();
     _animationController.dispose();

@@ -12,8 +12,10 @@ class HomeScreen extends StatefulWidget {
   }
 
   static Widget getInstance() {
-    final valueNotifier = getIt<ValueNotifier<(int, int)>>();
-    valueNotifier.value = (0, valueNotifier.value.$2);
+    getIt<ValueNotifier<AuthenticatedLayoutSettings>>().value =
+        getIt<ValueNotifier<AuthenticatedLayoutSettings>>()
+            .value
+            .copyWith(initialIndex: 0);
     return getIt<AuthenticatedLayout>();
   }
 

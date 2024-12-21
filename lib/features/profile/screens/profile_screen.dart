@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:udetxen/features/auth/bloc/auth_bloc.dart';
 import 'package:udetxen/features/auth/screens/login_screen.dart';
 import 'package:udetxen/features/profile/bloc/profile_bloc.dart';
+import 'package:udetxen/features/profile/screens/update_profile_screen.dart';
 import 'package:udetxen/shared/config/service_locator.dart';
 import 'package:udetxen/shared/constants/urls.dart';
 import 'package:udetxen/shared/services/theme_service.dart';
@@ -18,8 +19,10 @@ class ProfileScreen extends StatefulWidget {
   }
 
   static Widget getInstance() {
-    final valueNotifier = getIt<ValueNotifier<(int, int)>>();
-    valueNotifier.value = (3, valueNotifier.value.$2);
+    getIt<ValueNotifier<AuthenticatedLayoutSettings>>().value =
+        getIt<ValueNotifier<AuthenticatedLayoutSettings>>()
+            .value
+            .copyWith(initialIndex: 3);
     return getIt<AuthenticatedLayout>();
   }
 
@@ -67,6 +70,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               backgroundImage: NetworkImage(
                                   "${Urls.mediaUrl}/${user.photoUrl!}"),
                             ),
+                          )
+                        else
+                          const Center(
+                            child: CircleAvatar(
+                              radius: 50,
+                              child: Icon(Icons.person),
+                            ),
                           ),
                         const SizedBox(height: 16),
                         Text('Username: ${user.userName}',
@@ -78,6 +88,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   const Divider(),
+                  ListTile(
+                    leading: const Icon(Icons.edit),
+                    title: const Text('Update Profile'),
+                    onTap: () {
+                      Navigator.push(context, UpdateProfileScreen.route());
+                    },
+                  ),
                   ListTile(
                     leading: Icon(isDark ? Icons.dark_mode : Icons.light_mode),
                     title: Text(isDark

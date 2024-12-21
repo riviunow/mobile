@@ -2,25 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/learning/knowledge_learning/screens/screen_view/learning_screen_view.dart';
 import 'package:udetxen/features/learning/learning_list/blocs/get_learning_lists_bloc.dart';
-import 'package:udetxen/shared/models/index.dart';
+import 'package:udetxen/features/learning/learning_list/screens/create_learning_list_screen.dart';
 import 'package:udetxen/shared/widgets/loader.dart';
 
-class LearningListScreen extends StatefulWidget {
+import '../widgets/learning_lists.tile.dart';
+
+class LearningListsScreen extends StatefulWidget {
   static route() {
     return LearningScreenView.route(1);
   }
 
-  const LearningListScreen({super.key});
+  const LearningListsScreen({super.key});
 
   @override
-  State<LearningListScreen> createState() => _LearningListScreenState();
+  State<LearningListsScreen> createState() => _LearningListsScreenState();
 }
 
-class _LearningListScreenState extends State<LearningListScreen> {
+class _LearningListsScreenState extends State<LearningListsScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<GetLearningListsBloc>().add(GetLearningListsRequested());
+    context
+        .read<GetLearningListsBloc>()
+        .add(GetLearningListsRequested(learningLists: null));
   }
 
   @override
@@ -41,7 +45,7 @@ class _LearningListScreenState extends State<LearningListScreen> {
                   itemCount: state.learningLists.length,
                   itemBuilder: (context, index) {
                     final learningList = state.learningLists[index];
-                    return LearningListTile(learningList: learningList);
+                    return LearningListsTile(learningList: learningList);
                   },
                 );
               } else if (state is GetLearningListsError) {
@@ -56,44 +60,11 @@ class _LearningListScreenState extends State<LearningListScreen> {
             bottom: 16,
             right: 16,
             child: FloatingActionButton(
-              onPressed: () {},
+              onPressed: () =>
+                  Navigator.push(context, CreateLearningListScreen.route()),
               child: const Icon(Icons.add),
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class LearningListTile extends StatelessWidget {
-  final LearningList learningList;
-
-  const LearningListTile({super.key, required this.learningList});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      onTap: () {},
-      title: Text(learningList.title),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Learnt Knowledge Count: ${learningList.learntKnowledgeCount}'),
-          Text(
-              'Not Learnt Knowledge Count: ${learningList.notLearntKnowledgeCount}'),
-          ...learningList.learningListKnowledges.map((learningListKnowledge) {
-            final knowledge = learningListKnowledge.knowledge;
-            return knowledge != null
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Knowledge Title: ${knowledge.title}'),
-                      Text('Knowledge Level: ${knowledge.level}'),
-                    ],
-                  )
-                : const SizedBox.shrink();
-          }),
         ],
       ),
     );

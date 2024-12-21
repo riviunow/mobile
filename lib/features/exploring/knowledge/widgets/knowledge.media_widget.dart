@@ -106,6 +106,7 @@ class _KnowledgeMediaWidgetState extends State<KnowledgeMediaWidget> {
                         shape: BoxShape.circle,
                       ),
                       padding: const EdgeInsets.all(4.0),
+                      margin: const EdgeInsets.all(2.0),
                       child: AudioPlayer(
                         url: material.content,
                       ),

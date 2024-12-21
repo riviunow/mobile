@@ -9,6 +9,8 @@ class LearningList extends SingleIdEntity {
   final int learntKnowledgeCount;
   final List<Knowledge> notLearntKnowledges;
   final int notLearntKnowledgeCount;
+  bool get noKnowledge =>
+      learntKnowledges.isEmpty && notLearntKnowledges.isEmpty;
 
   LearningList({
     required super.id,
@@ -73,5 +75,10 @@ class LearningList extends SingleIdEntity {
       notLearntKnowledgeCount:
           notLearntKnowledgeCount ?? this.notLearntKnowledgeCount,
     );
+  }
+
+  bool containsKnowledge(String id) {
+    return learntKnowledges.any((element) => element.knowledgeId == id) ||
+        notLearntKnowledges.any((element) => element.id == id);
   }
 }

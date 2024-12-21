@@ -47,8 +47,9 @@ Future<void> setupLocator() async {
   getIt.registerSingleton<LearningService>(LearningService());
   getIt.registerSingleton<LearningListService>(LearningListService());
 
-  getIt.registerSingleton<ValueNotifier<(int, int)>>(
-      ValueNotifier<(int, int)>((0, 0)));
+  getIt.registerSingleton<ValueNotifier<AuthenticatedLayoutSettings>>(
+      ValueNotifier<AuthenticatedLayoutSettings>(
+          const AuthenticatedLayoutSettings()));
   getIt.registerSingleton<AuthenticatedLayout>(AuthenticatedLayout(
-      currentIndexNotifier: getIt<ValueNotifier<(int, int)>>()));
+      layoutSettings: getIt<ValueNotifier<AuthenticatedLayoutSettings>>()));
 }

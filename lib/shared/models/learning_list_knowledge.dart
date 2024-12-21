@@ -6,6 +6,7 @@ class LearningListKnowledge {
   final String knowledgeId;
   final Knowledge? knowledge;
   final int? order;
+  final bool deleted;
 
   LearningListKnowledge({
     required this.learningListId,
@@ -13,6 +14,7 @@ class LearningListKnowledge {
     required this.knowledgeId,
     this.knowledge,
     this.order,
+    required this.deleted,
   });
 
   factory LearningListKnowledge.fromJson(Map<String, dynamic> json) {
@@ -26,6 +28,7 @@ class LearningListKnowledge {
           ? Knowledge.fromJson(json['knowledge'])
           : null,
       order: json['order'],
+      deleted: json['deleted'],
     );
   }
 
@@ -35,6 +38,7 @@ class LearningListKnowledge {
     String? knowledgeId,
     Knowledge? knowledge,
     int? order,
+    bool? deleted,
   }) {
     return LearningListKnowledge(
       learningListId: learningListId ?? this.learningListId,
@@ -42,6 +46,7 @@ class LearningListKnowledge {
       knowledgeId: knowledgeId ?? this.knowledgeId,
       knowledge: knowledge ?? this.knowledge,
       order: order ?? this.order,
+      deleted: deleted ?? this.deleted,
     );
   }
 }

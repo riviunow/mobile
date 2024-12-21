@@ -41,7 +41,7 @@ class _UnlistedLearningsScreenState extends State<UnlistedLearningsScreen> {
             },
           );
         } else if (state is UnlistedLearningsError) {
-          return Center(child: Text('Error: ${state.messages.join('\n')}'));
+          return Center(child: Text(state.messages.join('\n')));
         } else {
           return const Center(child: Text('No data available'));
         }
