@@ -4,14 +4,16 @@ import 'package:udetxen/shared/models/index.dart' as models;
 
 class KnowledgeMaterialList extends StatelessWidget {
   final List<models.Material> materials;
+  final bool isFirstLayer;
 
-  const KnowledgeMaterialList({super.key, required this.materials});
+  const KnowledgeMaterialList(
+      {super.key, required this.materials, this.isFirstLayer = false});
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: materials
           .map((material) => _buildMaterialItem(context, material))
           .toList(),
@@ -20,28 +22,39 @@ class KnowledgeMaterialList extends StatelessWidget {
 
   Widget _buildMaterialItem(BuildContext context, models.Material material) {
     return Card(
-      color: Theme.of(context).primaryColor,
-      shadowColor: Theme.of(context).scaffoldBackgroundColor,
-      margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 6.0),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              material.content,
-              style: TextStyle(
-                fontSize: MaterialTypeExtension.getFontSize(material.type),
-                color: Theme.of(context).scaffoldBackgroundColor,
-                // fontWeight: FontWeight.bold,
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          border: !isFirstLayer
+              ? Border(
+                  left: BorderSide(
+                    color: Theme.of(context).primaryColor,
+                    width: 1.0,
+                  ),
+                  bottom: BorderSide(
+                    color: Theme.of(context).primaryColor,
+                    width: 1.0,
+                  ),
+                )
+              : null,
+        ),
+        child: Padding(
+          padding: isFirstLayer ? EdgeInsets.zero : const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                material.content,
+                style:
+                    MaterialTypeExtension.getTextStyle(material.type, context),
               ),
-            ),
-            if (material.children.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: KnowledgeMaterialList(materials: material.children),
-              ),
-          ],
+              if (material.children.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: KnowledgeMaterialList(materials: material.children),
+                ),
+            ],
+          ),
         ),
       ),
     );

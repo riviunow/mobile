@@ -24,7 +24,8 @@ class Game extends SingleIdEntity {
       imageUrl: json['imageUrl'],
       gameKnowledgeSubscriptions:
           (json['gameKnowledgeSubscriptions'] as List<dynamic>?)
-                  ?.map((e) => GameKnowledgeSubscription.fromJson(e))
+                  ?.whereType<Map<String, dynamic>>()
+                  .map((e) => GameKnowledgeSubscription.fromJson(e))
                   .toList() ??
               [],
     );

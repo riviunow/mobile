@@ -6,6 +6,8 @@ class GameKnowledgeSubscription extends SingleIdPivotEntity {
   final String knowledgeId;
   final Knowledge? knowledge;
   final List<GameOption> gameOptions;
+  GameOption get question => gameOptions
+      .firstWhere((option) => option.type == GameOptionType.question);
 
   GameKnowledgeSubscription({
     required super.id,

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 enum MaterialType {
   subtitle,
   interpretation,
@@ -11,17 +13,45 @@ enum MaterialType {
 }
 
 extension MaterialTypeExtension on MaterialType {
-  static double getFontSize(MaterialType type) {
-    switch (type) {
-      case MaterialType.textSmall || MaterialType.subtitle:
-        return 16;
-      case MaterialType.textMedium:
-        return 20;
-      case MaterialType.textLarge:
-        return 24;
-      default:
-        return 16;
+  static TextStyle getTextStyle(MaterialType type, BuildContext context) {
+    double getFontSize(MaterialType type) {
+      switch (type) {
+        case MaterialType.textSmall:
+        case MaterialType.subtitle:
+          return 14;
+        case MaterialType.textMedium:
+          return 20;
+        case MaterialType.textLarge:
+          return 24;
+        case MaterialType.interpretation:
+          return 16;
+        default:
+          return 16;
+      }
     }
+
+    FontWeight getFontWeight(MaterialType type) {
+      switch (type) {
+        case MaterialType.textSmall:
+        case MaterialType.subtitle:
+          return FontWeight.w200;
+        case MaterialType.textMedium:
+          return FontWeight.bold;
+        case MaterialType.textLarge:
+          return FontWeight.bold;
+        case MaterialType.interpretation:
+          return FontWeight.normal;
+        default:
+          return FontWeight.normal;
+      }
+    }
+
+    var fontSize = getFontSize(type);
+    return TextStyle(
+      fontSize: fontSize,
+      color: Theme.of(context).primaryColor,
+      fontWeight: getFontWeight(type),
+    );
   }
 
   static MaterialType fromJson(String json) {

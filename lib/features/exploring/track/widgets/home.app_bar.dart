@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/shared/config/service_locator.dart';
+import 'package:udetxen/shared/widgets/layouts/authenticated_layout.dart';
 import '../../../../shared/constants/urls.dart';
 import '../../../profile/bloc/profile_bloc.dart';
 
@@ -14,7 +15,10 @@ class HomeAppBar extends StatelessWidget {
         if (state is ProfileLoaded) {
           return GestureDetector(
             onTap: () {
-              getIt<ValueNotifier<int>>().value = 3;
+              getIt<ValueNotifier<AuthenticatedLayoutSettings>>().value =
+                  getIt<ValueNotifier<AuthenticatedLayoutSettings>>()
+                      .value
+                      .copyWith(initialIndex: 3);
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,

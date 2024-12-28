@@ -43,8 +43,7 @@ class _TrackDetailScreenState extends State<TrackDetailScreen> {
                 return const Center(child: Loading());
               } else if (state is TrackLoaded) {
                 return Expanded(
-                  child: TrackDetailListSubjects(
-                      trackSubjects: state.track.trackSubjects),
+                  child: TrackDetailListSubjects(track: state.track),
                 );
               } else if (state is TrackError) {
                 return Center(

@@ -8,6 +8,7 @@ class Learning extends SingleIdPivotEntity {
   final DateTime nextReviewDate;
   final List<LearningHistory> learningHistories;
   final LearningHistory? latestLearningHistory;
+  final int? learningListCount;
 
   Learning({
     required super.id,
@@ -21,6 +22,7 @@ class Learning extends SingleIdPivotEntity {
     required this.nextReviewDate,
     this.learningHistories = const [],
     this.latestLearningHistory,
+    this.learningListCount,
   });
 
   factory Learning.fromJson(Map<String, dynamic> json) {
@@ -49,6 +51,7 @@ class Learning extends SingleIdPivotEntity {
           ? LearningHistory.fromJson(
               json['latestLearningHistory'] as Map<String, dynamic>)
           : null,
+      learningListCount: json['learningListCount'] as int?,
     );
   }
 
@@ -64,6 +67,7 @@ class Learning extends SingleIdPivotEntity {
     DateTime? nextReviewDate,
     List<LearningHistory>? learningHistories,
     LearningHistory? latestLearningHistory,
+    int? learningListCount,
   }) {
     return Learning(
       id: id ?? this.id,
@@ -78,6 +82,7 @@ class Learning extends SingleIdPivotEntity {
       learningHistories: learningHistories ?? this.learningHistories,
       latestLearningHistory:
           latestLearningHistory ?? this.latestLearningHistory,
+      learningListCount: learningListCount ?? this.learningListCount,
     );
   }
 }

@@ -9,9 +9,16 @@ class Knowledge extends SingleIdEntity {
   final PublicationRequest? publicationRequest;
 
   final List<Material> materials;
-  List<Material> get imageMaterials =>
-      materials.where((element) => element.type == MaterialType.image).toList()
-        ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
+  List<Material> get imageMaterials => [
+        ...materials
+            .where((element) => element.type == MaterialType.image)
+            .toList()
+          ..sort((a, b) => a.createdAt.compareTo(b.createdAt)),
+        ...materials
+            .where((element) => element.type == MaterialType.image)
+            .toList()
+          ..sort((a, b) => a.createdAt.compareTo(b.createdAt))
+      ];
   List<Material> get videoMaterials =>
       materials.where((element) => element.type == MaterialType.video).toList()
         ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
@@ -40,6 +47,7 @@ class Knowledge extends SingleIdEntity {
   final List<GameKnowledgeSubscription>? gamesToLearn;
   final List<LearningListKnowledge> learningListKnowledges;
   final Learning? currentUserLearning;
+  final String? distinctInterpretation;
 
   Knowledge({
     required super.id,
@@ -60,6 +68,7 @@ class Knowledge extends SingleIdEntity {
     this.gamesToLearn,
     this.learningListKnowledges = const [],
     this.currentUserLearning,
+    this.distinctInterpretation,
   });
 
   factory Knowledge.fromJson(Map<String, dynamic> json) {
@@ -114,6 +123,7 @@ class Knowledge extends SingleIdEntity {
       currentUserLearning: json['currentUserLearning'] != null
           ? Learning.fromJson(json['currentUserLearning'])
           : null,
+      distinctInterpretation: json['distinctInterpretation'],
     );
   }
 
@@ -136,6 +146,7 @@ class Knowledge extends SingleIdEntity {
     List<GameKnowledgeSubscription>? gamesToLearn,
     List<LearningListKnowledge>? learningListKnowledges,
     Learning? currentUserLearning,
+    String? distinctInterpretation,
   }) {
     return Knowledge(
       id: id ?? this.id,
@@ -160,17 +171,8 @@ class Knowledge extends SingleIdEntity {
       learningListKnowledges:
           learningListKnowledges ?? this.learningListKnowledges,
       currentUserLearning: currentUserLearning ?? this.currentUserLearning,
+      distinctInterpretation:
+          distinctInterpretation ?? this.distinctInterpretation,
     );
-  }
-}
-
-extension on List<Material> {
-  Material? firstWhereOrNull(bool Function(Material element) test) {
-    for (var element in this) {
-      if (test(element)) {
-        return element;
-      }
-    }
-    return null;
   }
 }

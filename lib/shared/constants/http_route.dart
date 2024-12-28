@@ -28,7 +28,7 @@ class HttpRoute {
 
   // Subject
   static const String getSubjects = "subject/list";
-  static String getSubjectById(String id) => "detailed/$id";
+  static String getSubjectById(String id) => "subject/detailed/$id";
   static const String createSubject = "subject/create";
   static const String updateSubject = "subject/update";
   static String deleteSubject(String id) => "delete/$id";

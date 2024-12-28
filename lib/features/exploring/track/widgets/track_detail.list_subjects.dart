@@ -4,16 +4,17 @@ import 'package:udetxen/shared/config/theme/colors.dart';
 import 'package:udetxen/shared/models/index.dart';
 
 class TrackDetailListSubjects extends StatelessWidget {
-  final List<TrackSubject> trackSubjects;
+  final Track track;
 
-  const TrackDetailListSubjects({super.key, required this.trackSubjects});
+  const TrackDetailListSubjects({super.key, required this.track});
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: trackSubjects.length,
+      itemCount: track.trackSubjects.length,
       itemBuilder: (context, index) {
-        final subject = trackSubjects[index].subject;
+        final trackName = track.name;
+        final subject = track.trackSubjects[index].subject;
         final totalKnowledge = subject?.knowledgeCount ?? 0;
         final userLearning = subject?.userLearningCount ?? 0;
         final percentage =
@@ -32,13 +33,11 @@ class TrackDetailListSubjects extends StatelessWidget {
         return Card(
           margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
           child: ListTile(
-            onTap: () {
-              if (subject == null) return;
-              Navigator.push(
-                context,
-                SubjectDetailScreen.route(subject: subject),
-              );
-            },
+            onTap: () => Navigator.push(
+              context,
+              SubjectDetailScreen.route(
+                  subject: subject!, trackName: trackName),
+            ),
             title: Text(subject?.name ?? 'Unknown Subject'),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,8 +45,8 @@ class TrackDetailListSubjects extends StatelessWidget {
                 Text(subject?.description ?? 'No description available'),
                 const SizedBox(height: 8),
                 LinearProgressIndicator(
-                  value: percentage as double,
-                  color: getProgressColor(percentage),
+                  value: percentage.toDouble(),
+                  color: getProgressColor(percentage.toDouble()),
                   backgroundColor: Colors.grey[300],
                 ),
                 const SizedBox(height: 8),
@@ -56,9 +55,13 @@ class TrackDetailListSubjects extends StatelessWidget {
                     if (percentage == 0)
                       Expanded(
                         child: ElevatedButton(
-                          onPressed: () {
-                            // Handle learn action
-                          },
+                          onPressed: () => Navigator.push(
+                            context,
+                            SubjectDetailScreen.route(
+                                subject: subject!,
+                                learnAllKnowledge: true,
+                                trackName: trackName),
+                          ),
                           child: const Text('Learn'),
                         ),
                       )

@@ -33,6 +33,7 @@ class User extends SingleIdEntity {
           ? Authentication.fromJson(json['authentication'])
           : null,
       learningLists: (json['learningLists'] as List)
+          .whereType<Map<String, dynamic>>()
           .map((item) => LearningList.fromJson(item))
           .toList(),
       confirmationCodeExpiryTime: json['confirmationCodeExpiryTime'] != null

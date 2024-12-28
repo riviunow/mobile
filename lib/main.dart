@@ -24,6 +24,12 @@ import 'features/exploring/track/blocs/track_bloc.dart';
 import 'features/exploring/track/services/track_service.dart';
 import 'features/learning/knowledge_learning/blocs/current_user_learnings_bloc.dart';
 import 'features/learning/knowledge_learning/services/learning_service.dart';
+import 'features/learning/learn_and_review/blocs/game_bloc.dart';
+import 'features/learning/learn_and_review/blocs/get_to_learn_bloc.dart';
+import 'features/learning/learn_and_review/blocs/get_to_review_bloc.dart';
+import 'features/learning/learn_and_review/blocs/learn_knowledge_bloc.dart';
+import 'features/learning/learn_and_review/blocs/review_learning_bloc.dart';
+import 'features/learning/learn_and_review/services/learn_and_review_service.dart';
 import 'features/learning/learning_list/services/learning_list_service.dart';
 import 'features/profile/bloc/profile_bloc.dart';
 import 'shared/widgets/splash_screen.dart';
@@ -126,6 +132,27 @@ class MainApp extends StatelessWidget {
             create: (context) => AddRemoveKnowledgeBloc(
                 getIt<LearningListService>(),
                 BlocProvider.of<GetLearningListByIdBloc>(context)),
+          ),
+          BlocProvider(
+            create: (context) =>
+                LearnKnowledgeBloc(getIt<LearnAndReviewService>()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                ReviewLearningBloc(getIt<LearnAndReviewService>()),
+          ),
+          BlocProvider(
+            create: (context) => GameBloc(
+                BlocProvider.of<LearnKnowledgeBloc>(context),
+                BlocProvider.of<ReviewLearningBloc>(context)),
+          ),
+          BlocProvider(
+            create: (context) => GetToLearnBloc(getIt<LearnAndReviewService>(),
+                BlocProvider.of<GameBloc>(context)),
+          ),
+          BlocProvider(
+            create: (context) => GetToReviewBloc(getIt<LearnAndReviewService>(),
+                BlocProvider.of<GameBloc>(context)),
           ),
         ],
         child: MultiProvider(

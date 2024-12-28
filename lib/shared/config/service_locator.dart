@@ -12,6 +12,7 @@ import 'package:udetxen/features/exploring/knowledge/services/knowledge_type_ser
 import 'package:udetxen/features/exploring/subject/services/subject_service.dart';
 import 'package:udetxen/features/exploring/track/services/track_service.dart';
 import 'package:udetxen/features/learning/knowledge_learning/services/learning_service.dart';
+import 'package:udetxen/features/learning/learn_and_review/services/learn_and_review_service.dart';
 import 'package:udetxen/features/learning/learning_list/services/learning_list_service.dart';
 import 'package:udetxen/features/profile/services/profile_service.dart';
 import 'package:udetxen/shared/services/connectivity_service.dart';
@@ -46,6 +47,7 @@ Future<void> setupLocator() async {
   getIt.registerSingleton<KnowledgeTopicService>(KnowledgeTopicService());
   getIt.registerSingleton<LearningService>(LearningService());
   getIt.registerSingleton<LearningListService>(LearningListService());
+  getIt.registerSingleton<LearnAndReviewService>(LearnAndReviewService());
 
   getIt.registerSingleton<ValueNotifier<AuthenticatedLayoutSettings>>(
       ValueNotifier<AuthenticatedLayoutSettings>(

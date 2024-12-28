@@ -18,7 +18,7 @@ class TrackDetailAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Theme.of(context).dialogBackgroundColor,
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back),
+        icon: Icon(Icons.arrow_back, color: Theme.of(context).primaryColor),
         onPressed: () {
           Navigator.of(context).pop();
         },

@@ -8,19 +8,23 @@ class KnowledgeList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: knowledges.length,
-      itemBuilder: (context, index) {
-        final knowledge = knowledges[index];
-        return ListTile(
-          title: Text(knowledge.title),
-          subtitle: Text(knowledge.currentUserLearning != null
-              ? 'Learnt'
-              : 'Not yet learnt'),
-        );
-      },
+    return Expanded(
+      child: SingleChildScrollView(
+        child: ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: knowledges.length,
+          itemBuilder: (context, index) {
+            final knowledge = knowledges[index];
+            return ListTile(
+              title: Text(knowledge.title),
+              subtitle: Text(knowledge.currentUserLearning != null
+                  ? 'Learnt'
+                  : 'Not yet learnt'),
+            );
+          },
+        ),
+      ),
     );
   }
 }
