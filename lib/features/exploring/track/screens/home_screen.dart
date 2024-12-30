@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:udetxen/features/creating/knowledge/screens/create_knowledge_screen.dart';
+import 'package:udetxen/features/creating/knowledge/screens/created_knowledges_screen.dart';
 import 'package:udetxen/features/exploring/track/widgets/home.app_bar.dart';
 import 'package:udetxen/features/exploring/track/widgets/home.list_tracks.dart';
 import 'package:udetxen/shared/config/service_locator.dart';
 import 'package:udetxen/shared/widgets/layouts/authenticated_layout.dart';
+import 'package:udetxen/shared/widgets/spaced_divider.dart';
 
 class HomeScreen extends StatefulWidget {
   static route() {
@@ -33,16 +36,31 @@ class _HomeScreenState extends State<HomeScreen> {
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
-              pinned: true,
               expandedHeight: 50.0,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               flexibleSpace: const FlexibleSpaceBar(
                 background: HomeAppBar(),
               ),
             ),
-            const SliverFillRemaining(
-              child: HomeListTracks(),
+            SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  ElevatedButton(
+                    onPressed: () =>
+                        Navigator.push(context, CreateKnowledgeScreen.route()),
+                    child: const Text("Create Knowledge"),
+                  ),
+                  const SpacedDivider(spacing: 16),
+                  ElevatedButton(
+                    onPressed: () => Navigator.push(
+                        context, CreatedKnowledgesScreen.route()),
+                    child: const Text("View your Knowledges"),
+                  ),
+                  const SpacedDivider(spacing: 16),
+                ],
+              ),
             ),
+            const HomeListTracks(),
           ],
         ),
       ),

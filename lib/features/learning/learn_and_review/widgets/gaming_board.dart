@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/learning/learn_and_review/widgets/games/arrange_words.dart';
+import 'package:udetxen/shared/constants/games.dart';
 import 'package:udetxen/shared/models/index.dart';
 
 import '../blocs/game_bloc.dart';
@@ -38,18 +39,18 @@ class _GamingBoardState extends State<GamingBoard> {
     }
 
     switch (gameName) {
-      case 'Choose the correct answer':
+      case Games.chooseTheCorrectAnswer:
         return ChooseCorrectAnswer(
           gameOptions: widget.gameKnowledgeSubscription.gameOptions,
           onAnswerSubmitted: (answer) => _submitAnswer(context, answer),
         );
-      case 'Fill in the blank':
+      case Games.fillInTheBlank:
         return FillInBlank(
           gameOptions: widget.gameKnowledgeSubscription.gameOptions,
           knowledge: widget.gameKnowledgeSubscription.knowledge!,
           onAnswerSubmitted: (answer) => _submitAnswer(context, answer),
         );
-      case "Arrange the words":
+      case Games.arrangeWordsLetters:
         return ArrangeWords(
           gameOptions: widget.gameKnowledgeSubscription.gameOptions,
           knowledge: widget.gameKnowledgeSubscription.knowledge!,

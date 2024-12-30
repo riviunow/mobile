@@ -9,16 +9,9 @@ class Knowledge extends SingleIdEntity {
   final PublicationRequest? publicationRequest;
 
   final List<Material> materials;
-  List<Material> get imageMaterials => [
-        ...materials
-            .where((element) => element.type == MaterialType.image)
-            .toList()
-          ..sort((a, b) => a.createdAt.compareTo(b.createdAt)),
-        ...materials
-            .where((element) => element.type == MaterialType.image)
-            .toList()
-          ..sort((a, b) => a.createdAt.compareTo(b.createdAt))
-      ];
+  List<Material> get imageMaterials =>
+      materials.where((element) => element.type == MaterialType.image).toList()
+        ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
   List<Material> get videoMaterials =>
       materials.where((element) => element.type == MaterialType.video).toList()
         ..sort((a, b) => a.createdAt.compareTo(b.createdAt));

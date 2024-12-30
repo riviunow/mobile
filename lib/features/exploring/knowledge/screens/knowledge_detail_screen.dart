@@ -45,18 +45,16 @@ class _KnowledgeDetailScreenState extends State<KnowledgeDetailScreen> {
                   return const Center(child: Loading());
                 } else if (state is KnowledgeDetailLoaded) {
                   final knowledge = state.knowledge;
-                  return Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        KnowledgeMediaWidget(knowledge: knowledge),
-                        KnowledgeMaterialList(
-                            materials: knowledge.restMaterials),
-                        const SizedBox(height: 16),
-                        KnowledgeTagsWidget(knowledge: knowledge),
-                      ],
-                    ),
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      KnowledgeMediaWidget(knowledge: knowledge),
+                      KnowledgeMaterialList(
+                          materials: knowledge.restMaterials,
+                          isFirstLayer: true),
+                      const SizedBox(height: 16),
+                      KnowledgeTagsWidget(knowledge: knowledge),
+                    ],
                   );
                 } else if (state is KnowledgeDetailError) {
                   return Center(

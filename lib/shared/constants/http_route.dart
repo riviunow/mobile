@@ -38,6 +38,7 @@ class HttpRoute {
   // Knowledge
   static const String searchKnowledges = "knowledge/search";
   static const String getKnowledges = "knowledge/list";
+  static const String getCreatedKnowledges = "knowledge/list-created";
   static String getDetailedKnowledgeByGuid(String id) =>
       "knowledge/detailed/$id";
   static const String createKnowledge = "knowledge/create";

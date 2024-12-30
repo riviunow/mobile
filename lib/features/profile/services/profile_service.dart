@@ -12,6 +12,6 @@ class ProfileService extends ApiService {
 
   ApiResponse<User> updateProfile(UpdateProfileRequest request) {
     return postMultipart<User>(HttpRoute.updateProfile, User.fromJson,
-        request.toJson(), request.image, request.imageFieldName);
+        request.toJson(), [(request.image, request.imageFieldName)]);
   }
 }

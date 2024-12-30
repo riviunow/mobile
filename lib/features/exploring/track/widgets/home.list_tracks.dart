@@ -22,45 +22,55 @@ class _HomeListTracksState extends State<HomeListTracks> {
     return BlocBuilder<ListTracksBloc, ListTracksState>(
       builder: (context, state) {
         if (state is ListTracksLoading) {
-          return const Center(child: CircularProgressIndicator());
+          return const SliverToBoxAdapter(
+            child: Center(child: CircularProgressIndicator()),
+          );
         } else if (state is ListTracksLoaded) {
           final tracks = state.tracks;
-          return ListView.builder(
-            itemCount: tracks.length,
-            itemBuilder: (context, index) {
-              final track = tracks[index];
-              return Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                child: ListTile(
-                  title: Text(track.name, style: const TextStyle(fontSize: 22)),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(track.description),
-                      const SizedBox(height: 4),
-                      Text('${track.subjectCount} subjects',
-                          style: const TextStyle(
-                              fontSize: 16, color: Colors.grey)),
-                    ],
+          return SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final track = tracks[index];
+                return Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      TrackDetailScreen.route(track: track),
-                    );
-                  },
-                ),
-              );
-            },
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                  child: ListTile(
+                    title:
+                        Text(track.name, style: const TextStyle(fontSize: 22)),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(track.description),
+                        const SizedBox(height: 4),
+                        Text('${track.subjectCount} subjects',
+                            style: const TextStyle(
+                                fontSize: 16, color: Colors.grey)),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        TrackDetailScreen.route(track: track),
+                      );
+                    },
+                  ),
+                );
+              },
+              childCount: tracks.length,
+            ),
           );
         } else if (state is ListTracksError) {
-          return Center(child: Text(state.messages.first));
+          return SliverToBoxAdapter(
+            child: Center(child: Text(state.messages.first)),
+          );
         } else {
-          return const Center(child: Text('No tracks available'));
+          return const SliverToBoxAdapter(
+            child: Center(child: Text('No tracks available')),
+          );
         }
       },
     );

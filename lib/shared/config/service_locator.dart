@@ -6,6 +6,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:udetxen/features/auth/services/auth_service.dart';
 import 'package:udetxen/features/auth/services/jwt_service.dart';
+import 'package:udetxen/features/creating/knowledge/services/knowledge_service.dart'
+    as creating;
 import 'package:udetxen/features/exploring/knowledge/services/knowledge_service.dart';
 import 'package:udetxen/features/exploring/knowledge/services/knowledge_topic_service.dart';
 import 'package:udetxen/features/exploring/knowledge/services/knowledge_type_service.dart';
@@ -48,6 +50,8 @@ Future<void> setupLocator() async {
   getIt.registerSingleton<LearningService>(LearningService());
   getIt.registerSingleton<LearningListService>(LearningListService());
   getIt.registerSingleton<LearnAndReviewService>(LearnAndReviewService());
+  getIt.registerSingleton<creating.KnowledgeService>(
+      creating.KnowledgeService());
 
   getIt.registerSingleton<ValueNotifier<AuthenticatedLayoutSettings>>(
       ValueNotifier<AuthenticatedLayoutSettings>(

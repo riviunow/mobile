@@ -13,6 +13,16 @@ enum MaterialType {
 }
 
 extension MaterialTypeExtension on MaterialType {
+  static List<MaterialType> nonRestValues() {
+    return MaterialType.values
+        .where((type) =>
+            type != MaterialType.video &&
+            type != MaterialType.image &&
+            type != MaterialType.audio &&
+            type != MaterialType.subtitle)
+        .toList();
+  }
+
   static TextStyle getTextStyle(MaterialType type, BuildContext context) {
     double getFontSize(MaterialType type) {
       switch (type) {
@@ -99,6 +109,29 @@ extension MaterialTypeExtension on MaterialType {
         return 'Audio';
       case MaterialType.unknown:
         return 'Unknown';
+    }
+  }
+
+  String getAcronym() {
+    switch (this) {
+      case MaterialType.subtitle:
+        return 'Sub';
+      case MaterialType.interpretation:
+        return 'Int';
+      case MaterialType.textSmall:
+        return 'S';
+      case MaterialType.textMedium:
+        return 'M';
+      case MaterialType.textLarge:
+        return 'L';
+      case MaterialType.image:
+        return 'Img';
+      case MaterialType.video:
+        return 'Vid';
+      case MaterialType.audio:
+        return 'Aud';
+      case MaterialType.unknown:
+        return 'Unk';
     }
   }
 }

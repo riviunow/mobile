@@ -93,10 +93,11 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       const SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {
+                          if (_formKey.currentState!.validate() &&
+                              _image != null) {
                             final request = UpdateProfileRequest(
                               userName: _userNameController.text,
-                              photo: _image,
+                              photo: _image!,
                             );
                             context
                                 .read<ProfileBloc>()

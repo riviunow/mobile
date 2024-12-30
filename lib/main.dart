@@ -11,6 +11,12 @@ import 'package:udetxen/features/learning/learning_list/blocs/remove_learning_li
 import 'package:udetxen/features/learning/learning_list/blocs/update_learning_list_bloc.dart';
 import 'features/auth/bloc/auth_bloc.dart';
 import 'features/auth/services/jwt_service.dart';
+import 'features/creating/knowledge/services/knowledge_service.dart'
+    as creating;
+import 'features/creating/knowledge/blocs/create_knowledge_bloc.dart';
+import 'features/creating/knowledge/blocs/created_knowledges_bloc.dart';
+import 'features/creating/knowledge/blocs/delete_knowledge_bloc.dart';
+import 'features/creating/knowledge/blocs/update_knowledge_bloc.dart';
 import 'features/exploring/knowledge/blocs/search_knowledges_bloc.dart';
 import 'features/exploring/knowledge/blocs/knowledge_topic_bloc.dart';
 import 'features/exploring/knowledge/blocs/knowledge_type_bloc.dart';
@@ -87,6 +93,24 @@ class MainApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => KnowledgeDetailBloc(getIt<KnowledgeService>()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                CreatedKnowledgesBloc(getIt<creating.KnowledgeService>()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                CreateKnowledgeBloc(getIt<creating.KnowledgeService>()),
+          ),
+          BlocProvider(
+            create: (context) => UpdateKnowledgeBloc(
+                getIt<creating.KnowledgeService>(),
+                BlocProvider.of<CreatedKnowledgesBloc>(context)),
+          ),
+          BlocProvider(
+            create: (context) => DeleteKnowledgeBloc(
+                getIt<creating.KnowledgeService>(),
+                BlocProvider.of<CreatedKnowledgesBloc>(context)),
           ),
           BlocProvider(
             create: (context) =>

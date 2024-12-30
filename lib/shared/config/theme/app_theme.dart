@@ -7,7 +7,7 @@ class AppTheme {
     visualDensity: VisualDensity.adaptivePlatformDensity,
     brightness: Brightness.light,
     primaryColor: AppColors.primaryLight,
-    scaffoldBackgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+    scaffoldBackgroundColor: AppColors.backgroundLight,
     cardColor: AppColors.card,
     dividerColor: AppColors.divider,
     focusColor: AppColors.focus,
@@ -18,9 +18,9 @@ class AppTheme {
     splashColor: AppColors.primaryLight,
     unselectedWidgetColor: AppColors.unselectedWidget,
     appBarTheme: const AppBarTheme(
-      color: AppColors.primaryLight,
-      iconTheme: IconThemeData(color: AppColors.cardDark),
-    ),
+        color: AppColors.primaryLight,
+        iconTheme: IconThemeData(color: AppColors.card),
+        actionsIconTheme: IconThemeData(color: AppColors.card)),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       unselectedItemColor: AppColors.hint,
       selectedItemColor: AppColors.primaryLight,
@@ -82,7 +82,8 @@ class AppTheme {
     unselectedWidgetColor: AppColors.unselectedWidget,
     appBarTheme: const AppBarTheme(
       color: AppColors.primaryDark,
-      iconTheme: IconThemeData(color: AppColors.card),
+      iconTheme: IconThemeData(color: AppColors.cardDark),
+      actionsIconTheme: IconThemeData(color: AppColors.cardDark),
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       unselectedItemColor: AppColors.hint,

@@ -24,6 +24,7 @@ class KnowledgeMaterialList extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       child: Container(
+        width: double.infinity,
         decoration: BoxDecoration(
           border: !isFirstLayer
               ? Border(
@@ -39,7 +40,9 @@ class KnowledgeMaterialList extends StatelessWidget {
               : null,
         ),
         child: Padding(
-          padding: isFirstLayer ? EdgeInsets.zero : const EdgeInsets.all(12.0),
+          padding: isFirstLayer
+              ? const EdgeInsets.only(left: 2, top: 4)
+              : const EdgeInsets.all(12.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

@@ -61,31 +61,51 @@ abstract class ApiService {
   ApiResponse<T> postMultipart<T>(
       String endpoint,
       T Function(Map<String, dynamic>) fromJson,
-      Map<String, String> fields,
-      XFile? file,
-      String? fileField,
-      {String? method}) async {
-    String? mimeType =
-        file != null ? lookupMimeType(file.path) : 'application/octet-stream';
-    MediaType mediaType =
-        MediaType.parse(mimeType ?? 'application/octet-stream');
-
+      Map<String, dynamic> fields,
+      List<(XFile, String)> files) async {
     return _performApiCall<T>(
-      mediaType: mimeType,
       (headers) async {
         final uri = Uri.parse('${Urls.apiUrl}/$endpoint');
-        final request = http.MultipartRequest(method ?? 'POST', uri);
+        final request = http.MultipartRequest('POST', uri);
+
+        void addFields(String key, dynamic value) {
+          if (value is String) {
+            request.fields[key] = value;
+          } else if (value is List<String>) {
+            for (var i = 0; i < value.length; i++) {
+              request.fields['$key[$i]'] = value[i];
+            }
+          } else if (value is List<Map<String, dynamic>>) {
+            for (var i = 0; i < value.length; i++) {
+              value[i].forEach((subKey, subValue) {
+                if (subValue != null) addFields('$key[$i][$subKey]', subValue);
+              });
+            }
+          } else if (value is Map<String, dynamic>) {
+            value.forEach((subKey, subValue) {
+              addFields('$key[$subKey]', subValue);
+            });
+          } else if (value is int || value is double || value is bool) {
+            request.fields[key] = value.toString();
+          } else {
+            throw UnsupportedError(
+                'Unsupported field type: ${value.runtimeType}');
+          }
+        }
 
         fields.forEach((key, value) {
-          request.fields[key] = value;
+          addFields(key, value);
         });
 
-        if (file != null) {
+        for (var file in files) {
+          final mimeType =
+              lookupMimeType(file.$1.path) ?? 'application/octet-stream';
+          final mediaType = MediaType.parse(mimeType);
           request.files.add(
             http.MultipartFile.fromBytes(
-              fileField ?? 'file',
-              await file.readAsBytes(),
-              filename: file.name,
+              file.$2,
+              await file.$1.readAsBytes(),
+              filename: file.$1.name,
               contentType: mediaType,
             ),
           );
@@ -93,13 +113,13 @@ abstract class ApiService {
 
         request.headers.addAll(headers);
         final streamedResponse = await request.send();
-        final response = http.Response.fromStream(streamedResponse);
+        final response = await http.Response.fromStream(streamedResponse);
         return response;
       },
       (data) {
         if (data is Map<String, dynamic>) return fromJson(data);
 
-        throw FormatException('Expected list but got ${data.runtimeType}');
+        throw FormatException('Expected map but got ${data.runtimeType}');
       },
     );
   }

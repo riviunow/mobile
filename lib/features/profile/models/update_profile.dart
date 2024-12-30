@@ -2,9 +2,9 @@ import 'package:image_picker/image_picker.dart';
 
 class UpdateProfileRequest {
   final String userName;
-  final XFile? photo;
+  final XFile photo;
 
-  UpdateProfileRequest({required this.userName, this.photo});
+  UpdateProfileRequest({required this.userName, required this.photo});
 
   Map<String, String> toJson() {
     return {
@@ -12,6 +12,6 @@ class UpdateProfileRequest {
     };
   }
 
-  XFile? get image => photo;
+  XFile get image => photo;
   String get imageFieldName => 'photo';
 }
