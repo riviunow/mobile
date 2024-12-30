@@ -96,9 +96,14 @@ class HttpRoute {
   static String deleteLearningList(String id) => "learningList/delete/$id";
 
   // PublicationRequest
-  static const String requestPublishKnowledge = "request-publish";
-  static const String deletePublicationRequest = "delete-request";
-  static const String getPublicationRequests = "get-requests";
-  static const String approveRejectPublicationRequest = "approve-reject";
-  static const String updateKnowledgeVisibility = "update-visibility";
+  static const String requestPublishKnowledge =
+      "publicationRequest/request-publish";
+  static String deletePublicationRequest(String id) =>
+      "publicationRequest/delete-request/$id";
+  static const String getPublicationRequests =
+      "publicationRequest/get-requests";
+  static const String approveRejectPublicationRequest =
+      "publicationRequest/approve-reject";
+  static const String updateKnowledgeVisibility =
+      "publicationRequest/update-visibility";
 }

@@ -148,8 +148,8 @@ class Knowledge extends SingleIdEntity {
       visibility: visibility ?? this.visibility,
       level: level ?? this.level,
       creatorId: creatorId ?? this.creatorId,
-      creator: creator ?? this.creator,
-      publicationRequest: publicationRequest ?? this.publicationRequest,
+      creator: creator,
+      publicationRequest: publicationRequest,
       materials: materials ?? this.materials,
       subjectKnowledges: subjectKnowledges ?? this.subjectKnowledges,
       knowledgeTypeKnowledges:

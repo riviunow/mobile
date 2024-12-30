@@ -5,8 +5,8 @@ class GetCreatedKnowledgesRequest {
 
   GetCreatedKnowledgesRequest({
     this.search,
-    required this.page,
-    required this.pageSize,
+    this.page = 1,
+    this.pageSize = 10,
   });
 
   Map<String, dynamic> toJson() {

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:udetxen/features/creating/publication_request/screens/publish_knowledge_screen.dart';
+import 'package:udetxen/features/creating/publication_request/widgets/delete_publication_request_dialog.dart';
 import 'package:udetxen/features/exploring/knowledge/screens/knowledge_detail_screen.dart';
+import 'package:udetxen/shared/config/theme/colors.dart';
 import 'package:udetxen/shared/models/enums/knowledge_level.dart';
 import 'package:udetxen/shared/models/enums/knowledge_visibility.dart';
+import 'package:udetxen/shared/models/enums/publication_request_status.dart';
 import 'package:udetxen/shared/models/index.dart';
 import 'package:udetxen/shared/widgets/loader.dart';
 
@@ -48,59 +52,137 @@ class CreatedKnowledgeList extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             elevation: 4,
-            child: ListTile(
-              onTap: () => Navigator.push(
-                  context, KnowledgeDetailScreen.route(knowledge: knowledge)),
-              contentPadding: const EdgeInsets.all(16),
-              title: Text(
-                knowledge.title,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+            child: Stack(
+              children: [
+                ListTile(
+                  onTap: () => Navigator.push(context,
+                      KnowledgeDetailScreen.route(knowledge: knowledge)),
+                  contentPadding: const EdgeInsets.all(16),
+                  title: Text(
+                    knowledge.title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 8),
+                      Text('Level: ${knowledge.level.toJson()}'),
+                    ],
+                  ),
+                  trailing: PopupMenuButton<String>(
+                    onSelected: (String result) {
+                      if (result == 'update') {
+                        Navigator.push(
+                          context,
+                          UpdateKnowledgeScreen.route(knowledge),
+                        );
+                      } else if (result == 'delete') {
+                        showDialog(
+                          context: context,
+                          builder: (context) =>
+                              DeleteKnowledgeDialog(knowledge: knowledge),
+                        );
+                      } else if (result == 'publish') {
+                        Navigator.push(
+                          context,
+                          PublishKnowledgeScreen.route(knowledge),
+                        );
+                      } else if (result == 're-publish') {
+                        Navigator.push(
+                          context,
+                          PublishKnowledgeScreen.route(knowledge),
+                        );
+                      } else if (result == 'delete-request') {
+                        showDialog(
+                          context: context,
+                          builder: (context) => DeletePublicationRequestDialog(
+                            request: knowledge.publicationRequest!,
+                          ),
+                        );
+                      }
+                    },
+                    itemBuilder: (BuildContext context) =>
+                        <PopupMenuEntry<String>>[
+                      PopupMenuItem<String>(
+                        value: 'update',
+                        enabled:
+                            knowledge.visibility == KnowledgeVisibility.private,
+                        child: const Text('Update knowledge'),
+                      ),
+                      PopupMenuItem<String>(
+                        value: 'delete',
+                        enabled:
+                            knowledge.visibility == KnowledgeVisibility.private,
+                        child: const Text('Delete knowledge'),
+                      ),
+                      if (knowledge.visibility == KnowledgeVisibility.private &&
+                          knowledge.publicationRequest == null)
+                        const PopupMenuItem<String>(
+                          value: 'publish',
+                          child: Text('Publish Knowledge'),
+                        ),
+                      if (knowledge.visibility == KnowledgeVisibility.private &&
+                          knowledge.publicationRequest?.status ==
+                              PublicationRequestStatus.rejected)
+                        const PopupMenuItem<String>(
+                          value: 're-publish',
+                          child: Text('Re-publish Knowledge'),
+                        ),
+                      if (knowledge.publicationRequest != null &&
+                          knowledge.publicationRequest?.status !=
+                              PublicationRequestStatus.approved)
+                        const PopupMenuItem<String>(
+                          value: 'delete-request',
+                          child: Text('Delete Publication Request'),
+                        ),
+                    ],
+                  ),
                 ),
-              ),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 8),
-                  Text('Level: ${knowledge.level.toJson()}'),
-                  const SizedBox(height: 8),
-                  Text('Status: ${knowledge.visibility.toJson()}'),
-                  if (knowledge.publicationRequest != null)
-                    Text(
-                        'Publication Request: ${knowledge.publicationRequest!.status}'),
-                ],
-              ),
-              trailing: PopupMenuButton<String>(
-                onSelected: (String result) {
-                  if (result == 'update') {
-                    Navigator.push(
-                      context,
-                      UpdateKnowledgeScreen.route(knowledge),
-                    );
-                  } else if (result == 'delete') {
-                    showDialog(
-                      context: context,
-                      builder: (context) =>
-                          DeleteKnowledgeDialog(knowledge: knowledge),
-                    );
-                  }
-                },
-                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                  PopupMenuItem<String>(
-                    value: 'update',
-                    enabled:
-                        knowledge.visibility == KnowledgeVisibility.private,
-                    child: const Text('Update'),
-                  ),
-                  PopupMenuItem<String>(
-                    value: 'delete',
-                    enabled:
-                        knowledge.visibility == KnowledgeVisibility.private,
-                    child: const Text('Delete'),
-                  ),
-                ],
-              ),
+                Positioned(
+                    right: 8,
+                    top: -3,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 6, vertical: 4),
+                      decoration: BoxDecoration(
+                        color:
+                            knowledge.visibility == KnowledgeVisibility.public
+                                ? AppColors.success
+                                : AppColors.unselectedWidget,
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(6),
+                          bottomRight: Radius.circular(6),
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            knowledge.visibility.toJson(),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          if (knowledge.visibility ==
+                                  KnowledgeVisibility.private &&
+                              knowledge.publicationRequest != null)
+                            Text(
+                              knowledge.publicationRequest!.status.toJson(),
+                              style: TextStyle(
+                                  color: knowledge.publicationRequest!.status ==
+                                          PublicationRequestStatus.pending
+                                      ? AppColors.warning
+                                      : AppColors.error,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 12),
+                            ),
+                        ],
+                      ),
+                    )),
+              ],
             ),
           );
         },

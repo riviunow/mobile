@@ -30,6 +30,18 @@ class KnowledgeDeleted extends CreatedKnowledgesEvent {
   KnowledgeDeleted(this.deletedKnowledgeId);
 }
 
+class PublicationRequested extends CreatedKnowledgesEvent {
+  final PublicationRequest request;
+
+  PublicationRequested(this.request);
+}
+
+class PublicationDeleted extends CreatedKnowledgesEvent {
+  final PublicationRequest request;
+
+  PublicationDeleted(this.request);
+}
+
 // States
 abstract class CreatedKnowledgesState {}
 
@@ -102,6 +114,31 @@ class CreatedKnowledgesBloc
         var updatedKnowledges = currentState.knowledges
             .where((knowledge) => knowledge.id != event.deletedKnowledgeId)
             .toList();
+        emit(CreatedKnowledgesLoaded(updatedKnowledges, currentState.hasNext));
+      }
+    });
+
+    on<PublicationRequested>((event, emit) async {
+      if (state is CreatedKnowledgesLoaded) {
+        var currentState = state as CreatedKnowledgesLoaded;
+        var updatedKnowledges = currentState.knowledges.map((knowledge) {
+          return knowledge.id == event.request.knowledgeId
+              ? knowledge.copyWith(publicationRequest: event.request)
+              : knowledge;
+        }).toList();
+        emit(CreatedKnowledgesLoaded(updatedKnowledges, currentState.hasNext));
+      }
+    });
+
+    on<PublicationDeleted>((event, emit) async {
+      if (state is CreatedKnowledgesLoaded) {
+        var currentState = state as CreatedKnowledgesLoaded;
+        var updatedKnowledges = currentState.knowledges.map((knowledge) {
+          return knowledge.id == event.request.knowledgeId
+              ? knowledge.copyWith(
+                  publicationRequest: null as PublicationRequest?)
+              : knowledge;
+        }).toList();
         emit(CreatedKnowledgesLoaded(updatedKnowledges, currentState.hasNext));
       }
     });

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:udetxen/features/creating/publication_request/services/publication_request_service.dart';
 import 'package:udetxen/features/exploring/knowledge/blocs/knowledge_detail_bloc.dart';
 import 'package:udetxen/features/learning/knowledge_learning/blocs/unlisted_learnings_bloc.dart';
 import 'package:udetxen/features/learning/learning_list/blocs/add_remove_knowledge_bloc.dart';
@@ -17,6 +18,9 @@ import 'features/creating/knowledge/blocs/create_knowledge_bloc.dart';
 import 'features/creating/knowledge/blocs/created_knowledges_bloc.dart';
 import 'features/creating/knowledge/blocs/delete_knowledge_bloc.dart';
 import 'features/creating/knowledge/blocs/update_knowledge_bloc.dart';
+import 'features/creating/publication_request/blocs/delete_publication_request_bloc.dart';
+import 'features/creating/publication_request/blocs/get_publication_requests_bloc.dart';
+import 'features/creating/publication_request/blocs/publish_knowledge_bloc.dart';
 import 'features/exploring/knowledge/blocs/search_knowledges_bloc.dart';
 import 'features/exploring/knowledge/blocs/knowledge_topic_bloc.dart';
 import 'features/exploring/knowledge/blocs/knowledge_type_bloc.dart';
@@ -111,6 +115,24 @@ class MainApp extends StatelessWidget {
             create: (context) => DeleteKnowledgeBloc(
                 getIt<creating.KnowledgeService>(),
                 BlocProvider.of<CreatedKnowledgesBloc>(context)),
+          ),
+          BlocProvider(
+            create: (context) =>
+                GetPublicationRequestsBloc(getIt<PublicationRequestService>()),
+          ),
+          BlocProvider(
+            create: (context) => PublishKnowledgeBloc(
+              getIt<PublicationRequestService>(),
+              BlocProvider.of<CreatedKnowledgesBloc>(context),
+              BlocProvider.of<GetPublicationRequestsBloc>(context),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => DeletePublicationRequestBloc(
+              getIt<PublicationRequestService>(),
+              BlocProvider.of<CreatedKnowledgesBloc>(context),
+              BlocProvider.of<GetPublicationRequestsBloc>(context),
+            ),
           ),
           BlocProvider(
             create: (context) =>
