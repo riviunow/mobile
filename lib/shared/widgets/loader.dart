@@ -16,38 +16,38 @@ class Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.brown[100],
+      color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.5),
       child: Center(
-        child: _getLoader(),
+        child: _getLoader(context),
       ),
     );
   }
 
-  Widget _getLoader() {
+  Widget _getLoader(BuildContext context) {
     switch (loaderType) {
       case LoaderType.chasingDots:
-        return const SpinKitChasingDots(
-          color: Colors.brown,
+        return SpinKitChasingDots(
+          color: Theme.of(context).primaryColor,
           size: 50.0,
         );
       case LoaderType.doubleBounce:
-        return const SpinKitDoubleBounce(
-          color: Colors.brown,
+        return SpinKitDoubleBounce(
+          color: Theme.of(context).primaryColor,
           size: 50.0,
         );
       case LoaderType.wave:
-        return const SpinKitWave(
-          color: Colors.brown,
+        return SpinKitWave(
+          color: Theme.of(context).primaryColor,
           size: 50.0,
         );
       case LoaderType.wanderingCubes:
-        return const SpinKitWanderingCubes(
-          color: Colors.brown,
+        return SpinKitWanderingCubes(
+          color: Theme.of(context).primaryColor,
           size: 50.0,
         );
       default:
-        return const SpinKitChasingDots(
-          color: Colors.brown,
+        return SpinKitChasingDots(
+          color: Theme.of(context).primaryColor,
           size: 50.0,
         );
     }

@@ -28,13 +28,13 @@ extension MaterialTypeExtension on MaterialType {
       switch (type) {
         case MaterialType.textSmall:
         case MaterialType.subtitle:
-          return 14;
+          return 16;
         case MaterialType.textMedium:
           return 20;
         case MaterialType.textLarge:
           return 24;
         case MaterialType.interpretation:
-          return 16;
+          return 18;
         default:
           return 16;
       }

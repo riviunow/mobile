@@ -5,7 +5,11 @@ import 'package:udetxen/shared/models/index.dart';
 // Events
 abstract class UnlistedLearningsEvent {}
 
-class FetchUnlistedLearnings extends UnlistedLearningsEvent {}
+class FetchUnlistedLearnings extends UnlistedLearningsEvent {
+  final List<Knowledge>? knowledges;
+
+  FetchUnlistedLearnings({this.knowledges});
+}
 
 // States
 abstract class UnlistedLearningsState {}
@@ -15,9 +19,9 @@ class UnlistedLearningsInitial extends UnlistedLearningsState {}
 class UnlistedLearningsLoading extends UnlistedLearningsState {}
 
 class UnlistedLearningsLoaded extends UnlistedLearningsState {
-  final List<Learning> learnings;
+  final List<Knowledge> knowledges;
 
-  UnlistedLearningsLoaded(this.learnings);
+  UnlistedLearningsLoaded(this.knowledges);
 }
 
 class UnlistedLearningsError extends UnlistedLearningsState {
@@ -35,11 +39,20 @@ class UnlistedLearningsBloc
       : super(UnlistedLearningsInitial()) {
     on<FetchUnlistedLearnings>((event, emit) async {
       emit(UnlistedLearningsLoading());
+
+      if (event.knowledges != null) {
+        emit(UnlistedLearningsLoaded(event.knowledges!));
+        return;
+      }
       var response = await _learningService.getUnlistedLearnings();
       await response.on(onFailure: (errors, _) {
         emit(UnlistedLearningsError(messages: errors));
       }, onSuccess: (learnings) {
-        emit(UnlistedLearningsLoaded(learnings));
+        var knowledges = learnings
+            .map((e) => e.knowledge!
+                .copyWith(currentUserLearning: e.copyWith(knowledge: null)))
+            .toList();
+        emit(UnlistedLearningsLoaded(knowledges));
       });
     });
   }

@@ -20,66 +20,127 @@ class TrackDetailListSubjects extends StatelessWidget {
         final percentage =
             totalKnowledge == 0 ? 0 : userLearning / totalKnowledge;
 
-        Color getProgressColor(double percentage) {
-          if (percentage == 0) {
-            return AppColors.hint;
-          } else if (percentage < 1) {
-            return AppColors.warning;
-          } else {
-            return AppColors.success;
-          }
-        }
-
-        return Card(
-          margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-          child: ListTile(
-            onTap: () => Navigator.push(
-              context,
-              SubjectDetailScreen.route(
-                  subject: subject!, trackName: trackName),
+        return GestureDetector(
+          onTap: () => Navigator.push(
+            context,
+            SubjectDetailScreen.route(subject: subject!, trackName: trackName),
+          ),
+          child: Container(
+            margin: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              borderRadius: BorderRadius.circular(8.0),
+              border: percentage == 1
+                  ? Border.all(
+                      color: AppColors.success.withOpacity(0.6),
+                      width: 4,
+                    )
+                  : null,
             ),
-            title: Text(subject?.name ?? 'Unknown Subject'),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(subject?.description ?? 'No description available'),
-                const SizedBox(height: 8),
-                LinearProgressIndicator(
-                  value: percentage.toDouble(),
-                  color: getProgressColor(percentage.toDouble()),
-                  backgroundColor: Colors.grey[300],
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    if (percentage == 0)
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                       Expanded(
-                        child: ElevatedButton(
-                          onPressed: () => Navigator.push(
-                            context,
-                            SubjectDetailScreen.route(
-                                subject: subject!,
-                                learnAllKnowledge: true,
-                                trackName: trackName),
-                          ),
-                          child: const Text('Learn'),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              subject?.name ?? 'Unknown Subject',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                  color: Theme.of(context)
+                                      .scaffoldBackgroundColor),
+                            ),
+                            const SizedBox(height: 8),
+                            if (subject?.description != null) ...[
+                              Text(
+                                subject?.description ??
+                                    'No description available',
+                                style: TextStyle(
+                                  color: AppColors.hint.withOpacity(0.7),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                            ],
+                            Text(
+                              '$totalKnowledge Knowledges',
+                              style: TextStyle(
+                                color: Theme.of(context)
+                                    .scaffoldBackgroundColor
+                                    .withOpacity(0.9),
+                              ),
+                            ),
+                          ],
                         ),
-                      )
-                    else if (percentage < 1)
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            // Handle continue learning action
-                          },
-                          child: Text(
-                              'Continue Learning (${(percentage * 100).toStringAsFixed(1)}%)'),
-                        ),
-                      )
-                    else
-                      const Text('Completed'),
+                      ),
+                      if (subject?.photo != null && subject!.photo.isNotEmpty)
+                        CircleAvatar(
+                          radius: 40,
+                          backgroundImage: NetworkImage(subject.photo),
+                        )
+                    ],
+                  ),
+                  if (percentage > 0 && percentage < 1) ...[
+                    const SizedBox(height: 8),
+                    LinearProgressIndicator(
+                      value: percentage.toDouble(),
+                      color: AppColors.warning,
+                      backgroundColor: AppColors.hint.withOpacity(0.5),
+                    ),
                   ],
-                )
-              ],
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: percentage < 1
+                            ? ElevatedButton(
+                                onPressed: () => Navigator.push(
+                                  context,
+                                  SubjectDetailScreen.route(
+                                      subject: subject!,
+                                      learnAllKnowledge: true,
+                                      trackName: trackName),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.secondary,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                                child: Text(
+                                  percentage == 0
+                                      ? 'Learn'
+                                      : 'Continue Learning (${(percentage * 100).toStringAsFixed(1)}%)',
+                                ),
+                              )
+                            : Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.success,
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                padding: const EdgeInsets.all(8.0),
+                                child: Center(
+                                  child: Text(
+                                    'Completed',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context)
+                                          .scaffoldBackgroundColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         );

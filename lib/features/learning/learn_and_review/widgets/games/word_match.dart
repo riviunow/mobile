@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/shared/models/index.dart';
+import 'package:udetxen/shared/widgets/loader.dart';
+import 'package:udetxen/shared/widgets/spaced_divider.dart';
 import '../../blocs/game_bloc.dart';
 import '../../models/playing_widget.dart';
 
@@ -44,105 +46,102 @@ class _WordMatchState extends State<WordMatch> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GameBloc, GameState>(
-      builder: (context, state) {
-        if (state is GameInProgress) {
-          return _buildGameBoard(state.widget);
-        } else if (state is GameEnded) {
-          return _buildGameEnded();
-        }
-
-        return const Center(child: CircularProgressIndicator());
-      },
-    );
-  }
-
-  Widget _buildGameBoard(PlayingWidget playingWidget) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              'Match the knowledge titles with their interpretations',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            Flexible(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _buildSelectableList(
-                    items: knowledgeTupples.map((pair) => pair.$2).toList(),
-                    isTitle: true,
-                    selectedItem: selectedTitle,
+    return widget.knowledgeList.length == 1
+        ? const Loading()
+        : Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 2),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text(
+                  'Match the knowledge titles with their interpretations',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 10),
+                Flexible(
+                  flex: 3,
+                  child: SizedBox(
+                    child: _buildSelectableList(
+                      items: knowledgeTupples.map((pair) => pair.$2).toList(),
+                      isTitle: true,
+                      selectedItem: selectedTitle,
+                      textStyle:
+                          const TextStyle(fontSize: 18, color: Colors.white),
+                    ),
                   ),
-                  const Divider(),
-                  _buildSelectableList(
-                    items: shuffledInterpretations,
-                    isTitle: false,
-                    selectedItem: selectedInterpretation,
+                ),
+                const SpacedDivider(
+                  spacing: 12,
+                ),
+                Flexible(
+                  flex: 4,
+                  child: SizedBox(
+                    child: _buildSelectableList(
+                      items: shuffledInterpretations,
+                      isTitle: false,
+                      selectedItem: selectedInterpretation,
+                      textStyle:
+                          const TextStyle(fontSize: 16, color: Colors.white),
+                    ),
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: matchedPairs.length == knowledgeTupples.length
+                      ? () => _submitResults(context)
+                      : null,
+                  child: const Text('Submit Results',
+                      style: TextStyle(fontSize: 20)),
+                ),
+              ],
             ),
-            ElevatedButton(
-              onPressed: matchedPairs.length == knowledgeTupples.length
-                  ? () => _submitResults(context)
-                  : null,
-              child: const Text('Submit Results'),
-            ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 
   Widget _buildSelectableList({
     required List<String?> items,
     required bool isTitle,
     required String? selectedItem,
+    required TextStyle textStyle,
   }) {
-    return Expanded(
-      child: ListView.builder(
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          final item = items[index];
-          final isSelected = selectedItem == item;
-          final isMatched = matchedPairs.containsKey(item) ||
-              matchedPairs.containsValue(item);
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        final item = items[index];
+        final isSelected = selectedItem == item;
+        final isMatched =
+            matchedPairs.containsKey(item) || matchedPairs.containsValue(item);
 
-          Color borderColor = Colors.grey;
-          if (isMatched) {
-            if (matchResults[item] == true) {
-              borderColor = Colors.green;
-            } else if (matchResults[item] == false) {
-              borderColor = Colors.red;
-            }
+        Color borderColor = Colors.grey;
+        if (isMatched) {
+          if (matchResults[item] == true) {
+            borderColor = Colors.green;
+          } else if (matchResults[item] == false) {
+            borderColor = Colors.red;
           }
+        }
 
-          return GestureDetector(
-            onTap: isMatched ? null : () => _handleSelection(item, isTitle),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                side: BorderSide(color: borderColor, width: 2),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              color: (isSelected ? Colors.blue[300] : Colors.grey[300])
-                  ?.withOpacity(0.2),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  item ?? '',
-                  style: const TextStyle(fontSize: 16, color: Colors.white),
-                ),
+        return GestureDetector(
+          onTap: isMatched ? null : () => _handleSelection(item, isTitle),
+          child: Card(
+            shape: RoundedRectangleBorder(
+              side: BorderSide(color: borderColor, width: 2),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            color: (isSelected ? Colors.blue[300] : Colors.grey[300])
+                ?.withOpacity(0.2),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                item ?? '',
+                style: textStyle,
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -193,24 +192,5 @@ class _WordMatchState extends State<WordMatch> {
     }
 
     context.read<GameBloc>().add(WordMatchFinished(knowledgeToAnswers));
-  }
-
-  Widget _buildGameEnded() {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Game Over')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('You have completed the Word Match game!'),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {},
-              child: const Text('Restart Game'),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }

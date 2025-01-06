@@ -204,7 +204,7 @@ class _MaterialInputFieldState extends State<MaterialInputField> {
                         ),
                       ),
                     ),
-                    if (widget.level < 5)
+                    if (widget.level < 3)
                       IconButton(
                         icon: const Icon(Icons.add_circle, color: Colors.green),
                         tooltip: 'Add Child',

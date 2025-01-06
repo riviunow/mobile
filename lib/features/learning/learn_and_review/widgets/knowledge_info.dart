@@ -10,7 +10,7 @@ class KnowledgeInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
         if (knowledge.imageMaterials.isNotEmpty)
           SizedBox(
@@ -19,17 +19,23 @@ class KnowledgeInfo extends StatelessWidget {
                 "${Urls.mediaUrl}/${knowledge.imageMaterials.first.content}"),
           ),
         if (knowledge.audioMaterials.isNotEmpty)
-          Center(
+          Positioned(
+            bottom: 0,
+            right: knowledge.imageMaterials.isNotEmpty ? 0 : null,
+            left: knowledge.imageMaterials.isNotEmpty ? null : 0,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: knowledge.imageMaterials.isNotEmpty
+                  ? MainAxisAlignment.end
+                  : MainAxisAlignment.center,
               children: [
                 ...knowledge.audioMaterials.map((material) => Container(
                       decoration: const BoxDecoration(
                         color: AppColors.secondary,
                         shape: BoxShape.circle,
                       ),
-                      padding: const EdgeInsets.all(8.0),
-                      margin: const EdgeInsets.all(4.0),
+                      margin:
+                          const EdgeInsets.only(left: 8, right: 2, bottom: 2),
+                      padding: const EdgeInsets.all(4.0),
                       child: AudioPlayer(
                         url: material.content,
                       ),

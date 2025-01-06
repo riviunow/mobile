@@ -16,7 +16,7 @@ class TrackDetailAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Theme.of(context).dialogBackgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       leading: IconButton(
         icon: Icon(Icons.arrow_back, color: Theme.of(context).primaryColor),
         onPressed: () {
@@ -28,24 +28,19 @@ class TrackDetailAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           Text(
             trackName,
-            style: const TextStyle(
-                color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Theme.of(context).primaryColor,
+                fontSize: 20,
+                fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 4),
           Text(
             trackDescription,
-            style: const TextStyle(color: Colors.white70, fontSize: 14),
+            style: TextStyle(
+                color: Theme.of(context).hintColor.withOpacity(0.7),
+                fontSize: 14),
           ),
         ],
-      ),
-      flexibleSpace: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.blue, Colors.purple],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
       ),
       elevation: 4,
     );

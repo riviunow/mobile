@@ -25,35 +25,33 @@ class _TrackDetailScreenState extends State<TrackDetailScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<TrackBloc>().add(GetTrackById(widget.track.id));
+    var bloc = context.read<TrackBloc>();
+    if (bloc.state is! TrackLoaded ||
+        (bloc.state is TrackLoaded &&
+            (bloc.state as TrackLoaded).track.id != widget.track.id)) {
+      bloc.add(GetTrackById(widget.track.id));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
-        children: [
-          TrackDetailAppBar(
-            trackName: widget.track.name,
-            trackDescription: widget.track.description,
-          ),
-          BlocBuilder<TrackBloc, TrackState>(
-            builder: (context, state) {
-              if (state is TrackLoading) {
-                return const Center(child: Loading());
-              } else if (state is TrackLoaded) {
-                return Expanded(
-                  child: TrackDetailListSubjects(track: state.track),
-                );
-              } else if (state is TrackError) {
-                return Center(
-                    child: Text('Error: ${state.messages.join('\n')}'));
-              } else {
-                return const Center(child: Text('No data available'));
-              }
-            },
-          )
-        ],
+    return Scaffold(
+      appBar: TrackDetailAppBar(
+        trackName: widget.track.name,
+        trackDescription: widget.track.description,
+      ),
+      body: BlocBuilder<TrackBloc, TrackState>(
+        builder: (context, state) {
+          if (state is TrackLoading) {
+            return const Center(child: Loading());
+          } else if (state is TrackLoaded) {
+            return TrackDetailListSubjects(track: state.track);
+          } else if (state is TrackError) {
+            return Center(child: Text('Error: ${state.messages.join('\n')}'));
+          } else {
+            return const Center(child: Text('No data available'));
+          }
+        },
       ),
     );
   }

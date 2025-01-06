@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/learning/knowledge_learning/services/learning_service.dart';
 import 'package:udetxen/shared/models/index.dart';
-import 'package:udetxen/shared/types/index.dart';
 import '../models/current_user_learning.dart';
 
 // Events
@@ -13,6 +12,12 @@ class FetchLearnings extends GetCurrentUserLearningsEvent {
   FetchLearnings(this.request);
 }
 
+class LearningsUpdated extends GetCurrentUserLearningsEvent {
+  final List<Knowledge> knowledges;
+
+  LearningsUpdated(this.knowledges);
+}
+
 // States
 abstract class GetCurrentUserLearningsState {}
 
@@ -21,9 +26,9 @@ class LearningsInitial extends GetCurrentUserLearningsState {}
 class LearningsLoading extends GetCurrentUserLearningsState {}
 
 class LearningsLoaded extends GetCurrentUserLearningsState {
-  final Page<Learning> learnings;
+  final List<Knowledge> knowledges;
 
-  LearningsLoaded(this.learnings);
+  LearningsLoaded(this.knowledges);
 }
 
 class LearningsError extends GetCurrentUserLearningsState {
@@ -45,8 +50,15 @@ class GetCurrentUserLearningsBloc
       await response.on(onFailure: (errors, _) {
         emit(LearningsError(messages: errors));
       }, onSuccess: (learnings) {
-        emit(LearningsLoaded(learnings));
+        var knowledges = learnings.data
+            .map((e) => e.knowledge!
+                .copyWith(currentUserLearning: e.copyWith(knowledge: null)))
+            .toList();
+        emit(LearningsLoaded(knowledges));
       });
     });
+
+    on<LearningsUpdated>(
+        (event, emit) => emit(LearningsLoaded(event.knowledges)));
   }
 }

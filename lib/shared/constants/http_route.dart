@@ -89,8 +89,8 @@ class HttpRoute {
   // LearningList
   static const String createLearningList = "learningList/create";
   static const String updateLearningList = "learningList/update";
-  static const String addRemoveKnowledgeToLearningList =
-      "learningList/add-remove-knowledge";
+  static const String addRemoveKnowledgesToLearningList =
+      "learningList/add-remove-knowledges";
   static const String getAllLearningLists = "learningList/list";
   static String getLearningListByGuid(String id) => "learningList/detailed/$id";
   static String deleteLearningList(String id) => "learningList/delete/$id";

@@ -46,9 +46,6 @@ class PublicationRequestList extends StatelessWidget {
             child: Stack(
               children: [
                 ListTile(
-                  onTap: () {
-                    // Navigate to publication request detail screen
-                  },
                   contentPadding: const EdgeInsets.all(16),
                   title: Text(
                     request.knowledge?.title ?? 'Unknown',

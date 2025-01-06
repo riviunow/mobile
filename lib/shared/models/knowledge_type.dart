@@ -60,4 +60,18 @@ class KnowledgeType extends SingleIdEntity {
           knowledgeTypeKnowledges ?? this.knowledgeTypeKnowledges,
     );
   }
+
+  bool recursiveContains(String searchValue) {
+    if (name.toLowerCase().contains(searchValue.toLowerCase())) {
+      return true;
+    }
+
+    for (final child in children) {
+      if (child.recursiveContains(searchValue)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
 }

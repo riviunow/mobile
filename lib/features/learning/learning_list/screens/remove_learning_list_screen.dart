@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/learning/learning_list/blocs/remove_learning_list_bloc.dart';
+import 'package:udetxen/shared/models/index.dart';
 import 'package:udetxen/shared/widgets/loader.dart';
 
 class RemoveLearningListScreen extends StatefulWidget {
-  final String learningListId;
+  final LearningList learningList;
 
-  static route(String id) {
+  static route(LearningList learningList) {
     return MaterialPageRoute<void>(
-      builder: (_) => RemoveLearningListScreen(learningListId: id),
+      builder: (_) => RemoveLearningListScreen(learningList: learningList),
     );
   }
 
-  const RemoveLearningListScreen({super.key, required this.learningListId});
+  const RemoveLearningListScreen({super.key, required this.learningList});
 
   @override
   State<RemoveLearningListScreen> createState() =>
@@ -23,7 +24,7 @@ class _RemoveLearningListScreenState extends State<RemoveLearningListScreen> {
   void _removeLearningList() {
     context
         .read<RemoveLearningListBloc>()
-        .add(RemoveLearningListRequested(widget.learningListId));
+        .add(RemoveLearningListRequested(widget.learningList.id));
   }
 
   @override
@@ -49,6 +50,11 @@ class _RemoveLearningListScreenState extends State<RemoveLearningListScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Text(
+                    'This list contains ${widget.learningList.learningListKnowledges.length} knowledges.',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 16),
                   const Text(
                       'Are you sure you want to remove this learning list?'),
                   const SizedBox(height: 16),

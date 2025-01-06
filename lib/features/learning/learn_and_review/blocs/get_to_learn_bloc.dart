@@ -59,7 +59,7 @@ class GetToLearnBloc extends Bloc<GetToLearnEvent, GetToLearnState> {
     emit(GetToLearnLoading());
     final response =
         await _learnAndReviewService.getKnowledgeToLearn(event.request);
-    response.on(
+    await response.on(
       onSuccess: (groupedKnowledges) {
         emit(GetToLearnSuccess(groupedKnowledges));
         _gameBloc

@@ -12,8 +12,10 @@ class StatusBar extends StatelessWidget {
       builder: (context, state) {
         if (state is GameInProgress) {
           final gameBloc = context.read<GameBloc>();
+          final percentage =
+              (gameBloc.currentKnowledge - 1) / gameBloc.totalKnowledges;
           return LinearProgressIndicator(
-            value: gameBloc.currentKnowledge / gameBloc.totalKnowledges,
+            value: percentage,
             backgroundColor: Colors.grey[300],
             color: Colors.blue,
           );

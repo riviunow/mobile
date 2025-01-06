@@ -6,8 +6,9 @@ abstract class TrackEvent {}
 
 class GetTrackById extends TrackEvent {
   final String id;
+  final Track? track;
 
-  GetTrackById(this.id);
+  GetTrackById(this.id, {this.track});
 }
 
 abstract class TrackState {}
@@ -34,6 +35,12 @@ class TrackBloc extends Bloc<TrackEvent, TrackState> {
   TrackBloc(this._trackService) : super(TrackInitial()) {
     on<GetTrackById>((event, emit) async {
       emit(TrackLoading());
+
+      if (event.track != null) {
+        emit(TrackLoaded(event.track!));
+        return;
+      }
+
       var response = await _trackService.getTrackById(event.id);
       await response.on(onFailure: (errors, _) {
         emit(TrackError(messages: errors));

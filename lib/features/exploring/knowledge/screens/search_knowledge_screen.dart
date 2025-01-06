@@ -1,12 +1,23 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/exploring/knowledge/widgets/search.filter_widget.dart';
+import 'package:udetxen/features/learning/learn_and_review/screens/learn_knowledge_screen.dart';
+import 'package:udetxen/features/learning/learn_and_review/screens/review_knowledge_screen.dart';
+import 'package:udetxen/features/learning/learning_list/blocs/add_remove_knowledges_bloc.dart';
+import 'package:udetxen/features/learning/learning_list/blocs/get_learning_list_by_id_bloc.dart';
+import 'package:udetxen/features/learning/learning_list/models/add_remove_knowledges.dart';
 import 'package:udetxen/shared/config/service_locator.dart';
+import 'package:udetxen/shared/config/theme/colors.dart';
+import 'package:udetxen/shared/models/index.dart';
 import 'package:udetxen/shared/widgets/layouts/authenticated_layout.dart';
 import 'package:udetxen/shared/widgets/loader.dart';
 import '../blocs/search_knowledges_bloc.dart';
 import '../models/search_knowledge.dart';
-import '../widgets/search.knowledge_list.dart';
+import '../widgets/knowledge_list.dart';
+import '../widgets/learning_list_dialog.dart';
+import '../widgets/search.filter_widget.dart';
+import 'knowledge_detail_screen.dart';
 
 class SearchKnowledgeScreen extends StatefulWidget {
   final bool? searchFocus;
@@ -39,6 +50,46 @@ class _SearchKnowledgeScreenState extends State<SearchKnowledgeScreen> {
   late TextEditingController _searchController;
   late FocusNode _searchFocusNode;
   late SearchKnowledgesRequest _searchRequest;
+  bool _isSelectionMode = false;
+  final Set<Knowledge> _selectedKnowledges = {};
+  bool _isLoadingMore = false;
+  Timer? _debounce;
+  LearningList? learningList;
+
+  void _toggleSelectionMode() {
+    setState(() {
+      _isSelectionMode = !_isSelectionMode;
+      if (!_isSelectionMode) {
+        _selectedKnowledges.clear();
+      }
+    });
+  }
+
+  void _onKnowledgeSelected(Knowledge knowledge) {
+    setState(() {
+      if (_selectedKnowledges.any((element) => element.id == knowledge.id)) {
+        _selectedKnowledges
+            .removeWhere((element) => element.id == knowledge.id);
+      } else {
+        _selectedKnowledges.add(knowledge);
+      }
+    });
+  }
+
+  void _onLoadMore() {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      if (!_isLoadingMore) {
+        setState(() {
+          _isLoadingMore = true;
+        });
+        _searchRequest = _searchRequest.copyWith(page: _searchRequest.page + 1);
+        context
+            .read<SearchKnowledgesBloc>()
+            .add(LoadMoreKnowledges(_searchRequest));
+      }
+    });
+  }
 
   @override
   void initState() {
@@ -63,6 +114,7 @@ class _SearchKnowledgeScreenState extends State<SearchKnowledgeScreen> {
   void dispose() {
     _searchController.dispose();
     _searchFocusNode.dispose();
+    _debounce?.cancel();
     super.dispose();
   }
 
@@ -70,116 +122,327 @@ class _SearchKnowledgeScreenState extends State<SearchKnowledgeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            Container(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-              child: Row(
-                children: [
-                  if (Navigator.canPop(context))
-                    IconButton(
-                      icon: Icon(
-                        Icons.arrow_back,
-                        color: Theme.of(context).primaryColor,
-                        size: 28,
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context, true);
-                      },
-                    )
-                  else if (_searchFocusNode.hasFocus)
-                    IconButton(
-                      icon: Icon(
-                        Icons.cancel,
-                        color: Theme.of(context).primaryColor,
-                        size: 28,
-                      ),
-                      onPressed: () {
-                        _searchController.clear();
-                        _searchFocusNode.unfocus();
-                      },
-                    ),
-                  Expanded(
-                    child: TextField(
-                      controller: _searchController,
-                      focusNode: _searchFocusNode,
-                      textInputAction: TextInputAction.search,
-                      decoration: InputDecoration(
-                        hintText: 'Search...',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          borderSide: BorderSide.none,
+            Column(
+              children: [
+                Container(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 8.0, vertical: 4.0),
+                  child: Row(
+                    children: [
+                      if (Navigator.canPop(context) &&
+                          widget.learningListId != null)
+                        IconButton(
+                          icon: Icon(
+                            Icons.arrow_back,
+                            color: Theme.of(context).primaryColor,
+                            size: 28,
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context, true);
+                          },
+                        )
+                      else if (_searchFocusNode.hasFocus)
+                        IconButton(
+                          icon: Icon(
+                            Icons.cancel,
+                            color: Theme.of(context).primaryColor,
+                            size: 28,
+                          ),
+                          onPressed: () {
+                            _searchController.clear();
+                            _searchFocusNode.unfocus();
+                          },
                         ),
-                        filled: true,
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 0, horizontal: 16),
+                      Expanded(
+                        child: TextField(
+                          controller: _searchController,
+                          focusNode: _searchFocusNode,
+                          textInputAction: TextInputAction.search,
+                          decoration: InputDecoration(
+                            hintText: 'Search...',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide.none,
+                            ),
+                            filled: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 0, horizontal: 16),
+                          ),
+                          onSubmitted: (value) {
+                            setState(() {
+                              _searchRequest = _searchRequest.copyWith(
+                                  searchTerm: value, page: 1);
+                              context
+                                  .read<SearchKnowledgesBloc>()
+                                  .add(SearchKnowledges(_searchRequest));
+                            });
+                          },
+                        ),
                       ),
-                      onSubmitted: (value) {
-                        setState(() {
-                          _searchRequest =
-                              _searchRequest.copyWith(searchTerm: value);
-                          context
-                              .read<SearchKnowledgesBloc>()
-                              .add(SearchKnowledges(_searchRequest));
-                        });
-                      },
-                    ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.filter_list,
+                          color: Theme.of(context).primaryColor,
+                          size: 28,
+                        ),
+                        onPressed: () async {
+                          final result =
+                              await showDialog<SearchKnowledgesRequest>(
+                            barrierColor:
+                                Theme.of(context).primaryColor.withOpacity(0.5),
+                            context: context,
+                            builder: (context) =>
+                                SearchFilterWidget(request: _searchRequest),
+                          );
+                          if (result != null) {
+                            setState(() {
+                              _searchRequest = result.copyWith(page: 1);
+                              context
+                                  .read<SearchKnowledgesBloc>()
+                                  .add(SearchKnowledges(_searchRequest));
+                            });
+                          }
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(
+                            _isSelectionMode ? Icons.cancel : Icons.select_all),
+                        onPressed: _toggleSelectionMode,
+                      ),
+                    ],
                   ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.filter_list,
-                      color: Theme.of(context).primaryColor,
-                      size: 28,
-                    ),
-                    onPressed: () async {
-                      final result = await showDialog<SearchKnowledgesRequest>(
-                        barrierColor:
-                            Theme.of(context).primaryColor.withOpacity(0.5),
-                        context: context,
-                        builder: (context) =>
-                            SearchFilterWidget(request: _searchRequest),
-                      );
-                      if (result != null) {
-                        setState(() {
-                          _searchRequest = result;
-                          context
-                              .read<SearchKnowledgesBloc>()
-                              .add(SearchKnowledges(_searchRequest));
-                        });
+                ),
+                Expanded(
+                  child:
+                      BlocBuilder<SearchKnowledgesBloc, SearchKnowledgesState>(
+                    builder: (context, state) {
+                      if (state is KnowledgeLoading) {
+                        return const Center(child: Loading());
+                      } else if (state is KnowledgeLoaded) {
+                        _isLoadingMore = false;
+                        return BlocBuilder<GetLearningListByIdBloc,
+                            GetLearningListByIdState>(
+                          builder: (context, listState) {
+                            if (widget.learningListId != null &&
+                                listState is GetLearningListByIdSuccess) {
+                              learningList = listState.learningList;
+                            }
+
+                            return KnowledgeList(
+                              knowledges: state.knowledges,
+                              hasNext: state.hasNext,
+                              onLoadMore: _onLoadMore,
+                              learningList: learningList,
+                              isSelectionMode: _isSelectionMode,
+                              selectedKnowledgeIds:
+                                  _selectedKnowledges.map((e) => e.id).toSet(),
+                              onKnowledgeSelected: _isSelectionMode
+                                  ? _onKnowledgeSelected
+                                  : (knowledge) => Navigator.push(
+                                      context,
+                                      KnowledgeDetailScreen.route(
+                                          knowledge: knowledge)),
+                            );
+                          },
+                        );
+                      } else if (state is KnowledgeError) {
+                        return Center(
+                            child: Text('Error: ${state.messages.join('\n')}'));
+                      } else {
+                        return const Center(child: Text('No data available'));
                       }
                     },
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            Expanded(
-              child: BlocBuilder<SearchKnowledgesBloc, SearchKnowledgesState>(
-                builder: (context, state) {
-                  if (state is KnowledgeLoading) {
-                    return const Center(child: Loading());
-                  } else if (state is KnowledgeLoaded) {
-                    return SearchKnowledgeList(
-                      knowledges: state.knowledges,
-                      hasNext: state.hasNext,
-                      onLoadMore: () {
-                        _searchRequest.copyWith(page: _searchRequest.page + 1);
-                        context
-                            .read<SearchKnowledgesBloc>()
-                            .add(LoadMoreKnowledges(_searchRequest));
-                      },
-                      learningListId: widget.learningListId,
-                    );
-                  } else if (state is KnowledgeError) {
-                    return Center(
-                        child: Text('Error: ${state.messages.join('\n')}'));
-                  } else {
-                    return const Center(child: Text('No data available'));
-                  }
-                },
+            if (_isSelectionMode)
+              Positioned(
+                bottom: 0,
+                left: 10,
+                right: 10,
+                child: Card(
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.warning,
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            onPressed: () => _toggleSelectionMode(),
+                            child: Text(
+                              'Cancel',
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .scaffoldBackgroundColor),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.warning,
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _selectedKnowledges.clear();
+                              });
+                            },
+                            child: Text(
+                              'Clear',
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .scaffoldBackgroundColor),
+                            ),
+                          ),
+                        ),
+                        if (widget.learningListId == null &&
+                            _selectedKnowledges.isNotEmpty) ...[
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Theme.of(context).primaryColor,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              onPressed: _selectedKnowledges.every(
+                                      (e) => e.currentUserLearning == null)
+                                  ? () {
+                                      Navigator.push(
+                                          context,
+                                          LearnKnowledgeScreen.route(
+                                              knowledgeIds: _selectedKnowledges
+                                                  .map((e) => e.id)
+                                                  .toList()));
+                                      _toggleSelectionMode();
+                                    }
+                                  : _selectedKnowledges.every(
+                                          (e) => e.currentUserLearning != null)
+                                      ? () {
+                                          Navigator.push(
+                                              context,
+                                              ReviewKnowledgeScreen.route(
+                                                  knowledgeIds:
+                                                      _selectedKnowledges
+                                                          .map((e) => e.id)
+                                                          .toList()));
+                                          _toggleSelectionMode();
+                                        }
+                                      : null,
+                              child: Text(
+                                _selectedKnowledges.every(
+                                        (e) => e.currentUserLearning != null)
+                                    ? "Review (${_selectedKnowledges.length})"
+                                    : "Learn (${_selectedKnowledges.length})",
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .scaffoldBackgroundColor),
+                              ),
+                            ),
+                          ),
+                        ],
+                        if (widget.learningListId != null) ...[
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Theme.of(context).primaryColor,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              onPressed: _selectedKnowledges.every((e) =>
+                                      learningList!.containsKnowledge(e.id))
+                                  ? () => context
+                                      .read<AddRemoveKnowledgesBloc>()
+                                      .add(AddRemoveKnowledgesRequested(
+                                          AddRemoveKnowledgesRequest(
+                                              knowledgeIds: _selectedKnowledges
+                                                  .map((e) => e.id)
+                                                  .toList(),
+                                              isAdd: false,
+                                              learningListId:
+                                                  widget.learningListId!)))
+                                  : _selectedKnowledges.every((e) =>
+                                          !learningList!
+                                              .containsKnowledge(e.id))
+                                      ? () => context
+                                          .read<AddRemoveKnowledgesBloc>()
+                                          .add(AddRemoveKnowledgesRequested(AddRemoveKnowledgesRequest(isAdd: true, knowledgeIds: _selectedKnowledges.map((e) => e.id).toList(), learningListId: widget.learningListId!)))
+                                      : null,
+                              child: Text(
+                                _selectedKnowledges.every((e) =>
+                                        learningList!.containsKnowledge(e.id))
+                                    ? 'Remove ${_selectedKnowledges.length}'
+                                    : 'Add ${_selectedKnowledges.length}',
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .scaffoldBackgroundColor),
+                              ),
+                            ),
+                          ),
+                        ] else ...[
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Theme.of(context).primaryColor,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              onPressed: _selectedKnowledges.isEmpty
+                                  ? null
+                                  : () {
+                                      Navigator.push(
+                                        context,
+                                        LearningListDialog.route(
+                                            _selectedKnowledges
+                                                .map((e) => e.id)
+                                                .toList()),
+                                      );
+                                      _toggleSelectionMode();
+                                    },
+                              child: Text(
+                                'Add to list',
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .scaffoldBackgroundColor),
+                              ),
+                            ),
+                          ),
+                        ]
+                      ],
+                    ),
+                  ),
+                ),
               ),
-            ),
           ],
         ),
       ),

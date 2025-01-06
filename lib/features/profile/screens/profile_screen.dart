@@ -36,7 +36,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<ProfileBloc>().add(LoadProfile());
+    var bloc = context.read<ProfileBloc>();
+    if (bloc.state is! ProfileLoaded) {
+      bloc.add(LoadProfile());
+    }
   }
 
   @override
@@ -56,7 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.1,
+                    height: MediaQuery.of(context).size.height * 0.05,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -66,7 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         if (user.photoUrl != null)
                           Center(
                             child: CircleAvatar(
-                              radius: 50,
+                              radius: 100,
                               backgroundImage: NetworkImage(
                                   "${Urls.mediaUrl}/${user.photoUrl!}"),
                             ),
@@ -74,16 +77,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         else
                           const Center(
                             child: CircleAvatar(
-                              radius: 50,
-                              child: Icon(Icons.person),
+                              radius: 100,
+                              child: Icon(Icons.person, size: 100),
                             ),
                           ),
                         const SizedBox(height: 16),
-                        Text('Username: ${user.userName}',
-                            style: const TextStyle(fontSize: 18)),
+                        Row(
+                          children: [
+                            const Icon(Icons.person, size: 24),
+                            const SizedBox(width: 8),
+                            Text(user.userName,
+                                style: const TextStyle(fontSize: 18)),
+                          ],
+                        ),
                         const SizedBox(height: 8),
-                        Text('Email: ${user.email}',
-                            style: const TextStyle(fontSize: 18)),
+                        Row(
+                          children: [
+                            const Icon(Icons.email, size: 24),
+                            const SizedBox(width: 8),
+                            Text(user.email,
+                                style: const TextStyle(fontSize: 18)),
+                          ],
+                        ),
                       ],
                     ),
                   ),

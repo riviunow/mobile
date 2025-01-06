@@ -19,13 +19,15 @@ import '../widgets/navigation_buttons.dart';
 import '../widgets/step_status_bar.dart';
 
 class CreateKnowledgeScreen extends StatefulWidget {
-  static route() {
+  final String? title;
+
+  static route({String? title}) {
     return MaterialPageRoute(
-      builder: (context) => const CreateKnowledgeScreen(),
+      builder: (context) => CreateKnowledgeScreen(title: title),
     );
   }
 
-  const CreateKnowledgeScreen({super.key});
+  const CreateKnowledgeScreen({super.key, this.title});
 
   @override
   State<CreateKnowledgeScreen> createState() => _CreateKnowledgeScreenState();
@@ -50,12 +52,17 @@ class _CreateKnowledgeScreenState extends State<CreateKnowledgeScreen> {
   @override
   void initState() {
     super.initState();
-    context
-        .read<KnowledgeTypeBloc>()
-        .add(GetKnowledgeTypes(KnowledgeTypesRequest()));
-    context
-        .read<KnowledgeTopicBloc>()
-        .add(GetKnowledgeTopics(KnowledgeTopicsRequest()));
+    if (widget.title != null) {
+      _titleController.text = widget.title!;
+    }
+    var typeBloc = context.read<KnowledgeTypeBloc>();
+    if (typeBloc.state is! KnowledgeTypeLoaded) {
+      typeBloc.add(GetKnowledgeTypes(KnowledgeTypesRequest()));
+    }
+    var topicBloc = context.read<KnowledgeTopicBloc>();
+    if (topicBloc.state is! KnowledgeTopicLoaded) {
+      topicBloc.add(GetKnowledgeTopics(KnowledgeTopicsRequest()));
+    }
   }
 
   void _submit() {
@@ -105,6 +112,7 @@ class _CreateKnowledgeScreenState extends State<CreateKnowledgeScreen> {
         title: const Text('Create Knowledge'),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
+      resizeToAvoidBottomInset: true,
       body: BlocListener<CreateKnowledgeBloc, CreateKnowledgeState>(
         listener: (context, state) {
           if (!mounted) return;
@@ -126,51 +134,54 @@ class _CreateKnowledgeScreenState extends State<CreateKnowledgeScreen> {
         },
         child: Form(
           key: _formKey,
-          child: Column(
-            children: [
-              StepStatusBar(
-                currentStep: _currentStep,
-                onStepTapped: (index) => setState(() {
-                  _currentStep = index;
-                  _pageController.jumpToPage(index);
-                }),
-              ),
-              Expanded(
-                child: PageView(
-                  controller: _pageController,
-                  onPageChanged: (index) {
-                    setState(() {
-                      _currentStep = index;
-                    });
-                  },
-                  children: [
-                    _buildStepTitle(),
-                    _buildStepFilePicker(),
-                    _buildStepMaterial(),
-                    _buildStepKnowledgeTopic(),
-                    _buildStepKnowledgeType(),
-                  ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                StepStatusBar(
+                  currentStep: _currentStep,
+                  onStepTapped: (index) => setState(() {
+                    _currentStep = index;
+                    _pageController.jumpToPage(index);
+                  }),
                 ),
-              ),
-              NavigationButtons(
-                currentStep: _currentStep,
-                onBack: () => setState(() {
-                  _currentStep--;
-                  _pageController.previousPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  );
-                }),
-                onNext: () => setState(() {
-                  _currentStep++;
-                  _pageController.nextPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  );
-                }),
-                onSubmit: _currentStep == 4 ? _submit : null,
-              ),
-            ],
+                SizedBox(
+                  height: MediaQuery.of(context).size.height - kToolbarHeight,
+                  child: PageView(
+                    controller: _pageController,
+                    onPageChanged: (index) {
+                      setState(() {
+                        _currentStep = index;
+                      });
+                    },
+                    children: [
+                      _buildStepTitle(),
+                      _buildStepFilePicker(),
+                      _buildStepMaterial(),
+                      _buildStepKnowledgeTopic(),
+                      _buildStepKnowledgeType(),
+                    ],
+                  ),
+                ),
+                NavigationButtons(
+                  currentStep: _currentStep,
+                  onBack: () => setState(() {
+                    _currentStep--;
+                    _pageController.previousPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    );
+                  }),
+                  onNext: () => setState(() {
+                    _currentStep++;
+                    _pageController.nextPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    );
+                  }),
+                  onSubmit: _currentStep == 4 ? _submit : null,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -307,72 +318,80 @@ class _CreateKnowledgeScreenState extends State<CreateKnowledgeScreen> {
   }
 
   Widget _buildStepMaterial() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        MaterialSection(
-            materials: _materials,
-            onAddMaterial: (MaterialParams material) {
-              setState(() {
-                _materials.add(material);
-              });
-            },
-            onRemoveMaterial: (int index) {
-              setState(() {
-                if (index >= 0 && index < _materials.length) {
-                  _materials.removeAt(index);
-                } else {
-                  debugPrint('Invalid index: $index');
-                }
-              });
-            },
-            onUpdateMaterial: (entry) {
-              setState(() {
-                if (entry.key >= 0 && entry.key < _materials.length) {
-                  _materials[entry.key] = entry.value;
-                } else {
-                  debugPrint('Invalid index: ${entry.key}');
-                }
-              });
-            }),
-        const SizedBox(height: 16),
-        _buildNextButton(3),
-      ],
-    );
-  }
-
-  Widget _buildStepKnowledgeTopic() {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          KnowledgeTopicFilter(
-            knowledgeTopicIds: _selectedKnowledgeTopicIds,
-            onRequestUpdated: (ids) {
-              setState(() {
-                _selectedKnowledgeTopicIds = ids;
-              });
-            },
-          ),
+          MaterialSection(
+              materials: _materials,
+              onAddMaterial: (MaterialParams material) {
+                setState(() {
+                  _materials.add(material);
+                });
+              },
+              onRemoveMaterial: (int index) {
+                setState(() {
+                  if (index >= 0 && index < _materials.length) {
+                    _materials.removeAt(index);
+                  } else {
+                    debugPrint('Invalid index: $index');
+                  }
+                });
+              },
+              onUpdateMaterial: (entry) {
+                setState(() {
+                  if (entry.key >= 0 && entry.key < _materials.length) {
+                    _materials[entry.key] = entry.value;
+                  } else {
+                    debugPrint('Invalid index: ${entry.key}');
+                  }
+                });
+              }),
+          const SizedBox(height: 16),
+          _buildNextButton(3),
         ],
       ),
     );
   }
 
+  Widget _buildStepKnowledgeTopic() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            KnowledgeTopicFilter(
+              selectedIds: _selectedKnowledgeTopicIds,
+              onRequestUpdated: (ids) {
+                setState(() {
+                  _selectedKnowledgeTopicIds = ids;
+                });
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildStepKnowledgeType() {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          KnowledgeTypeFilter(
-            knowledgeTypeIds: _selectedKnowledgeTypeIds,
-            onRequestUpdated: (ids) {
-              setState(() {
-                _selectedKnowledgeTypeIds = ids;
-              });
-            },
-          ),
-        ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            KnowledgeTypeFilter(
+              selectedIds: _selectedKnowledgeTypeIds,
+              onRequestUpdated: (ids) {
+                setState(() {
+                  _selectedKnowledgeTypeIds = ids;
+                });
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

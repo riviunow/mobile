@@ -5,6 +5,8 @@ import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:udetxen/features/auth/screens/login_screen.dart';
+import 'package:udetxen/main.dart';
 import 'package:udetxen/shared/constants/error_message.dart';
 import 'package:udetxen/shared/constants/http_route.dart';
 import 'package:udetxen/shared/constants/urls.dart';
@@ -13,6 +15,8 @@ import '../config/service_locator.dart';
 import '../types/index.dart';
 
 abstract class ApiService {
+  final prefs = getIt<SharedPreferences>();
+
   ApiResponse<T> get<T>(
     String endpoint,
     T Function(Map<String, dynamic>)? fromJson,
@@ -192,6 +196,12 @@ abstract class ApiService {
       if (response.statusCode == 401) {
         final newAccessToken = await _refreshToken();
         if (newAccessToken == null) {
+          prefs.remove('accessToken');
+          prefs.remove('refreshToken');
+          navigatorKey.currentState?.pushAndRemoveUntil(
+            LoginScreen.route(),
+            (route) => false,
+          );
           return Response(
               failure: Failure(message: 'Login timeout, please login again'));
         }
@@ -269,7 +279,6 @@ abstract class ApiService {
   }
 
   Future<Map<String, String>> _getHeaders(String? mediaType) async {
-    final prefs = getIt<SharedPreferences>();
     final token = prefs.getString('accessToken');
 
     final headers = <String, String>{};
@@ -284,7 +293,6 @@ abstract class ApiService {
   }
 
   Future<String?> _refreshToken() async {
-    final prefs = getIt<SharedPreferences>();
     final refreshToken = prefs.getString('refreshToken');
     if (refreshToken != null) {
       final response = await http.post(

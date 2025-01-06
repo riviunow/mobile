@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:udetxen/features/creating/publication_request/services/publication_request_service.dart';
 import 'package:udetxen/features/exploring/knowledge/blocs/knowledge_detail_bloc.dart';
 import 'package:udetxen/features/learning/knowledge_learning/blocs/unlisted_learnings_bloc.dart';
-import 'package:udetxen/features/learning/learning_list/blocs/add_remove_knowledge_bloc.dart';
+import 'package:udetxen/features/learning/learning_list/blocs/add_remove_knowledges_bloc.dart';
 import 'package:udetxen/features/learning/learning_list/blocs/create_learning_list_bloc.dart';
 import 'package:udetxen/features/learning/learning_list/blocs/get_learning_list_by_id_bloc.dart';
 import 'package:udetxen/features/learning/learning_list/blocs/get_learning_lists_bloc.dart';
@@ -175,9 +175,10 @@ class MainApp extends StatelessWidget {
                 BlocProvider.of<GetLearningListsBloc>(context)),
           ),
           BlocProvider(
-            create: (context) => AddRemoveKnowledgeBloc(
+            create: (context) => AddRemoveKnowledgesBloc(
                 getIt<LearningListService>(),
-                BlocProvider.of<GetLearningListByIdBloc>(context)),
+                BlocProvider.of<GetLearningListByIdBloc>(context),
+                BlocProvider.of<GetLearningListsBloc>(context)),
           ),
           BlocProvider(
             create: (context) =>

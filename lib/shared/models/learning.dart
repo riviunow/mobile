@@ -9,6 +9,7 @@ class Learning extends SingleIdPivotEntity {
   final List<LearningHistory> learningHistories;
   final LearningHistory? latestLearningHistory;
   final int? learningListCount;
+  bool get isDue => nextReviewDate.isBefore(DateTime.now());
 
   Learning({
     required super.id,
@@ -84,5 +85,21 @@ class Learning extends SingleIdPivotEntity {
           latestLearningHistory ?? this.latestLearningHistory,
       learningListCount: learningListCount ?? this.learningListCount,
     );
+  }
+
+  String calculateTimeLeft() {
+    final now = DateTime.now();
+    final difference = nextReviewDate.difference(now);
+    if (difference.inDays > 0) {
+      return 'Next review in ${difference.inDays} day(s)';
+    } else if (difference.inHours > 0) {
+      return 'Next review in ${difference.inHours} hour(s)';
+    } else if (difference.inMinutes > 0) {
+      return 'Next review in ${difference.inMinutes} minute(s)';
+    } else if (difference.inSeconds > 0) {
+      return 'Next review in ${difference.inSeconds} second(s)';
+    } else {
+      return 'Ready to review';
+    }
   }
 }

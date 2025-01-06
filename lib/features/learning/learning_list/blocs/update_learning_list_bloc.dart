@@ -4,7 +4,7 @@ import '../models/update_learning_list.dart';
 import 'package:udetxen/shared/models/index.dart';
 
 import 'get_learning_list_by_id_bloc.dart';
-import 'get_learning_lists_bloc.dart';
+// import 'get_learning_lists_bloc.dart';
 
 // Events
 abstract class UpdateLearningListEvent {}
@@ -39,10 +39,10 @@ class UpdateLearningListBloc
     extends Bloc<UpdateLearningListEvent, UpdateLearningListState> {
   final LearningListService _learningListService;
   final GetLearningListByIdBloc getLearningListByIdBloc;
-  final GetLearningListsBloc getLearningListsBloc;
+  // final GetLearningListsBloc getLearningListsBloc;
 
-  UpdateLearningListBloc(this._learningListService,
-      this.getLearningListByIdBloc, this.getLearningListsBloc)
+  UpdateLearningListBloc(
+      this._learningListService, this.getLearningListByIdBloc)
       : super(UpdateLearningListInitial()) {
     on<UpdateLearningListRequested>((event, emit) async {
       emit(UpdateLearningListLoading());
@@ -58,13 +58,15 @@ class UpdateLearningListBloc
               learningList:
                   state.learningList.copyWith(title: learningList.title)));
         }
-        if (getLearningListsBloc.state is GetLearningListsSuccess) {
-          var state = getLearningListsBloc.state as GetLearningListsSuccess;
-          getLearningListsBloc.add(GetLearningListsRequested(
-              learningLists: state.learningLists
-                  .map((e) => e.id == learningList.id ? learningList : e)
-                  .toList()));
-        }
+        // if (getLearningListsBloc.state is GetLearningListsSuccess) {
+        //   var state = getLearningListsBloc.state as GetLearningListsSuccess;
+        //   getLearningListsBloc.add(GetLearningListsRequested(
+        //       learningLists: state.learningLists
+        //           .map((e) => e.id == learningList.id
+        //               ? e.copyWith(title: learningList.title)
+        //               : e)
+        //           .toList()));
+        // }
         emit(UpdateLearningListSuccess(learningList));
       });
     });

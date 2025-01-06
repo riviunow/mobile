@@ -5,7 +5,7 @@ import 'package:udetxen/shared/types/index.dart';
 
 import '../models/update_learning_list.dart';
 import '../models/create_learning_list.dart';
-import '../models/add_remove_knowledge.dart';
+import '../models/add_remove_knowledges.dart';
 
 class LearningListService extends ApiService {
   ApiResponse<LearningList> create(CreateLearningListRequest request) {
@@ -33,11 +33,11 @@ class LearningListService extends ApiService {
         HttpRoute.getAllLearningLists, (item) => LearningList.fromJson(item));
   }
 
-  ApiResponse<LearningListKnowledge> addRemoveKnowledge(
-      AddRemoveKnowledgeRequest request) {
-    return post<LearningListKnowledge>(
-        HttpRoute.addRemoveKnowledgeToLearningList,
-        LearningListKnowledge.fromJson,
+  ApiResponse<List<LearningListKnowledge>> addRemoveKnowledges(
+      AddRemoveKnowledgesRequest request) {
+    return postList<LearningListKnowledge>(
+        HttpRoute.addRemoveKnowledgesToLearningList,
+        (e) => LearningListKnowledge.fromJson(e),
         request.toJson());
   }
 }

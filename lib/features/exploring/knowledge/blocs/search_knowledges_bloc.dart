@@ -17,6 +17,13 @@ class LoadMoreKnowledges extends SearchKnowledgesEvent {
   LoadMoreKnowledges(this.request);
 }
 
+class SearchKnowledgesLearningUpdated extends SearchKnowledgesEvent {
+  final List<Knowledge> knowledges;
+  final bool hasNext;
+
+  SearchKnowledgesLearningUpdated(this.knowledges, this.hasNext);
+}
+
 abstract class SearchKnowledgesState {}
 
 class KnowledgeInitial extends SearchKnowledgesState {}
@@ -58,12 +65,23 @@ class SearchKnowledgesBloc
         await response.on(onFailure: (errors, _) {
           emit(KnowledgeError(messages: errors));
         }, onSuccess: (page) {
+          var newKnowledges = (currentState.knowledges + page.data)
+              .fold<Map<String, Knowledge>>({}, (map, knowledge) {
+                map[knowledge.id] = knowledge;
+                return map;
+              })
+              .values
+              .toList();
           emit(KnowledgeLoaded(
-            currentState.knowledges + page.data,
+            newKnowledges,
             page.hasNext,
           ));
         });
       }
     });
+
+    on<SearchKnowledgesLearningUpdated>((event, emit) => emit(
+          KnowledgeLoaded(event.knowledges, event.hasNext),
+        ));
   }
 }

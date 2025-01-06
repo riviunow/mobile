@@ -60,10 +60,10 @@ class GetToReviewBloc extends Bloc<GetToReviewEvent, GetToReviewState> {
     emit(GetToReviewLoading());
     final response =
         await _learnAndReviewService.getLearningToReview(event.request);
-    response.on(
+    await response.on(
       onSuccess: (groupedLearnings) {
         _gameBloc
-            .add(InitWidgetQueue(getWidgets(groupedLearnings), Task.Learn));
+            .add(InitWidgetQueue(getWidgets(groupedLearnings), Task.Review));
         emit(GetToReviewSuccess(groupedLearnings));
       },
       onFailure: (errors, _) => emit(GetToReviewFailure(errors)),
@@ -74,22 +74,26 @@ class GetToReviewBloc extends Bloc<GetToReviewEvent, GetToReviewState> {
     Queue<PlayingWidget> widgets = Queue();
     for (int i = 0; i < groupedLearnings.length; i++) {
       for (int j = 0; j < groupedLearnings[i].length; j++) {
+        if (groupedLearnings[i][j].knowledge!.gameToReview != null) {
+          widgets.add(PlayingWidget(
+              type: PlayingWidgetType.GamingBoard,
+              widget: GamingBoard(
+                gameKnowledgeSubscription: groupedLearnings[i][j]
+                    .knowledge!
+                    .gameToReview!
+                    .copyWith(
+                        knowledge: groupedLearnings[i][j].knowledge!.copyWith(
+                      gameKnowledgeSubscriptions: [],
+                    )),
+              ),
+              group: i,
+              knowledgeId: groupedLearnings[i][j].knowledgeId));
+        }
+
         // FlashCard
         widgets.add(PlayingWidget(
             type: PlayingWidgetType.FlashCard,
             widget: FlashCard(knowledge: groupedLearnings[i][j].knowledge!),
-            group: i,
-            knowledgeId: groupedLearnings[i][j].knowledgeId));
-        if (groupedLearnings[i][j].knowledge!.gameToReview == null) {
-          continue;
-        }
-
-        widgets.add(PlayingWidget(
-            type: PlayingWidgetType.GamingBoard,
-            widget: GamingBoard(
-              gameKnowledgeSubscription:
-                  groupedLearnings[i][j].knowledge!.gameToReview!,
-            ),
             group: i,
             knowledgeId: groupedLearnings[i][j].knowledgeId));
       }

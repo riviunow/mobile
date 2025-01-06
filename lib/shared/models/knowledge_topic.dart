@@ -65,4 +65,16 @@ class KnowledgeTopic extends SingleIdEntity {
           knowledgeTopicKnowledges ?? this.knowledgeTopicKnowledges,
     );
   }
+
+  bool recursiveContains(String searchValue) {
+    if (title.toLowerCase().contains(searchValue.toLowerCase())) {
+      return true;
+    }
+    for (final topic in children) {
+      if (topic.recursiveContains(searchValue)) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

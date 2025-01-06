@@ -37,7 +37,6 @@ class HomeAppBar extends StatelessWidget {
                   ),
                 const SizedBox(width: 10),
                 Text(state.user.userName, style: const TextStyle(fontSize: 20)),
-                // Add more widgets here if needed
               ],
             ),
           );

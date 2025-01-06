@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:udetxen/features/learning/learning_list/blocs/get_learning_lists_bloc.dart';
 import 'package:udetxen/features/learning/learning_list/services/learning_list_service.dart';
 import 'package:udetxen/shared/models/index.dart';
 
@@ -35,14 +36,32 @@ class GetLearningListByIdError extends GetLearningListByIdState {
 class GetLearningListByIdBloc
     extends Bloc<GetLearningListByIdEvent, GetLearningListByIdState> {
   final LearningListService _learningListService;
+  final GetLearningListsBloc _getLearningListsBloc;
+  // TODO
 
-  GetLearningListByIdBloc(this._learningListService)
+  GetLearningListByIdBloc(this._learningListService, this._getLearningListsBloc)
       : super(GetLearningListByIdInitial()) {
     on<GetLearningListByIdRequested>((event, emit) async {
       emit(GetLearningListByIdLoading());
 
       if (event.learningList != null) {
         emit(GetLearningListByIdSuccess(event.learningList!));
+        if (_getLearningListsBloc.state is GetLearningListsSuccess) {
+          var state = _getLearningListsBloc.state as GetLearningListsSuccess;
+          _getLearningListsBloc.add(GetLearningListsRequested(
+            learningLists: state.learningLists
+                .map((e) => e.id == event.learningList!.id
+                    ? e.copyWith(
+                        title: event.learningList!.title,
+                        notLearntKnowledgeCount:
+                            event.learningList!.notLearntKnowledges.length,
+                        learntKnowledgeCount:
+                            event.learningList!.learntKnowledges.length,
+                      )
+                    : e)
+                .toList(),
+          ));
+        }
         return;
       }
 

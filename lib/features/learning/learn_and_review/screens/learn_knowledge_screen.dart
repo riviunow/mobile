@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:udetxen/shared/widgets/loader.dart';
 
 import '../blocs/game_bloc.dart';
 import '../blocs/get_to_learn_bloc.dart';
 import '../models/get_to_learn.dart';
-import '../widgets/status_bar.dart';
+import '../widgets/game_over_board.dart';
+import '../widgets/playing_header.dart';
 
 class LearnKnowledgeScreen extends StatefulWidget {
   final List<String> knowledgeIds;
@@ -33,6 +35,11 @@ class _LearnKnowledgeScreenState extends State<LearnKnowledgeScreen> {
   @override
   void initState() {
     super.initState();
+    // final bloc = context.read<GetToLearnBloc>();
+    // if (bloc.state is! GetToLearnSuccess ||
+    //     (bloc.state is GetToLearnSuccess &&
+    //         !(bloc.state as GetToLearnSuccess).groupedKnowledges.every(
+    //             (gr) => gr.every((k) => widget.knowledgeIds.contains(k.id)))))
     context
         .read<GetToLearnBloc>()
         .add(GetToLearnRequested(GetKnowledgesToLearnRequest(
@@ -45,7 +52,7 @@ class _LearnKnowledgeScreenState extends State<LearnKnowledgeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: BlocListener<GetToLearnBloc, GetToLearnState>(
+        child: BlocConsumer<GetToLearnBloc, GetToLearnState>(
           listener: (context, state) {
             if (state is GetToLearnFailure) {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -54,73 +61,47 @@ class _LearnKnowledgeScreenState extends State<LearnKnowledgeScreen> {
               Navigator.of(context).pop(false);
             }
           },
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.cancel),
-                    onPressed: () async {
-                      bool? confirm = await showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text('Confirm'),
-                            content:
-                                const Text('Are you sure you want to cancel?'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(false);
-                                },
-                                child: const Text('No'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(true);
-                                },
-                                child: const Text('Yes'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                      if (confirm == true) {
-                        context.read<GameBloc>().add(EndGameRequested());
-                      }
-                    },
-                  ),
-                  const Expanded(child: StatusBar()),
-                ],
-              ),
-              const SizedBox(height: 24),
-              Expanded(
-                child: BlocBuilder<GameBloc, GameState>(
-                  builder: (context, state) {
-                    if (state is GameInProgress) {
-                      return state.widget.widget;
-                    } else if (state is GameEnded) {
-                      return ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pop(true);
-                        },
-                        child: const Text('Finish'),
-                      );
-                    } else if (state is GameInitial) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    return const Center(
-                      child: Text('No Data Available'),
+          builder: (context, state) {
+            if (state is GetToLearnLoading) {
+              return const Center(
+                child: Loading(),
+              );
+            } else if (state is GetToLearnSuccess) {
+              return BlocConsumer<GameBloc, GameState>(
+                listener: (context, state) {
+                  if (state is GameEnded && state.learnings.isEmpty) {
+                    context.read<GameBloc>().add(OutGameRequested());
+                    Navigator.pop(context, true);
+                  }
+                },
+                builder: (context, state) {
+                  if (state is GameInProgress) {
+                    return Column(
+                      children: [
+                        PlayingHeader(state: state),
+                        const SizedBox(height: 24),
+                        Expanded(
+                          child: state.widget.widget,
+                        ),
+                      ],
                     );
-                  },
-                ),
-              ),
-            ],
-          ),
+                  } else if (state is GameEnded) {
+                    return GameOverBoard(learnings: state.learnings);
+                  } else if (state is GameInitial) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return const Center(
+                    child: Text('No Data Available'),
+                  );
+                },
+              );
+            }
+            return const Center(
+              child: Text('No Data Available'),
+            );
+          },
         ),
       ),
     );

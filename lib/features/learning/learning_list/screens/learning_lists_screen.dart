@@ -45,7 +45,12 @@ class _LearningListsScreenState extends State<LearningListsScreen> {
                   itemCount: state.learningLists.length,
                   itemBuilder: (context, index) {
                     final learningList = state.learningLists[index];
-                    return LearningListsTile(learningList: learningList);
+                    return LearningListsTile(
+                      learningList: learningList,
+                      isSelectionMode: false,
+                      isSelected: false,
+                      onLearningListSelected: (value) {},
+                    );
                   },
                 );
               } else if (state is GetLearningListsError) {

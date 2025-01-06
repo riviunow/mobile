@@ -19,7 +19,7 @@ class KnowledgeTagsWidget extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: AppColors.success,
+              color: AppColors.success.withOpacity(0.8),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
@@ -34,7 +34,7 @@ class KnowledgeTagsWidget extends StatelessWidget {
             (item) => Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: AppColors.secondary,
+                color: AppColors.secondary.withOpacity(0.8),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
@@ -50,7 +50,7 @@ class KnowledgeTagsWidget extends StatelessWidget {
             (item) => Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: AppColors.hint,
+                color: AppColors.hint.withOpacity(0.8),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
