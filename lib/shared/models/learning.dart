@@ -91,15 +91,15 @@ class Learning extends SingleIdPivotEntity {
     final now = DateTime.now();
     final difference = nextReviewDate.difference(now);
     if (difference.inDays > 0) {
-      return 'Next review in ${difference.inDays} day(s)';
+      return '${"next_rv".tr()} ${difference.inDays}d';
     } else if (difference.inHours > 0) {
-      return 'Next review in ${difference.inHours} hour(s)';
+      return '${"next_rv".tr()} ${difference.inHours}h';
     } else if (difference.inMinutes > 0) {
-      return 'Next review in ${difference.inMinutes} minute(s)';
+      return '${"next_rv".tr()} ${difference.inMinutes}m';
     } else if (difference.inSeconds > 0) {
-      return 'Next review in ${difference.inSeconds} second(s)';
+      return '${"next_rv".tr()} ${difference.inSeconds}s';
     } else {
-      return 'Ready to review';
+      return 'ready_to_review'.tr();
     }
   }
 }

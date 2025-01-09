@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+
 import 'enums/game_option_type.dart';
 import 'enums/learning_level.dart';
 import 'enums/material_type.dart';

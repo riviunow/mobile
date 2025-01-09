@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/learning/learn_and_review/screens/learn_knowledge_screen.dart';
@@ -252,7 +253,7 @@ class _SearchKnowledgeScreenState extends State<SearchKnowledgeScreen> {
                         return Center(
                             child: Text('Error: ${state.messages.join('\n')}'));
                       } else {
-                        return const Center(child: Text('No data available'));
+                        return Center(child: Text('no_data_available'.tr()));
                       }
                     },
                   ),
@@ -262,15 +263,16 @@ class _SearchKnowledgeScreenState extends State<SearchKnowledgeScreen> {
             if (_isSelectionMode)
               Positioned(
                 bottom: 0,
-                left: 10,
-                right: 10,
+                left: 0,
+                right: 0,
                 child: Card(
                   elevation: 5,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 2),
                     child: Row(
                       children: [
                         Expanded(
@@ -284,14 +286,14 @@ class _SearchKnowledgeScreenState extends State<SearchKnowledgeScreen> {
                             ),
                             onPressed: () => _toggleSelectionMode(),
                             child: Text(
-                              'Cancel',
+                              'cancel'.tr(),
                               style: TextStyle(
                                   color: Theme.of(context)
                                       .scaffoldBackgroundColor),
                             ),
                           ),
                         ),
-                        const SizedBox(width: 10),
+                        const SizedBox(width: 4),
                         Expanded(
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -307,7 +309,7 @@ class _SearchKnowledgeScreenState extends State<SearchKnowledgeScreen> {
                               });
                             },
                             child: Text(
-                              'Clear',
+                              'clear'.tr(),
                               style: TextStyle(
                                   color: Theme.of(context)
                                       .scaffoldBackgroundColor),
@@ -316,7 +318,7 @@ class _SearchKnowledgeScreenState extends State<SearchKnowledgeScreen> {
                         ),
                         if (widget.learningListId == null &&
                             _selectedKnowledges.isNotEmpty) ...[
-                          const SizedBox(width: 10),
+                          const SizedBox(width: 4),
                           Expanded(
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
@@ -354,8 +356,8 @@ class _SearchKnowledgeScreenState extends State<SearchKnowledgeScreen> {
                               child: Text(
                                 _selectedKnowledges.every(
                                         (e) => e.currentUserLearning != null)
-                                    ? "Review (${_selectedKnowledges.length})"
-                                    : "Learn (${_selectedKnowledges.length})",
+                                    ? "${"review".tr()} (${_selectedKnowledges.length})"
+                                    : "${"learn".tr()} (${_selectedKnowledges.length})",
                                 style: TextStyle(
                                     color: Theme.of(context)
                                         .scaffoldBackgroundColor),
@@ -364,7 +366,7 @@ class _SearchKnowledgeScreenState extends State<SearchKnowledgeScreen> {
                           ),
                         ],
                         if (widget.learningListId != null) ...[
-                          const SizedBox(width: 10),
+                          const SizedBox(width: 4),
                           Expanded(
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
@@ -397,8 +399,8 @@ class _SearchKnowledgeScreenState extends State<SearchKnowledgeScreen> {
                               child: Text(
                                 _selectedKnowledges.every((e) =>
                                         learningList!.containsKnowledge(e.id))
-                                    ? 'Remove ${_selectedKnowledges.length}'
-                                    : 'Add ${_selectedKnowledges.length}',
+                                    ? '${"remove".tr()} ${_selectedKnowledges.length}'
+                                    : '${"add".tr()} ${_selectedKnowledges.length}',
                                 style: TextStyle(
                                     color: Theme.of(context)
                                         .scaffoldBackgroundColor),
@@ -406,7 +408,7 @@ class _SearchKnowledgeScreenState extends State<SearchKnowledgeScreen> {
                             ),
                           ),
                         ] else ...[
-                          const SizedBox(width: 10),
+                          const SizedBox(width: 4),
                           Expanded(
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
@@ -430,7 +432,7 @@ class _SearchKnowledgeScreenState extends State<SearchKnowledgeScreen> {
                                       _toggleSelectionMode();
                                     },
                               child: Text(
-                                'Add to list',
+                                'add_to_list'.tr(),
                                 style: TextStyle(
                                     color: Theme.of(context)
                                         .scaffoldBackgroundColor),

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/learning/learning_list/blocs/create_learning_list_bloc.dart';
@@ -94,7 +95,7 @@ class _CreateLearningListScreenState extends State<CreateLearningListScreen> {
                     if (widget.knowledgeIds.isNotEmpty) ...[
                       const SizedBox(height: 16),
                       Text(
-                        '${widget.knowledgeIds.length} knowledge(s) will be added to this list',
+                        '(${widget.knowledgeIds.length})  ${"will_be_add_to_list".tr()}',
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),
@@ -107,11 +108,11 @@ class _CreateLearningListScreenState extends State<CreateLearningListScreen> {
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: const Text('Cancel'),
+                          child: Text('cancel'.tr()),
                         ),
                         ElevatedButton(
                           onPressed: _createLearningList,
-                          child: const Text('Create'),
+                          child: Text('create'.tr()),
                         ),
                       ],
                     ),

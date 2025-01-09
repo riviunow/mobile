@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+
 enum LearningLevel {
   levelZero,
   levelOne,
@@ -41,6 +43,23 @@ extension LearningLevelExtension on LearningLevel {
         return 'LevelFour';
       case LearningLevel.levelFive:
         return 'LevelFive';
+    }
+  }
+
+  String toStr() {
+    switch (this) {
+      case LearningLevel.levelZero:
+        return 'learning_level.levelZero'.tr();
+      case LearningLevel.levelOne:
+        return 'learning_level.levelOne'.tr();
+      case LearningLevel.levelTwo:
+        return 'learning_level.levelTwo'.tr();
+      case LearningLevel.levelThree:
+        return 'learning_level.levelThree'.tr();
+      case LearningLevel.levelFour:
+        return 'learning_level.levelFour'.tr();
+      case LearningLevel.levelFive:
+        return 'learning_level.levelFive'.tr();
     }
   }
 }

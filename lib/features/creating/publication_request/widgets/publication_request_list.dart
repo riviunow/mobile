@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:udetxen/shared/config/theme/colors.dart';
 import 'package:udetxen/shared/models/enums/publication_request_status.dart';
@@ -34,7 +35,7 @@ class PublicationRequestList extends StatelessWidget {
           if (index == publicationRequests.length) {
             return hasNext
                 ? const Center(child: Loading())
-                : const Center(child: Text('No more items to load'));
+                : Center(child: Text('no_more_items_to_load'.tr()));
           }
           final request = publicationRequests[index];
           return Card(
@@ -58,9 +59,9 @@ class PublicationRequestList extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 8),
-                      Text('Status: ${request.status.toJson()}'),
+                      Text('${"status".tr()}: ${request.status.toStr()}'),
                       const SizedBox(height: 8),
-                      Text('Created at: ${request.createdAt}'),
+                      Text('${"created_at".tr()}: ${request.createdAt}'),
                     ],
                   ),
                   trailing: PopupMenuButton<String>(
@@ -79,7 +80,7 @@ class PublicationRequestList extends StatelessWidget {
                         value: 'delete',
                         enabled:
                             request.status != PublicationRequestStatus.approved,
-                        child: const Text('Delete'),
+                        child: Text('delete'.tr()),
                       ),
                     ],
                   ),
@@ -102,7 +103,7 @@ class PublicationRequestList extends StatelessWidget {
                         ),
                       ),
                       child: Text(
-                        request.status.toJson(),
+                        request.status.toStr(),
                         style: const TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold),
                       ),

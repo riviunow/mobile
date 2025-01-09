@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/creating/knowledge/blocs/update_knowledge_bloc.dart';
@@ -47,14 +48,14 @@ class _UpdateKnowledgeScreenState extends State<UpdateKnowledgeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Update Knowledge'),
+        title: Text('update_knowledge'.tr()),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
       body: BlocListener<UpdateKnowledgeBloc, UpdateKnowledgeState>(
         listener: (context, state) {
           if (state is UpdateKnowledgeSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Knowledge updated successfully!')),
+              SnackBar(content: Text('knowledge_updated_successfully'.tr())),
             );
             Navigator.pop(context);
           } else if (state is UpdateKnowledgeError) {
@@ -87,7 +88,7 @@ class _UpdateKnowledgeScreenState extends State<UpdateKnowledgeScreen> {
                   items: KnowledgeLevel.values.map((KnowledgeLevel level) {
                     return DropdownMenuItem<KnowledgeLevel>(
                       value: level,
-                      child: Text(level.toJson()),
+                      child: Text(level.toStr()),
                     );
                   }).toList(),
                   onChanged: (KnowledgeLevel? newValue) {
@@ -101,7 +102,7 @@ class _UpdateKnowledgeScreenState extends State<UpdateKnowledgeScreen> {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: _submit,
-                    child: const Text('Update'),
+                    child: Text('update'.tr()),
                   ),
                 ),
               ],

@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+
 enum GameOptionType {
   question,
   answer,
@@ -21,6 +23,15 @@ extension GameOptionTypeExtension on GameOptionType {
         return 'Question';
       case GameOptionType.answer:
         return 'Answer';
+    }
+  }
+
+  String toStr() {
+    switch (this) {
+      case GameOptionType.question:
+        return 'game_option_type.question'.tr();
+      case GameOptionType.answer:
+        return 'game_option_type.answer'.tr();
     }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:udetxen/features/creating/knowledge/screens/create_knowledge_screen.dart';
 import 'package:udetxen/features/creating/knowledge/screens/created_knowledges_screen.dart';
@@ -57,14 +58,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     ListTile(
-                      title: const Text("Review your Learning"),
+                      title: Text("review_your".tr()),
                       trailing: const Icon(Icons.arrow_forward),
                       onTap: () =>
                           Navigator.push(context, LearningsScreen.route()),
                     ),
                     const SizedBox(height: 16),
                     ListTile(
-                      title: const Text("Your Learning List"),
+                      title: Text("your_learning_lists".tr()),
                       trailing: const Icon(Icons.arrow_forward),
                       onTap: () =>
                           Navigator.push(context, LearningListsScreen.route()),
@@ -72,10 +73,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     const SizedBox(height: 16),
                     ListTile(
                       title: TextField(
+                        textAlign: TextAlign.center,
                         decoration: InputDecoration(
-                          labelText: "Title for your knowledge",
-                          hintText: "Create your knowledge",
-                          prefixIcon: const Icon(Icons.search),
+                          hintText: "create_your_knowledge".tr(),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -86,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     const SizedBox(height: 16),
                     ListTile(
-                      title: const Text("View your Knowledges"),
+                      title: Text("view_your_knowledges".tr()),
                       trailing: const Icon(Icons.arrow_forward),
                       onTap: () => Navigator.push(
                           context, CreatedKnowledgesScreen.route()),

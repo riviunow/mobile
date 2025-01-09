@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/auth/screens/confirm_email_screen.dart';
@@ -81,7 +82,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   onPressed: () {
                     _sendResetCode(context);
                   },
-                  child: const Text('Send Reset Code'),
+                  child: Text('send_reset_code'.tr()),
                 ),
                 const SizedBox(height: 10),
                 TextButton(
@@ -92,7 +93,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       Navigator.push(context, LoginScreen.route());
                     }
                   },
-                  child: const Text('Login'),
+                  child: Text('login'.tr()),
                 ),
               ],
             ),

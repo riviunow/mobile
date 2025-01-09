@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/exploring/knowledge/widgets/learning_list_dialog.dart';
@@ -66,9 +67,10 @@ class _GameOverBoardState extends State<GameOverBoard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Overall Result',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                Text(
+                  'overall_result'.tr(),
+                  style: const TextStyle(
+                      fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 16),
                 _buildOverallResult(),
@@ -77,9 +79,9 @@ class _GameOverBoardState extends State<GameOverBoard> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Unlisted Learnings',
-                        style: TextStyle(
+                      Text(
+                        'unlisted_learnings'.tr(),
+                        style: const TextStyle(
                             fontSize: 24, fontWeight: FontWeight.bold),
                       ),
                       Row(
@@ -137,9 +139,9 @@ class _GameOverBoardState extends State<GameOverBoard> {
                     ),
                     backgroundColor: AppColors.secondary.withOpacity(0.8),
                   ),
-                  child: const Text(
-                    'Finish',
-                    style: TextStyle(fontSize: 20),
+                  child: Text(
+                    'finish'.tr(),
+                    style: const TextStyle(fontSize: 20),
                   ),
                 ),
                 if (_isSelectionMode) ...[
@@ -176,7 +178,7 @@ class _GameOverBoardState extends State<GameOverBoard> {
                           Theme.of(context).primaryColor.withOpacity(0.8),
                     ),
                     child: Text(
-                      'Add to list',
+                      'add_to_list'.tr(),
                       style: TextStyle(
                           fontSize: 20,
                           color: Theme.of(context).scaffoldBackgroundColor),
@@ -208,13 +210,14 @@ class _GameOverBoardState extends State<GameOverBoard> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Total Score: $totalScore', style: const TextStyle(fontSize: 18)),
+        Text('${"total_score".tr()}: $totalScore',
+            style: const TextStyle(fontSize: 18)),
         const SizedBox(height: 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(
-              'Memorized: $memorizedCount / ${widget.learnings.length}',
+              '${"memorized".tr()}: $memorizedCount / ${widget.learnings.length}',
               style: const TextStyle(fontSize: 18),
             ),
             SizedBox(
@@ -272,14 +275,15 @@ class _GameOverBoardState extends State<GameOverBoard> {
             onTap: _isSelectionMode && isUnlisted
                 ? () => _onLearningSelected(learning)
                 : null,
-            title: Text(learning.knowledge?.title ?? 'Unknown Knowledge'),
+            title: Text(learning.knowledge?.title ?? ''),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Score: ${latestHistory?.score ?? 'N/A'}'),
+                Text('${"score".tr()}: ${latestHistory?.score ?? 'N/A'}'),
                 Text(
-                    'Level: ${latestHistory?.learningLevel.toJson() ?? 'N/A'}'),
-                Text('Memorized: ${latestHistory?.isMemorized ?? 'N/A'}'),
+                    '${"level".tr()}: ${latestHistory?.learningLevel.toStr() ?? 'N/A'}'),
+                Text(
+                    '${"memorized".tr()}: ${latestHistory?.isMemorized ?? 'N/A'}'),
                 Text(learning.calculateTimeLeft()),
               ],
             ),

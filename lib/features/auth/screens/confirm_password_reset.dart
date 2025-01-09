@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/auth/screens/login_screen.dart';
@@ -82,7 +83,7 @@ class _ConfirmPasswordResetScreenState
                   state.user.confirmationCodeExpiryTime;
             });
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Confirmation code resent.')),
+              SnackBar(content: Text('confirmation_code_resent'.tr())),
             );
           }
         },
@@ -185,14 +186,14 @@ class _ConfirmPasswordResetScreenState
                           .read<AuthBloc>()
                           .add(ResendCodeRequested(resendRequest));
                     },
-                    child: const Text('Resend Code'),
+                    child: Text('resend_code'.tr()),
                   ),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
                     _resetPassword(context);
                   },
-                  child: const Text('Reset Password'),
+                  child: Text('reset_password'.tr()),
                 ),
               ],
             ),

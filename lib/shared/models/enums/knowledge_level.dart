@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+
 enum KnowledgeLevel {
   beginner,
   intermediate,
@@ -26,6 +28,17 @@ extension KnowledgeLevelExtension on KnowledgeLevel {
         return 'Intermediate';
       case KnowledgeLevel.expert:
         return 'Expert';
+    }
+  }
+
+  String toStr() {
+    switch (this) {
+      case KnowledgeLevel.beginner:
+        return 'knowledge_level.beginner'.tr();
+      case KnowledgeLevel.intermediate:
+        return 'knowledge_level.intermediate'.tr();
+      case KnowledgeLevel.expert:
+        return 'knowledge_level.expert'.tr();
     }
   }
 }

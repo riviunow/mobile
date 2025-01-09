@@ -41,9 +41,9 @@ class _VideoPlayerState extends State<VideoPlayer> {
   Widget build(BuildContext context) {
     if (_isError) {
       return const Center(
-        child: Text(
-          'Failed to load video',
-          style: TextStyle(color: AppColors.error),
+        child: Icon(
+          Icons.error,
+          color: AppColors.error,
         ),
       );
     }

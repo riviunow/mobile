@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:udetxen/features/exploring/subject/screens/subject_detail_screen.dart';
 import 'package:udetxen/shared/config/theme/colors.dart';
@@ -50,7 +51,7 @@ class TrackDetailListSubjects extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              subject?.name ?? 'Unknown Subject',
+                              subject?.name ?? '',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18,
@@ -60,8 +61,7 @@ class TrackDetailListSubjects extends StatelessWidget {
                             const SizedBox(height: 8),
                             if (subject?.description != null) ...[
                               Text(
-                                subject?.description ??
-                                    'No description available',
+                                subject?.description ?? '',
                                 style: TextStyle(
                                   color: AppColors.hint.withOpacity(0.7),
                                 ),
@@ -69,7 +69,7 @@ class TrackDetailListSubjects extends StatelessWidget {
                               const SizedBox(height: 8),
                             ],
                             Text(
-                              '$totalKnowledge Knowledges',
+                              '($totalKnowledge) ${"knowledges".tr()}',
                               style: TextStyle(
                                 color: Theme.of(context)
                                     .scaffoldBackgroundColor
@@ -115,8 +115,8 @@ class TrackDetailListSubjects extends StatelessWidget {
                                 ),
                                 child: Text(
                                   percentage == 0
-                                      ? 'Learn'
-                                      : 'Continue Learning (${(percentage * 100).toStringAsFixed(1)}%)',
+                                      ? 'learn'.tr()
+                                      : '${"continue_learning".tr()} (${(percentage * 100).toStringAsFixed(1)}%)',
                                 ),
                               )
                             : Container(
@@ -127,7 +127,7 @@ class TrackDetailListSubjects extends StatelessWidget {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Center(
                                   child: Text(
-                                    'Completed',
+                                    'completed'.tr(),
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Theme.of(context)

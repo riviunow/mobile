@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/learning/learn_and_review/blocs/game_bloc.dart';
@@ -22,20 +23,20 @@ class PlayingHeader extends StatelessWidget {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: const Text('Confirm'),
-                  content: const Text('Are you sure you want to cancel?'),
+                  title: Text('confirm'.tr()),
+                  content: Text('are_you_sure_to_cancel'.tr()),
                   actions: <Widget>[
                     TextButton(
                       onPressed: () {
                         Navigator.of(context).pop(false);
                       },
-                      child: const Text('No'),
+                      child: Text('no'.tr()),
                     ),
                     TextButton(
                       onPressed: () {
                         Navigator.of(context).pop(true);
                       },
-                      child: const Text('Yes'),
+                      child: Text('yes'.tr()),
                     ),
                   ],
                 );

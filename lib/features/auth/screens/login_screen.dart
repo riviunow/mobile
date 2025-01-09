@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/auth/screens/confirm_email_screen.dart';
@@ -95,18 +96,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {
                     _login(context);
                   },
-                  child: const Text('Login'),
+                  child: Text('login'.tr()),
                 ),
                 const SizedBox(height: 10),
                 TextButton(
                   onPressed: () =>
                       Navigator.push(context, RegisterScreen.route()),
-                  child: const Text('Register'),
+                  child: Text('register'.tr()),
                 ),
                 TextButton(
                   onPressed: () =>
                       Navigator.push(context, ForgotPasswordScreen.route()),
-                  child: const Text('Forgot Password'),
+                  child: Text('forgot_password'.tr()),
                 ),
               ],
             ),

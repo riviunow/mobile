@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:udetxen/features/creating/publication_request/screens/publish_knowledge_screen.dart';
 import 'package:udetxen/features/creating/publication_request/widgets/delete_publication_request_dialog.dart';
@@ -43,7 +44,7 @@ class CreatedKnowledgeList extends StatelessWidget {
                     child: Loading(
                     loaderType: LoaderType.wave,
                   ))
-                : const Center(child: Text('No more items to load'));
+                : Center(child: Text('no_more_items_to_load'.tr()));
           }
           final knowledge = knowledges[index];
           return Card(
@@ -69,7 +70,7 @@ class CreatedKnowledgeList extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 8),
-                      Text('Level: ${knowledge.level.toJson()}'),
+                      Text('Level: ${knowledge.level.toStr()}'),
                     ],
                   ),
                   trailing: PopupMenuButton<String>(
@@ -110,33 +111,33 @@ class CreatedKnowledgeList extends StatelessWidget {
                         value: 'update',
                         enabled:
                             knowledge.visibility == KnowledgeVisibility.private,
-                        child: const Text('Update knowledge'),
+                        child: Text('update_knowledge'.tr()),
                       ),
                       PopupMenuItem<String>(
                         value: 'delete',
                         enabled:
                             knowledge.visibility == KnowledgeVisibility.private,
-                        child: const Text('Delete knowledge'),
+                        child: Text('delete_knowledge'.tr()),
                       ),
                       if (knowledge.visibility == KnowledgeVisibility.private &&
                           knowledge.publicationRequest == null)
-                        const PopupMenuItem<String>(
+                        PopupMenuItem<String>(
                           value: 'publish',
-                          child: Text('Publish Knowledge'),
+                          child: Text('publish_knowledge'.tr()),
                         ),
                       if (knowledge.visibility == KnowledgeVisibility.private &&
                           knowledge.publicationRequest?.status ==
                               PublicationRequestStatus.rejected)
-                        const PopupMenuItem<String>(
+                        PopupMenuItem<String>(
                           value: 're-publish',
-                          child: Text('Re-publish Knowledge'),
+                          child: Text('re_publish_knowledge'.tr()),
                         ),
                       if (knowledge.publicationRequest != null &&
                           knowledge.publicationRequest?.status !=
                               PublicationRequestStatus.approved)
-                        const PopupMenuItem<String>(
+                        PopupMenuItem<String>(
                           value: 'delete-request',
-                          child: Text('Delete Publication Request'),
+                          child: Text('delete_publication_requet'.tr()),
                         ),
                     ],
                   ),
@@ -160,7 +161,7 @@ class CreatedKnowledgeList extends StatelessWidget {
                       child: Column(
                         children: [
                           Text(
-                            knowledge.visibility.toJson(),
+                            knowledge.visibility.toStr(),
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -170,7 +171,7 @@ class CreatedKnowledgeList extends StatelessWidget {
                                   KnowledgeVisibility.private &&
                               knowledge.publicationRequest != null)
                             Text(
-                              knowledge.publicationRequest!.status.toJson(),
+                              knowledge.publicationRequest!.status.toStr(),
                               style: TextStyle(
                                   color: knowledge.publicationRequest!.status ==
                                           PublicationRequestStatus.pending

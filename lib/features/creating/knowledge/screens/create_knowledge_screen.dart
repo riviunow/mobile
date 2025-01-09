@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -109,7 +110,7 @@ class _CreateKnowledgeScreenState extends State<CreateKnowledgeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Knowledge'),
+        title: Text('create_knowledge'.tr()),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
       resizeToAvoidBottomInset: true,
@@ -122,7 +123,7 @@ class _CreateKnowledgeScreenState extends State<CreateKnowledgeScreen> {
               if (mounted) Navigator.pop(context);
             });
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Knowledge created successfully!')),
+              SnackBar(content: Text('knowledge_created_successfully'.tr())),
             );
           } else if (state is CreateKnowledgeError) {
             if (mounted) {
@@ -212,7 +213,7 @@ class _CreateKnowledgeScreenState extends State<CreateKnowledgeScreen> {
             items: KnowledgeLevel.values.map((KnowledgeLevel level) {
               return DropdownMenuItem<KnowledgeLevel>(
                 value: level,
-                child: Text(level.toJson()),
+                child: Text(level.toStr()),
               );
             }).toList(),
             onChanged: (KnowledgeLevel? newValue) {
@@ -225,9 +226,10 @@ class _CreateKnowledgeScreenState extends State<CreateKnowledgeScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Subtitles',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              Text(
+                'subtitles'.tr(),
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 12),
               ..._subTitleControllers.asMap().entries.map((entry) {
@@ -275,7 +277,7 @@ class _CreateKnowledgeScreenState extends State<CreateKnowledgeScreen> {
                     });
                   },
                   icon: const Icon(Icons.add),
-                  label: const Text('Add Subtitle'),
+                  label: Text('add_subtitle'.tr()),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24.0,
@@ -406,7 +408,7 @@ class _CreateKnowledgeScreenState extends State<CreateKnowledgeScreen> {
             _pageController.jumpToPage(nextStep);
           });
         },
-        child: const Text('Next'),
+        child: Text('next'.tr()),
       ),
     );
   }

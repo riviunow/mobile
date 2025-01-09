@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/learning/learning_list/blocs/update_learning_list_bloc.dart';
@@ -91,11 +92,11 @@ class _UpdateLearningListScreenState extends State<UpdateLearningListScreen> {
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: const Text('Cancel'),
+                          child: Text('cancel'.tr()),
                         ),
                         ElevatedButton(
                           onPressed: _updateLearningList,
-                          child: const Text('Update'),
+                          child: Text('update'.tr()),
                         ),
                       ],
                     ),

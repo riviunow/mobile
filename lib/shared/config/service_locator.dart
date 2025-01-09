@@ -21,6 +21,7 @@ import 'package:udetxen/features/profile/services/profile_service.dart';
 import 'package:udetxen/shared/services/connectivity_service.dart';
 import 'package:udetxen/shared/services/theme_service.dart';
 import '../services/notification_service.dart';
+import '../services/translation_service.dart';
 import '../widgets/layouts/authenticated_layout.dart';
 
 final GetIt getIt = GetIt.instance;
@@ -39,6 +40,8 @@ Future<void> setupLocator() async {
       ConnectivityService(Connectivity()));
 
   getIt.registerSingleton<ThemeService>(ThemeService());
+
+  getIt.registerSingleton<TranslationService>(TranslationService());
 
   getIt.registerSingleton<AuthService>(AuthService());
   getIt.registerSingleton<ProfileService>(ProfileService());

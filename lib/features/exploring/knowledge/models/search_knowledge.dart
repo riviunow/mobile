@@ -20,7 +20,7 @@ class SearchKnowledgesRequest {
     this.knowledgeTypeIds,
     this.knowledgeTopicIds,
     this.level,
-    this.orderBy = OrderByType.Date,
+    this.orderBy = OrderByType.Title,
     this.ascending,
   });
 

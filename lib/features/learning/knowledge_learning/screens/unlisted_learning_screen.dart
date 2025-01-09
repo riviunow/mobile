@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/exploring/knowledge/screens/knowledge_detail_screen.dart';
@@ -81,7 +82,7 @@ class _UnlistedLearningsScreenState extends State<UnlistedLearningsScreen> {
             } else if (state is UnlistedLearningsError) {
               return Center(child: Text(state.messages.join('\n')));
             } else {
-              return const Center(child: Text('No data available'));
+              return Center(child: Text('no_data_available'.tr()));
             }
           },
         ),
@@ -110,26 +111,29 @@ class _UnlistedLearningsScreenState extends State<UnlistedLearningsScreen> {
                                       e.currentUserLearning?.isDue == true)
                                   .map((e) => e.id)
                                   .toList();
-                              knowledgeIdsToRv.isEmpty
-                                  ? null
-                                  : () => Navigator.push(
-                                      context,
-                                      ReviewKnowledgeScreen.route(
-                                          knowledgeIds: knowledgeIdsToRv));
+                              if (knowledgeIdsToRv.isNotEmpty) {
+                                Navigator.push(
+                                    context,
+                                    ReviewKnowledgeScreen.route(
+                                        knowledgeIds: knowledgeIdsToRv));
+                              }
                             }
                           : !_selectedKnowledges.every(
                                   (e) => e.currentUserLearning?.isDue == true)
                               ? null
-                              : () => Navigator.push(
-                                  context,
-                                  ReviewKnowledgeScreen.route(
-                                      knowledgeIds: _selectedKnowledges
-                                          .map((e) => e.id)
-                                          .toList())),
+                              : () {
+                                  _toggleSelectionMode();
+                                  Navigator.push(
+                                      context,
+                                      ReviewKnowledgeScreen.route(
+                                          knowledgeIds: _selectedKnowledges
+                                              .map((e) => e.id)
+                                              .toList()));
+                                },
                       child: Text(
                         _selectedKnowledges.isEmpty
-                            ? "Review"
-                            : "Review ${_selectedKnowledges.length}",
+                            ? "review".tr()
+                            : "${"review".tr()} ${_selectedKnowledges.length}",
                         style: TextStyle(color: Theme.of(context).primaryColor),
                       ),
                     ),
@@ -150,7 +154,7 @@ class _UnlistedLearningsScreenState extends State<UnlistedLearningsScreen> {
                                     .toList()),
                               ),
                       child: Text(
-                        'Add to list',
+                        'add_to_list'.tr(),
                         style: TextStyle(
                             color: Theme.of(context).scaffoldBackgroundColor),
                       ),
@@ -166,6 +170,22 @@ class _UnlistedLearningsScreenState extends State<UnlistedLearningsScreen> {
                       onPressed: () {
                         setState(() {
                           _selectedKnowledges.clear();
+                        });
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(_selectedKnowledges.length ==
+                              _unlistedKnowledges.length
+                          ? Icons.check_box_outlined
+                          : Icons.check_box_outline_blank_sharp),
+                      onPressed: () {
+                        setState(() {
+                          if (_selectedKnowledges.length ==
+                              _unlistedKnowledges.length) {
+                            _selectedKnowledges.clear();
+                          } else {
+                            _selectedKnowledges.addAll(_unlistedKnowledges);
+                          }
                         });
                       },
                     ),

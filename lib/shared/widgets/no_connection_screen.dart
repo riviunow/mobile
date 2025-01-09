@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class NoConnectionScreen extends StatelessWidget {
@@ -16,16 +17,16 @@ class NoConnectionScreen extends StatelessWidget {
               color: Colors.red,
             ),
             const SizedBox(height: 16),
-            const Text(
-              'No Internet Connection',
-              style: TextStyle(
+            Text(
+              'no_internet_connection'.tr(),
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Please check your internet connection and try again.',
+            Text(
+              'please_check_your_internet_connection'.tr(),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
@@ -33,7 +34,7 @@ class NoConnectionScreen extends StatelessWidget {
               onPressed: () {
                 // TODO: Implement retry logic
               },
-              child: const Text('Retry'),
+              child: Text('retry'.tr()),
             ),
           ],
         ),

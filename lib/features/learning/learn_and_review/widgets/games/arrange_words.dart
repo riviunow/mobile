@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:udetxen/shared/config/theme/colors.dart';
 import 'package:udetxen/shared/models/enums/game_option_type.dart';
@@ -46,8 +47,9 @@ class _ArrangeWordsState extends State<ArrangeWords> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text("Arrange the words",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+          Text("arrange_the_words".tr(),
+              style:
+                  const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
           const SizedBox(height: 10),
           KnowledgeInfo(knowledge: widget.knowledge),
           _buildWordCard(arrangedWords, (String word) {
@@ -82,9 +84,9 @@ class _ArrangeWordsState extends State<ArrangeWords> {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: const Text(
-                'Submit',
-                style: TextStyle(fontSize: 18),
+              child: Text(
+                'submit'.tr(),
+                style: const TextStyle(fontSize: 18),
               ),
             ),
           ),

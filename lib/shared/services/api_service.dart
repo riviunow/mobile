@@ -9,6 +9,7 @@ import 'package:udetxen/features/auth/screens/login_screen.dart';
 import 'package:udetxen/main.dart';
 import 'package:udetxen/shared/constants/error_message.dart';
 import 'package:udetxen/shared/constants/http_route.dart';
+import 'package:udetxen/shared/constants/pref_keys.dart';
 import 'package:udetxen/shared/constants/urls.dart';
 
 import '../config/service_locator.dart';
@@ -196,8 +197,8 @@ abstract class ApiService {
       if (response.statusCode == 401) {
         final newAccessToken = await _refreshToken();
         if (newAccessToken == null) {
-          prefs.remove('accessToken');
-          prefs.remove('refreshToken');
+          prefs.remove(PrefKeys.accessToken);
+          prefs.remove(PrefKeys.refreshToken);
           navigatorKey.currentState?.pushAndRemoveUntil(
             LoginScreen.route(),
             (route) => false,
@@ -279,7 +280,7 @@ abstract class ApiService {
   }
 
   Future<Map<String, String>> _getHeaders(String? mediaType) async {
-    final token = prefs.getString('accessToken');
+    final token = prefs.getString(PrefKeys.accessToken);
 
     final headers = <String, String>{};
 
@@ -293,26 +294,26 @@ abstract class ApiService {
   }
 
   Future<String?> _refreshToken() async {
-    final refreshToken = prefs.getString('refreshToken');
+    final refreshToken = prefs.getString(PrefKeys.refreshToken);
     if (refreshToken != null) {
       final response = await http.post(
         Uri.parse('${Urls.apiUrl}/${HttpRoute.refreshAccessToken}'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'refreshToken': refreshToken,
+          PrefKeys.refreshToken: refreshToken,
         }),
       );
 
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
-        final newAccessToken = responseData['accessToken'];
-        final newRefreshToken = responseData['refreshToken'];
-        await prefs.setString('accessToken', newAccessToken);
-        await prefs.setString('refreshToken', newRefreshToken);
+        final newAccessToken = responseData[PrefKeys.accessToken];
+        final newRefreshToken = responseData[PrefKeys.refreshToken];
+        await prefs.setString(PrefKeys.accessToken, newAccessToken);
+        await prefs.setString(PrefKeys.refreshToken, newRefreshToken);
         return newAccessToken;
       } else if (response.statusCode == 400) {
-        await prefs.remove('accessToken');
-        await prefs.remove('refreshToken');
+        await prefs.remove(PrefKeys.accessToken);
+        await prefs.remove(PrefKeys.refreshToken);
       }
     }
     return null;
@@ -327,8 +328,8 @@ class JWTPairResponse {
 
   factory JWTPairResponse.fromJson(Map<String, dynamic> json) {
     return JWTPairResponse(
-      accessToken: json['accessToken'],
-      refreshToken: json['refreshToken'],
+      accessToken: json[PrefKeys.accessToken],
+      refreshToken: json[PrefKeys.refreshToken],
     );
   }
 }

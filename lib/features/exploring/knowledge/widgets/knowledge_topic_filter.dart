@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/shared/config/theme/colors.dart';
@@ -139,7 +140,7 @@ class _KnowledgeTopicFilterState extends State<KnowledgeTopicFilter> {
                       ),
                       child: ExpansionTile(
                         title: Text(
-                          '${_selectedIds.length} Topics Selected',
+                          '(${_selectedIds.length}) ${"selected".tr()}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).primaryColor,
@@ -150,8 +151,8 @@ class _KnowledgeTopicFilterState extends State<KnowledgeTopicFilter> {
                           final topic =
                               recursiveFind(state.knowledgeTopics, id);
                           if (topic == null) {
-                            return const ListTile(
-                              title: Text('No topic found'),
+                            return ListTile(
+                              title: Text('no_topic_found'.tr()),
                             );
                           }
                           return ListTile(
@@ -180,8 +181,7 @@ class _KnowledgeTopicFilterState extends State<KnowledgeTopicFilter> {
                 ],
               );
             } else {
-              return const Center(
-                  child: Text('Failed to load knowledge topics'));
+              return Center(child: Text('no_more_items_to_load'.tr()));
             }
           },
         ),

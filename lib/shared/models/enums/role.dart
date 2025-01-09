@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+
 enum Role {
   admin,
   user,
@@ -21,6 +23,15 @@ extension RoleExtension on Role {
         return 'Admin';
       case Role.user:
         return 'User';
+    }
+  }
+
+  String toStr() {
+    switch (this) {
+      case Role.admin:
+        return 'role.admin'.tr();
+      case Role.user:
+        return 'role.user'.tr();
     }
   }
 }

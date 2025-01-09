@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/shared/config/theme/colors.dart';
@@ -139,7 +140,7 @@ class _KnowledgeTypeFilterState extends State<KnowledgeTypeFilter> {
                       ),
                       child: ExpansionTile(
                         title: Text(
-                          '${_selectedIds.length} Types Selected',
+                          '(${_selectedIds.length}) ${"selected".tr()}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).primaryColor,
@@ -149,8 +150,8 @@ class _KnowledgeTypeFilterState extends State<KnowledgeTypeFilter> {
                         children: _selectedIds.map((id) {
                           final type = recursiveFind(state.knowledgeTypes, id);
                           if (type == null) {
-                            return const ListTile(
-                              title: Text('No type found'),
+                            return ListTile(
+                              title: Text('no_type_found'.tr()),
                             );
                           }
                           return ListTile(
@@ -179,8 +180,7 @@ class _KnowledgeTypeFilterState extends State<KnowledgeTypeFilter> {
                 ],
               );
             } else {
-              return const Center(
-                  child: Text('Failed to load knowledge types'));
+              return Center(child: Text('no_more_items_to_load'.tr()));
             }
           },
         ),

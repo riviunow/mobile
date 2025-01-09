@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/learning/learning_list/blocs/add_remove_knowledges_bloc.dart';
@@ -47,7 +48,7 @@ class KnowledgeList extends StatelessWidget {
                     child: Loading(
                       loaderType: LoaderType.wave,
                     ))
-                : const Center(child: Text('No more items to load'));
+                : Center(child: Text('no_more_items_to_load'.tr()));
           }
           final knowledge = knowledges[index];
           final isSelected = selectedKnowledgeIds.contains(knowledge.id);
@@ -112,8 +113,8 @@ class KnowledgeList extends StatelessWidget {
                             ),
                             label: Text(
                               learningList!.containsKnowledge(knowledge.id)
-                                  ? 'Remove from ${learningList!.title.length > 12 ? '${learningList!.title.substring(0, 12)}...' : learningList!.title}'
-                                  : 'Add to ${learningList!.title.length > 12 ? '${learningList!.title.substring(0, 12)}...' : learningList!.title}',
+                                  ? '${"remove_from".tr()} ${learningList!.title.length > 12 ? '${learningList!.title.substring(0, 12)}...' : learningList!.title}'
+                                  : '${"add_to"} ${learningList!.title.length > 12 ? '${learningList!.title.substring(0, 12)}...' : learningList!.title}',
                               style: const TextStyle(color: Colors.white),
                             ),
                             style: ElevatedButton.styleFrom(
@@ -164,7 +165,7 @@ class KnowledgeList extends StatelessWidget {
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
-                    knowledge.level.toJson(),
+                    knowledge.level.toStr(),
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,

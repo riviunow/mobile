@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 enum MaterialType {
@@ -56,11 +57,21 @@ extension MaterialTypeExtension on MaterialType {
       }
     }
 
+    FontStyle getFontStyle(MaterialType type) {
+      switch (type) {
+        case MaterialType.textSmall:
+          return FontStyle.italic;
+        default:
+          return FontStyle.normal;
+      }
+    }
+
     var fontSize = getFontSize(type);
     return TextStyle(
       fontSize: fontSize,
       color: Theme.of(context).primaryColor,
       fontWeight: getFontWeight(type),
+      fontStyle: getFontStyle(type),
     );
   }
 
@@ -109,6 +120,29 @@ extension MaterialTypeExtension on MaterialType {
         return 'Audio';
       case MaterialType.unknown:
         return 'Unknown';
+    }
+  }
+
+  String toStr() {
+    switch (this) {
+      case MaterialType.subtitle:
+        return 'material_type.subtitle'.tr();
+      case MaterialType.interpretation:
+        return 'material_type.interpretation'.tr();
+      case MaterialType.textSmall:
+        return 'material_type.text_small'.tr();
+      case MaterialType.textMedium:
+        return 'material_type.text_medium'.tr();
+      case MaterialType.textLarge:
+        return 'material_type.text_large'.tr();
+      case MaterialType.image:
+        return 'material_type.image'.tr();
+      case MaterialType.video:
+        return 'material_type.video'.tr();
+      case MaterialType.audio:
+        return 'material_type.audio'.tr();
+      case MaterialType.unknown:
+        return 'material_type.unknown'.tr();
     }
   }
 

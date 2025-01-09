@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/creating/knowledge/blocs/created_knowledges_bloc.dart';
@@ -34,7 +35,7 @@ class _CreatedKnowledgesScreenState extends State<CreatedKnowledgesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Created Knowledges'),
+        title: Text('your_created_knowledges'.tr()),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
       body: Stack(
@@ -58,7 +59,7 @@ class _CreatedKnowledgesScreenState extends State<CreatedKnowledgesScreen> {
                 return Center(
                     child: Text('Error: ${state.messages.join('\n')}'));
               } else {
-                return const Center(child: Text('No data available'));
+                return Center(child: Text('no_data_available'.tr()));
               }
             },
           ),
@@ -69,7 +70,7 @@ class _CreatedKnowledgesScreenState extends State<CreatedKnowledgesScreen> {
               child: ElevatedButton(
                   onPressed: () => Navigator.push(
                       context, PublicationRequestsScreen.route()),
-                  child: const Text('View publication requests'))),
+                  child: Text('view_publication_requests'.tr()))),
         ],
       ),
     );

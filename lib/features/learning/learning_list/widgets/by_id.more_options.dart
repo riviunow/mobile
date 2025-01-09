@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:udetxen/shared/models/index.dart';
 
@@ -18,7 +19,7 @@ class ByIdMoreOptions extends StatelessWidget {
         children: [
           ListTile(
             leading: const Icon(Icons.edit, size: 28),
-            title: const Text('Update', style: TextStyle(fontSize: 18)),
+            title: Text('update'.tr(), style: const TextStyle(fontSize: 18)),
             onTap: () async {
               Navigator.pop(context);
               await Navigator.push(
@@ -27,7 +28,7 @@ class ByIdMoreOptions extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.delete, size: 28),
-            title: const Text('Remove', style: TextStyle(fontSize: 18)),
+            title: Text('remove'.tr(), style: const TextStyle(fontSize: 18)),
             onTap: () async {
               var result = await Navigator.push(
                   context, RemoveLearningListScreen.route(learningList));

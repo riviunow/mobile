@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/exploring/knowledge/screens/search_knowledge_screen.dart';
@@ -137,11 +138,11 @@ class _GetLearningListByIdScreenState extends State<GetLearningListByIdScreen> {
                                 fontSize: 24, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 4),
                         if (learningList.noKnowledge) ...[
-                          const Text('No knowledge items in this list.'),
+                          Text('no_knowledge_items_in_this_list'.tr()),
                           const SizedBox(height: 16),
                           ElevatedButton(
                             onPressed: () => _onSearch(state),
-                            child: const Text('Add Knowledge'),
+                            child: Text('add_knowledge'.tr()),
                           ),
                         ] else
                           Expanded(
@@ -154,9 +155,9 @@ class _GetLearningListByIdScreenState extends State<GetLearningListByIdScreen> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const Text(
-                                        'Not Learnt Knowledges',
-                                        style: TextStyle(
+                                      Text(
+                                        'not_learnt_knowledges'.tr(),
+                                        style: const TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                       ),
@@ -208,9 +209,9 @@ class _GetLearningListByIdScreenState extends State<GetLearningListByIdScreen> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const Text(
-                                        'Learnt Knowledges',
-                                        style: TextStyle(
+                                      Text(
+                                        'learnt_knowledges'.tr(),
+                                        style: const TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                       ),
@@ -263,7 +264,7 @@ class _GetLearningListByIdScreenState extends State<GetLearningListByIdScreen> {
                   return Center(
                       child: Text('Error: ${state.messages.join('\n')}'));
                 } else {
-                  return const Center(child: Text('No data available'));
+                  return Center(child: Text('no_data_available'.tr()));
                 }
               },
             ),
@@ -311,8 +312,8 @@ class _GetLearningListByIdScreenState extends State<GetLearningListByIdScreen> {
                                                   .toList())),
                               child: Text(
                                 _selectedKnowledges.isEmpty
-                                    ? "Learn"
-                                    : "Learn ${_selectedKnowledges.length}",
+                                    ? "learn".tr()
+                                    : "${"learn".tr()} ${_selectedKnowledges.length}",
                               ),
                             ),
                           ),
@@ -357,8 +358,8 @@ class _GetLearningListByIdScreenState extends State<GetLearningListByIdScreen> {
                                                   .toList())),
                               child: Text(
                                 _selectedKnowledges.isEmpty
-                                    ? "Review"
-                                    : "Review ${_selectedKnowledges.length}",
+                                    ? "review".tr()
+                                    : "${"review".tr()} ${_selectedKnowledges.length}",
                               ),
                             ),
                           ),
@@ -381,21 +382,21 @@ class _GetLearningListByIdScreenState extends State<GetLearningListByIdScreen> {
                                       context: context,
                                       builder: (context) {
                                         return AlertDialog(
-                                          title: const Text('Confirm Deletion'),
+                                          title: Text('confirm_deletion'.tr()),
                                           content: Text(
-                                              'Are you sure you want to remove ${_selectedKnowledges.length} knowledge(s) from the list?'),
+                                              '${"are_you_sure_to_remove".tr()} (${_selectedKnowledges.length}) ${"from_the_list".tr()}?'),
                                           actions: [
                                             TextButton(
                                               onPressed: () =>
                                                   Navigator.of(context)
                                                       .pop(false),
-                                              child: const Text('Cancel'),
+                                              child: Text('cancel'.tr()),
                                             ),
                                             TextButton(
                                               onPressed: () =>
                                                   Navigator.of(context)
                                                       .pop(true),
-                                              child: const Text('Delete'),
+                                              child: Text('delete'.tr()),
                                             ),
                                           ],
                                         );
@@ -420,7 +421,7 @@ class _GetLearningListByIdScreenState extends State<GetLearningListByIdScreen> {
                                       _toggleSelectionMode();
                                     }
                                   },
-                            child: const Text("Remove"),
+                            child: Text("remove".tr()),
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -439,7 +440,7 @@ class _GetLearningListByIdScreenState extends State<GetLearningListByIdScreen> {
                                 _selectedKnowledges.clear();
                               });
                             },
-                            child: const Text("Clear"),
+                            child: Text("clear".tr()),
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -454,7 +455,7 @@ class _GetLearningListByIdScreenState extends State<GetLearningListByIdScreen> {
                               ),
                             ),
                             onPressed: _toggleSelectionMode,
-                            child: const Text("Cancel"),
+                            child: Text("cancel".tr()),
                           ),
                         ),
                       ],

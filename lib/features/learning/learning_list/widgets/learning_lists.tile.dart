@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:udetxen/shared/config/theme/colors.dart';
 import 'package:udetxen/shared/models/index.dart';
@@ -45,13 +46,13 @@ class LearningListsTile extends StatelessWidget {
           children: [
             const SizedBox(height: 8),
             if (total > 0)
-              Text('$total Knowledge(s)',
+              Text('$total ${"knowledge(s)".tr()}',
                   style: const TextStyle(color: AppColors.success)),
             if (total > 0 && learntCount < total && learntCount > 0) ...[
               const SizedBox(height: 8),
               Row(
                 children: [
-                  Text('Learnt $learntCount/$total'),
+                  Text('${"learnt".tr()} $learntCount/$total'),
                   const SizedBox(width: 8),
                   Expanded(
                     child: LinearProgressIndicator(
@@ -65,8 +66,8 @@ class LearningListsTile extends StatelessWidget {
             ],
             if (learntCount == 0) ...[
               const SizedBox(height: 8),
-              const Text('No knowledge learnt yet',
-                  style: TextStyle(color: AppColors.warning)),
+              Text('no_knowledge_learnt_yet'.tr(),
+                  style: const TextStyle(color: AppColors.warning)),
             ],
           ],
         ),

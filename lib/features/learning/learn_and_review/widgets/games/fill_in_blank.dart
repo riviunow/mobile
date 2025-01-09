@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:udetxen/shared/config/theme/colors.dart';
@@ -81,9 +82,9 @@ class _FillInBlankState extends State<FillInBlank> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              "Fill in the blank",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            Text(
+              "fill_in_the_blank".tr(),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             KnowledgeInfo(knowledge: widget.knowledge),
@@ -174,9 +175,9 @@ class _FillInBlankState extends State<FillInBlank> {
                         widget.onAnswerSubmitted(userAnswer);
                       }
                     : null,
-                child: const Text(
-                  'Next',
-                  style: TextStyle(fontSize: 18),
+                child: Text(
+                  'next'.tr(),
+                  style: const TextStyle(fontSize: 18),
                 ),
               ),
             ),

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -70,7 +71,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Update Profile'),
+        title: Text('update_profile'.tr()),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
       body: BlocListener<ProfileBloc, ProfileState>(
@@ -80,7 +81,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
               _isLoading = false;
             });
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Profile updated successfully')),
+              SnackBar(content: Text('profile_updated_successfully'.tr())),
             );
             Navigator.of(context).pop();
           } else if (state is ProfileError) {
@@ -132,9 +133,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               shape: BoxShape.rectangle,
                               borderRadius: BorderRadius.circular(4),
                             ),
-                            child: const Text(
-                              'New',
-                              style: TextStyle(
+                            child: Text(
+                              'new'.tr(),
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -168,7 +169,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       ? const CircularProgressIndicator(
                           color: Colors.white,
                         )
-                      : const Text('Update Profile'),
+                      : Text('update'.tr()),
                 ),
               ],
             ),

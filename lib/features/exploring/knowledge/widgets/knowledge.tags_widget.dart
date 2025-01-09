@@ -23,7 +23,7 @@ class KnowledgeTagsWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
-              knowledge.level.toJson(),
+              knowledge.level.toStr(),
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/shared/config/theme/colors.dart';
@@ -48,9 +49,9 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const Text(
-              'Filter',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Text(
+              'filter'.tr(),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             Expanded(
@@ -81,14 +82,14 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                         Expanded(
                           child: DropdownButtonFormField<bool>(
                             value: _request.ascending ?? true,
-                            items: const [
+                            items: [
                               DropdownMenuItem(
                                 value: true,
-                                child: Text('Ascending'),
+                                child: Text('ascending'.tr()),
                               ),
                               DropdownMenuItem(
                                 value: false,
-                                child: Text('Descending'),
+                                child: Text('descending'.tr()),
                               ),
                             ],
                             onChanged: (value) {
@@ -136,18 +137,18 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text(
-                    'Cancel',
-                    style: TextStyle(color: AppColors.error),
+                  child: Text(
+                    'cancel'.tr(),
+                    style: const TextStyle(color: AppColors.error),
                   ),
                 ),
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop(_request);
                   },
-                  child: const Text(
-                    'Apply',
-                    style: TextStyle(color: AppColors.success),
+                  child: Text(
+                    'apply'.tr(),
+                    style: const TextStyle(color: AppColors.success),
                   ),
                 ),
               ],

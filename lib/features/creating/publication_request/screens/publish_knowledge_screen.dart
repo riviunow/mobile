@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/creating/publication_request/blocs/publish_knowledge_bloc.dart';
@@ -31,16 +32,14 @@ class _PublishKnowledgeScreenState extends State<PublishKnowledgeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Publish Knowledge'),
+        title: Text('publish_knowledge'.tr()),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
       body: BlocListener<PublishKnowledgeBloc, PublishKnowledgeState>(
         listener: (context, state) {
           if (state is PublishKnowledgeSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                  content: Text('Knowledge published successfully!')),
-            );
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text('knowledge_published_successfully'.tr())));
             Navigator.pop(context);
           } else if (state is PublishKnowledgeError) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -54,7 +53,7 @@ class _PublishKnowledgeScreenState extends State<PublishKnowledgeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Are you sure you want to publish "${widget.knowledge.title}"?',
+                '${'are_you_sure_to_publish'.tr()} "${widget.knowledge.title}"?',
                 style: const TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 16),
@@ -62,7 +61,7 @@ class _PublishKnowledgeScreenState extends State<PublishKnowledgeScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: _submit,
-                  child: const Text('Publish'),
+                  child: Text('publish'.tr()),
                 ),
               ),
             ],

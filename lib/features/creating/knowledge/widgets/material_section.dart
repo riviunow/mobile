@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:udetxen/features/creating/knowledge/models/create.dart';
 import 'package:udetxen/shared/models/enums/material_type.dart' as enums;
@@ -21,9 +22,9 @@ class MaterialSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Materials',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        Text(
+          'materials'.tr(),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
         ...materials.asMap().entries.map(
@@ -45,7 +46,7 @@ class MaterialSection extends StatelessWidget {
             children: [],
           )),
           icon: const Icon(Icons.add),
-          label: const Text('Add Material'),
+          label: Text('add_material'.tr()),
         ),
       ],
     );
@@ -166,7 +167,7 @@ class _MaterialInputFieldState extends State<MaterialInputField> {
                               children: [
                                 Flexible(
                                   child: Text(
-                                    type.toJson(),
+                                    type.toStr(),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                     style: const TextStyle(fontSize: 14),

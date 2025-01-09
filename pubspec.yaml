@@ -21,6 +21,9 @@ dependencies:
   http_parser: ^4.0.2
   audioplayers: ^6.1.0
   video_player: ^2.9.2
+  fl_chart: ^0.69.2
+  google_mlkit_translation: ^0.11.0
+  easy_localization: ^3.0.7
 
 dev_dependencies:
   flutter_test:
@@ -29,3 +32,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/langs/

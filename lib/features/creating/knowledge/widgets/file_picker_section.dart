@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -26,14 +27,14 @@ class FilePickerSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Files',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+         Text(
+          'files'.tr(),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
         ElevatedButton(
           onPressed: onPickAudio,
-          child: const Text('Select Audio'),
+          child: Text('select_audio'.tr()),
         ),
         if (selectedAudios.isNotEmpty)
           Container(
@@ -43,12 +44,11 @@ class FilePickerSection extends StatelessWidget {
               border: Border.all(color: Colors.blue),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Text('Selected Audio: ${selectedAudios.first.name}'),
           ),
         const SizedBox(height: 8),
         ElevatedButton(
           onPressed: onPickImage,
-          child: const Text('Select Image'),
+          child: Text('select_image'.tr()),
         ),
         if (selectedImages.isNotEmpty)
           Container(
@@ -66,14 +66,13 @@ class FilePickerSection extends StatelessWidget {
                   width: 100,
                   fit: BoxFit.cover,
                 ),
-                Text('Selected Image: ${selectedImages.first.name}'),
               ],
             ),
           ),
         const SizedBox(height: 8),
         ElevatedButton(
           onPressed: onPickVideo,
-          child: const Text('Select Video'),
+          child: Text('select_video'.tr()),
         ),
         if (selectedVideos.isNotEmpty)
           Container(
@@ -83,7 +82,6 @@ class FilePickerSection extends StatelessWidget {
               border: Border.all(color: Colors.blue),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Text('Selected Video: ${selectedVideos.first.name}'),
           ),
       ],
     );

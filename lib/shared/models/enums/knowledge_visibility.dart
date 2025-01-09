@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+
 enum KnowledgeVisibility {
   public,
   private,
@@ -21,6 +23,15 @@ extension KnowledgeVisibilityExtension on KnowledgeVisibility {
         return 'Public';
       case KnowledgeVisibility.private:
         return 'Private';
+    }
+  }
+
+  String toStr() {
+    switch (this) {
+      case KnowledgeVisibility.public:
+        return 'knowledge_visibility.public'.tr();
+      case KnowledgeVisibility.private:
+        return 'knowledge_visibility.private'.tr();
     }
   }
 }

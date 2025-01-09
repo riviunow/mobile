@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/shared/widgets/loader.dart';
@@ -92,15 +93,12 @@ class _LearnKnowledgeScreenState extends State<LearnKnowledgeScreen> {
                       child: CircularProgressIndicator(),
                     );
                   }
-                  return const Center(
-                    child: Text('No Data Available'),
-                  );
+
+                  return Center(child: Text('no_data_available'.tr()));
                 },
               );
             }
-            return const Center(
-              child: Text('No Data Available'),
-            );
+            return Center(child: Text('no_data_available'.tr()));
           },
         ),
       ),

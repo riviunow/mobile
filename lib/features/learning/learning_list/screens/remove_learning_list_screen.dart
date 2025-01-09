@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/learning/learning_list/blocs/remove_learning_list_bloc.dart';
@@ -51,12 +52,11 @@ class _RemoveLearningListScreenState extends State<RemoveLearningListScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'This list contains ${widget.learningList.learningListKnowledges.length} knowledges.',
+                    '${"this_list_contains".tr()} (${widget.learningList.learningListKnowledges.length}).',
                     style: const TextStyle(fontSize: 16),
                   ),
                   const SizedBox(height: 16),
-                  const Text(
-                      'Are you sure you want to remove this learning list?'),
+                  Text('are_you_sure_to_remove_this_learning_list'.tr()),
                   const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -65,11 +65,11 @@ class _RemoveLearningListScreenState extends State<RemoveLearningListScreen> {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: const Text('Cancel'),
+                        child: Text('cancel'.tr()),
                       ),
                       ElevatedButton(
                         onPressed: _removeLearningList,
-                        child: const Text('Remove'),
+                        child: Text('remove'.tr()),
                       ),
                     ],
                   ),

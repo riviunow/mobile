@@ -1,10 +1,13 @@
 import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:udetxen/features/exploring/knowledge/widgets/knowledge.material_list.dart';
 import 'package:udetxen/features/exploring/knowledge/widgets/knowledge.media_widget.dart';
+import 'package:udetxen/shared/config/theme/colors.dart';
 import 'package:udetxen/shared/models/index.dart' as models;
+import 'package:udetxen/shared/services/translation_service.dart';
 
 import '../blocs/game_bloc.dart';
 
@@ -20,6 +23,16 @@ class FlashCard extends StatefulWidget {
 class _FlashCardState extends State<FlashCard> {
   bool isFront = true;
   bool isFlipped = false;
+  late bool showTranslation;
+  late TranslationService translationService;
+
+  @override
+  void initState() {
+    super.initState();
+    translationService =
+        Provider.of<TranslationService>(context, listen: false);
+    showTranslation = translationService.showTranslationEn;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +97,7 @@ class _FlashCardState extends State<FlashCard> {
                           );
                     }
                   : null,
-              child: const Text('Next'),
+              child: Text('next'.tr()),
             ))
       ],
     );
@@ -108,18 +121,43 @@ class _FlashCardState extends State<FlashCard> {
     return Container(
       key: const ValueKey('BackView'),
       padding: const EdgeInsets.all(16),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height * 0.7 - 32,
-          ),
-          child: SingleChildScrollView(
-            child: KnowledgeMaterialList(
-              materials: widget.knowledge.restMaterials,
-              isFirstLayer: true,
+      child: Stack(
+        children: [
+          Center(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height * 0.7 - 32,
+              ),
+              child: SingleChildScrollView(
+                child: KnowledgeMaterialList(
+                    materials: widget.knowledge.restMaterials,
+                    isFirstLayer: true,
+                    showTranslation: showTranslation,
+                    translationService: translationService),
+              ),
             ),
           ),
-        ),
+          Positioned(
+            top: 16,
+            right: 16,
+            child: Row(
+              children: [
+                Icon(Icons.translate,
+                    color: showTranslation
+                        ? Theme.of(context).primaryColor
+                        : AppColors.hint),
+                Switch(
+                  value: showTranslation,
+                  onChanged: (value) {
+                    setState(() {
+                      showTranslation = value;
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

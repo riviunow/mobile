@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/creating/publication_request/blocs/get_publication_requests_bloc.dart';
@@ -36,7 +37,7 @@ class _PublicationRequestsScreenState extends State<PublicationRequestsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Publication Requests'),
+        title: Text('publication_requests'.tr()),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
       body:
@@ -58,7 +59,7 @@ class _PublicationRequestsScreenState extends State<PublicationRequestsScreen> {
           } else if (state is GetPublicationRequestsError) {
             return Center(child: Text('Error: ${state.messages.join('\n')}'));
           } else {
-            return const Center(child: Text('No data available'));
+            return Center(child: Text('no_data_available'.tr()));
           }
         },
       ),

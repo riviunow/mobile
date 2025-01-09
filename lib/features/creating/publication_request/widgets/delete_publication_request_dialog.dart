@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/creating/publication_request/blocs/delete_publication_request_bloc.dart';
@@ -15,8 +16,8 @@ class DeletePublicationRequestDialog extends StatelessWidget {
       listener: (context, state) {
         if (state is DeletePublicationRequestSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-                content: Text('Publication request deleted successfully!')),
+            SnackBar(
+                content: Text('publication_request_deleted_successfully'.tr())),
           );
           Navigator.pop(context);
         } else if (state is DeletePublicationRequestError) {
@@ -26,13 +27,12 @@ class DeletePublicationRequestDialog extends StatelessWidget {
         }
       },
       child: AlertDialog(
-        title: const Text('Delete Publication Request'),
-        content: const Text(
-            'Are you sure you want to delete this publication request?'),
+        title: Text('delete_publication_request'.tr()),
+        content: Text('are_you_sure_to_delete_publication_request'.tr()),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text('cancel'.tr()),
           ),
           ElevatedButton(
             onPressed: () {
@@ -40,7 +40,7 @@ class DeletePublicationRequestDialog extends StatelessWidget {
                   .read<DeletePublicationRequestBloc>()
                   .add(DeletePublicationRequest(request.id));
             },
-            child: const Text('Delete'),
+            child: Text('delete'.tr()),
           ),
         ],
       ),

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/exploring/track/screens/home_screen.dart';
@@ -75,10 +76,10 @@ class _ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
                   state.user.confirmationCodeExpiryTime;
             });
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
+              SnackBar(
                   content: Text(
-                'Confirmation code resent.',
-                style: TextStyle(color: Colors.black),
+                'confirmation_code_resent'.tr(),
+                style: const TextStyle(color: Colors.black),
               )),
             );
           }
@@ -137,7 +138,7 @@ class _ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
                 if (confirmationCodeExpiryTime != null &&
                     timeLeft > Duration.zero)
                   Text(
-                      'Confirmation code has been sent to your email. It will expire in ${timeLeft.inMinutes} minutes and ${timeLeft.inSeconds % 60} seconds.'),
+                      '${'confirmation_code_sent_noti'.tr()}${timeLeft.inMinutes}m${timeLeft.inSeconds % 60}s'),
                 if (confirmationCodeExpiryTime == null ||
                     timeLeft <= Duration.zero)
                   ElevatedButton(
@@ -148,14 +149,14 @@ class _ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
                           .read<AuthBloc>()
                           .add(ResendCodeRequested(resendRequest));
                     },
-                    child: const Text('Resend Code'),
+                    child: Text('resend_code'.tr()),
                   ),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
                     _confirmEmail(context);
                   },
-                  child: const Text('Confirm Email'),
+                  child: Text('confirm_email'.tr()),
                 ),
               ],
             ),

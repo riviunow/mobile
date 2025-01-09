@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart' as audio_player;
+import 'package:udetxen/shared/config/theme/colors.dart';
 import 'package:udetxen/shared/constants/urls.dart';
 
 class AudioPlayer extends StatefulWidget {
@@ -77,9 +78,9 @@ class _AudioPlayerState extends State<AudioPlayer>
                 },
         ),
         if (_hasError)
-          const Text(
-            'Error loading audio',
-            style: TextStyle(color: Colors.red),
+          const Icon(
+            Icons.error,
+            color: AppColors.error,
           ),
       ],
     );

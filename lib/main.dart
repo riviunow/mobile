@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +11,7 @@ import 'package:udetxen/features/learning/learning_list/blocs/get_learning_list_
 import 'package:udetxen/features/learning/learning_list/blocs/get_learning_lists_bloc.dart';
 import 'package:udetxen/features/learning/learning_list/blocs/remove_learning_list_bloc.dart';
 import 'package:udetxen/features/learning/learning_list/blocs/update_learning_list_bloc.dart';
+import 'package:udetxen/shared/services/translation_service.dart';
 import 'features/auth/bloc/auth_bloc.dart';
 import 'features/auth/services/jwt_service.dart';
 import 'features/creating/knowledge/services/knowledge_service.dart'
@@ -37,8 +39,6 @@ import 'features/learning/knowledge_learning/services/learning_service.dart';
 import 'features/learning/learn_and_review/blocs/game_bloc.dart';
 import 'features/learning/learn_and_review/blocs/get_to_learn_bloc.dart';
 import 'features/learning/learn_and_review/blocs/get_to_review_bloc.dart';
-import 'features/learning/learn_and_review/blocs/learn_knowledge_bloc.dart';
-import 'features/learning/learn_and_review/blocs/review_learning_bloc.dart';
 import 'features/learning/learn_and_review/services/learn_and_review_service.dart';
 import 'features/learning/learning_list/services/learning_list_service.dart';
 import 'features/profile/bloc/profile_bloc.dart';
@@ -55,12 +55,18 @@ final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
 
   await setupLocator();
 
   await initialize();
 
-  runApp(const MainApp());
+  runApp(EasyLocalization(
+    supportedLocales: const [Locale('en'), Locale('vi')],
+    path: 'assets/langs',
+    fallbackLocale: const Locale('en'),
+    child: const MainApp(),
+  ));
 }
 
 class MainApp extends StatelessWidget {
@@ -89,7 +95,8 @@ class MainApp extends StatelessWidget {
             create: (context) => ListTracksBloc(getIt<TrackService>()),
           ),
           BlocProvider(
-            create: (context) => SubjectBloc(getIt<SubjectService>()),
+            create: (context) => SubjectBloc(
+                getIt<SubjectService>(), BlocProvider.of<TrackBloc>(context)),
           ),
           BlocProvider(
             create: (context) =>
@@ -155,8 +162,9 @@ class MainApp extends StatelessWidget {
                 GetLearningListsBloc(getIt<LearningListService>()),
           ),
           BlocProvider(
-            create: (context) =>
-                GetLearningListByIdBloc(getIt<LearningListService>()),
+            create: (context) => GetLearningListByIdBloc(
+                getIt<LearningListService>(),
+                BlocProvider.of<GetLearningListsBloc>(context)),
           ),
           BlocProvider(
             create: (context) => CreateLearningListBloc(
@@ -166,8 +174,7 @@ class MainApp extends StatelessWidget {
           BlocProvider(
             create: (context) => UpdateLearningListBloc(
                 getIt<LearningListService>(),
-                BlocProvider.of<GetLearningListByIdBloc>(context),
-                BlocProvider.of<GetLearningListsBloc>(context)),
+                BlocProvider.of<GetLearningListByIdBloc>(context)),
           ),
           BlocProvider(
             create: (context) => RemoveLearningListBloc(
@@ -178,21 +185,16 @@ class MainApp extends StatelessWidget {
             create: (context) => AddRemoveKnowledgesBloc(
                 getIt<LearningListService>(),
                 BlocProvider.of<GetLearningListByIdBloc>(context),
-                BlocProvider.of<GetLearningListsBloc>(context)),
+                BlocProvider.of<UnlistedLearningsBloc>(context)),
           ),
           BlocProvider(
-            create: (context) =>
-                LearnKnowledgeBloc(getIt<LearnAndReviewService>()),
-          ),
-          BlocProvider(
-            create: (context) =>
-                ReviewLearningBloc(getIt<LearnAndReviewService>()),
-          ),
-          BlocProvider(
-            create: (context) => GameBloc(
-                BlocProvider.of<LearnKnowledgeBloc>(context),
-                BlocProvider.of<ReviewLearningBloc>(context)),
-          ),
+              create: (context) => GameBloc(
+                  getIt<LearnAndReviewService>(),
+                  BlocProvider.of<SubjectBloc>(context),
+                  BlocProvider.of<SearchKnowledgesBloc>(context),
+                  BlocProvider.of<GetCurrentUserLearningsBloc>(context),
+                  BlocProvider.of<UnlistedLearningsBloc>(context),
+                  BlocProvider.of<GetLearningListByIdBloc>(context))),
           BlocProvider(
             create: (context) => GetToLearnBloc(getIt<LearnAndReviewService>(),
                 BlocProvider.of<GameBloc>(context)),
@@ -210,6 +212,9 @@ class MainApp extends StatelessWidget {
             ChangeNotifierProvider<ConnectivityService>(
               create: (_) => getIt<ConnectivityService>(),
             ),
+            ChangeNotifierProvider<TranslationService>(
+              create: (_) => getIt<TranslationService>(),
+            ),
           ],
           child: Consumer<ThemeService>(
             builder: (context, themeService, _) {
@@ -220,6 +225,9 @@ class MainApp extends StatelessWidget {
                 theme: themeService.isDarkMode
                     ? AppTheme.darkTheme
                     : AppTheme.lightTheme,
+                localizationsDelegates: context.localizationDelegates,
+                supportedLocales: context.supportedLocales,
+                locale: context.locale,
                 home: const SplashScreen(),
               );
             },

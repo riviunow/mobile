@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class NavigationButtons extends StatelessWidget {
@@ -23,17 +24,17 @@ class NavigationButtons extends StatelessWidget {
         children: [
           ElevatedButton(
             onPressed: currentStep > 0 ? onBack : null,
-            child: const Text('Back'),
+            child: Text('back'.tr()),
           ),
           if (currentStep < 4)
             ElevatedButton(
               onPressed: onNext,
-              child: const Text('Next'),
+              child: Text('next'.tr()),
             ),
           if (currentStep == 4 && onSubmit != null)
             ElevatedButton(
               onPressed: onSubmit,
-              child: const Text('Submit'),
+              child: Text('submit'.tr()),
             ),
         ],
       ),

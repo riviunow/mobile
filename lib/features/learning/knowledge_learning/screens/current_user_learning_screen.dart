@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/exploring/knowledge/screens/knowledge_detail_screen.dart';
@@ -79,7 +80,7 @@ class _LearningsScreenState extends State<LearningsScreen> {
               } else if (state is LearningsError) {
                 return Center(child: Text(state.messages.join('\n')));
               } else {
-                return const Center(child: Text('No data available'));
+                return Center(child: Text('no_data_available'.tr()));
               }
             },
           ),
@@ -105,20 +106,23 @@ class _LearningsScreenState extends State<LearningsScreen> {
                             ? () {} // TODO: review generally
                             : _selectedKnowledges.every(
                                     (e) => e.currentUserLearning?.isDue == true)
-                                ? () => Navigator.push(
-                                    context,
-                                    ReviewKnowledgeScreen.route(
-                                        knowledgeIds: _selectedKnowledges
-                                            .map((e) => e.id)
-                                            .toList()))
+                                ? () {
+                                    _toggleSelectionMode();
+                                    Navigator.push(
+                                        context,
+                                        ReviewKnowledgeScreen.route(
+                                            knowledgeIds: _selectedKnowledges
+                                                .map((e) => e.id)
+                                                .toList()));
+                                  }
                                 : null,
                         child: Text(
                           _selectedKnowledges.isEmpty
-                              ? "Review"
+                              ? "review".tr()
                               : _selectedKnowledges.every((e) =>
                                       e.currentUserLearning?.isDue == true)
-                                  ? "Review ${_selectedKnowledges.length} knowledge(s)"
-                                  : "Next review is not due",
+                                  ? "${"review".tr()} (${_selectedKnowledges.length})"
+                                  : "next_rv_not_due".tr(),
                           style:
                               TextStyle(color: Theme.of(context).primaryColor),
                         ),

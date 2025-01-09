@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/exploring/knowledge/screens/knowledge_detail_screen.dart';
@@ -101,19 +102,19 @@ class _ByIdKnowledgeCardState extends State<ByIdKnowledgeCard> {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: const Text('Confirm Deletion'),
-                            content: const Text(
-                                'Are you sure you want to remove this knowledge from the list?'),
+                            title: Text('confirm_deletion'.tr()),
+                            content:
+                                Text('are_you_sure_to_remove_knowledge_'.tr()),
                             actions: [
                               TextButton(
                                 onPressed: () =>
                                     Navigator.of(context).pop(false),
-                                child: const Text('Cancel'),
+                                child: Text('cancel'.tr()),
                               ),
                               TextButton(
                                 onPressed: () =>
                                     Navigator.of(context).pop(true),
-                                child: const Text('Delete'),
+                                child: Text('delete'.tr()),
                               ),
                             ],
                           );
@@ -144,7 +145,7 @@ class _ByIdKnowledgeCardState extends State<ByIdKnowledgeCard> {
               borderRadius: BorderRadius.circular(4),
             ),
             child: Text(
-              widget.knowledge.level.toJson(),
+              widget.knowledge.level.toStr(),
               style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,

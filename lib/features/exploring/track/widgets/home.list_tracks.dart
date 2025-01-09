@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/exploring/track/blocs/list_tracks_bloc.dart';
@@ -46,7 +47,7 @@ class _HomeListTracksState extends State<HomeListTracks> {
                       children: [
                         Text(track.description),
                         const SizedBox(height: 4),
-                        Text('${track.subjectCount} subjects',
+                        Text('${track.subjectCount} ${"subjects".tr()}',
                             style: const TextStyle(
                                 fontSize: 16, color: Colors.grey)),
                       ],
@@ -68,8 +69,8 @@ class _HomeListTracksState extends State<HomeListTracks> {
             child: Center(child: Text(state.messages.first)),
           );
         } else {
-          return const SliverToBoxAdapter(
-            child: Center(child: Text('No tracks available')),
+          return SliverToBoxAdapter(
+            child: Center(child: Text('no_tracks_avalable'.tr())),
           );
         }
       },

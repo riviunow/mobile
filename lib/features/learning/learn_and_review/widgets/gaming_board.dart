@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/learning/learn_and_review/widgets/games/arrange_words.dart';
@@ -30,10 +31,10 @@ class _GamingBoardState extends State<GamingBoard> {
     final gameName = widget.gameKnowledgeSubscription.game?.name;
 
     if (gameName == null) {
-      return const Center(
+      return Center(
         child: Text(
-          'Game not found',
-          style: TextStyle(fontSize: 18, color: Colors.red),
+          'game_not_found'.tr(),
+          style: const TextStyle(fontSize: 18, color: Colors.red),
         ),
       );
     }
@@ -59,7 +60,7 @@ class _GamingBoardState extends State<GamingBoard> {
       default:
         return Center(
           child: Text(
-            'Unsupported game: $gameName',
+            '${"unsupported_game".tr()}: $gameName',
             style: const TextStyle(fontSize: 18, color: Colors.grey),
           ),
         );

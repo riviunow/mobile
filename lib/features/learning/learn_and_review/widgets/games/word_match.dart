@@ -1,6 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
+import 'package:udetxen/shared/config/theme/colors.dart';
 import 'package:udetxen/shared/models/index.dart';
+import 'package:udetxen/shared/services/translation_service.dart';
 import 'package:udetxen/shared/widgets/loader.dart';
 import 'package:udetxen/shared/widgets/spaced_divider.dart';
 import '../../blocs/game_bloc.dart';
@@ -24,9 +27,17 @@ class _WordMatchState extends State<WordMatch> {
   Map<String, String?> matchedPairs = {};
   Map<String, bool> matchResults = {};
 
+  bool showTranslation = false;
+  late TranslationService translationService;
+
   @override
   void initState() {
     super.initState();
+
+    translationService =
+        Provider.of<TranslationService>(context, listen: false);
+    showTranslation = translationService.showTranslationEn;
+
     if (widget.knowledgeList.length == 1) {
       final knowledgeToAnswers = <String, WordMatchAnswer>{
         widget.knowledgeList.first.id: WordMatchAnswer(
@@ -53,9 +64,10 @@ class _WordMatchState extends State<WordMatch> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text(
-                  'Match the knowledge titles with their interpretations',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                Text(
+                  'match_the_knowledges'.tr(),
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 10),
@@ -87,12 +99,35 @@ class _WordMatchState extends State<WordMatch> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: matchedPairs.length == knowledgeTupples.length
-                      ? () => _submitResults(context)
-                      : null,
-                  child: const Text('Submit Results',
-                      style: TextStyle(fontSize: 20)),
+                Row(
+                  children: [
+                    Row(
+                      children: [
+                        Switch(
+                          value: showTranslation,
+                          onChanged: (value) {
+                            setState(() {
+                              showTranslation = value;
+                            });
+                          },
+                        ),
+                        Icon(Icons.translate,
+                            color: showTranslation
+                                ? Theme.of(context).primaryColor
+                                : AppColors.hint),
+                      ],
+                    ),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed:
+                            matchedPairs.length == knowledgeTupples.length
+                                ? () => _submitResults(context)
+                                : null,
+                        child: Text('submit_results'.tr(),
+                            style: const TextStyle(fontSize: 20)),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -134,10 +169,33 @@ class _WordMatchState extends State<WordMatch> {
                 ?.withOpacity(0.2),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(
-                item ?? '',
-                style: textStyle,
-              ),
+              child: showTranslation
+                  ? FutureBuilder<String>(
+                      future: translationService.translate(item ?? ''),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Container(
+                            height: 10,
+                            decoration: BoxDecoration(
+                              color: AppColors.hint,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          );
+                        } else if (snapshot.hasError) {
+                          return const SizedBox();
+                        } else {
+                          return Text(
+                            snapshot.data ?? '',
+                            style: textStyle,
+                          );
+                        }
+                      },
+                    )
+                  : Text(
+                      item ?? '',
+                      style: textStyle,
+                    ),
             ),
           ),
         );
@@ -149,21 +207,20 @@ class _WordMatchState extends State<WordMatch> {
     setState(() {
       if (isTitle) {
         if (selectedTitle == item) {
-          selectedTitle = null; // Deselect
+          selectedTitle = null;
         } else {
-          selectedTitle = item; // Select new title
+          selectedTitle = item;
         }
       } else {
         if (selectedInterpretation == item) {
-          selectedInterpretation = null; // Deselect
+          selectedInterpretation = null;
         } else {
-          selectedInterpretation = item; // Select new interpretation
+          selectedInterpretation = item;
         }
       }
 
-      // Check for match if both selections are made
       if (selectedTitle != null && selectedInterpretation != null) {
-        matchedPairs[selectedTitle!] = selectedInterpretation; // Match found
+        matchedPairs[selectedTitle!] = selectedInterpretation;
 
         bool matchFound = widget.knowledgeList.any(
           (k) =>
@@ -174,7 +231,6 @@ class _WordMatchState extends State<WordMatch> {
         matchResults[selectedTitle!] = matchFound;
         matchResults[selectedInterpretation!] = matchFound;
 
-        // Reset selections
         selectedTitle = null;
         selectedInterpretation = null;
       }

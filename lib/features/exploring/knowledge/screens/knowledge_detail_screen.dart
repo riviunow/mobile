@@ -1,6 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:udetxen/shared/models/index.dart';
+import 'package:udetxen/shared/services/translation_service.dart';
 import 'package:udetxen/shared/widgets/loader.dart';
 
 import '../blocs/knowledge_detail_bloc.dart';
@@ -24,12 +27,24 @@ class KnowledgeDetailScreen extends StatefulWidget {
 }
 
 class _KnowledgeDetailScreenState extends State<KnowledgeDetailScreen> {
+  bool showTranslation = false;
+  late TranslationService translationService;
+
+  void toggleShowTranslation() {
+    setState(() {
+      showTranslation = !showTranslation;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     context
         .read<KnowledgeDetailBloc>()
         .add(GetKnowledgeDetail(widget.knowledge.id));
+    translationService =
+        Provider.of<TranslationService>(context, listen: false);
+    showTranslation = translationService.showTranslationEn;
   }
 
   @override
@@ -50,8 +65,11 @@ class _KnowledgeDetailScreenState extends State<KnowledgeDetailScreen> {
                     children: [
                       KnowledgeMediaWidget(knowledge: knowledge),
                       KnowledgeMaterialList(
-                          materials: knowledge.restMaterials,
-                          isFirstLayer: true),
+                        materials: knowledge.restMaterials,
+                        isFirstLayer: true,
+                        showTranslation: showTranslation,
+                        translationService: translationService,
+                      ),
                       const SizedBox(height: 16),
                       KnowledgeTagsWidget(knowledge: knowledge),
                     ],
@@ -60,7 +78,7 @@ class _KnowledgeDetailScreenState extends State<KnowledgeDetailScreen> {
                   return Center(
                       child: Text('Error: ${state.messages.join('\n')}'));
                 } else {
-                  return const Center(child: Text('No data available'));
+                  return Center(child: Text('no_data_available'.tr()));
                 }
               },
             ),
@@ -79,6 +97,32 @@ class _KnowledgeDetailScreenState extends State<KnowledgeDetailScreen> {
                     Theme.of(context).scaffoldBackgroundColor),
                 elevation: WidgetStateProperty.all(4),
               ),
+            ),
+          ),
+          Positioned(
+            top: 10,
+            right: 10,
+            child: PopupMenuButton<String>(
+              icon: Icon(Icons.more_vert,
+                  size: 32, color: Theme.of(context).primaryColor),
+              onSelected: (String result) {
+                if (result == "toggleShowTranslation") {
+                  toggleShowTranslation();
+                }
+              },
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                PopupMenuItem<String>(
+                  value: "toggleShowTranslation",
+                  enabled: translationService.getUserLang != 'en',
+                  child: Row(
+                    children: [
+                      Text(showTranslation
+                          ? 'hide_translations'.tr()
+                          : 'show_translations'.tr()),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ],

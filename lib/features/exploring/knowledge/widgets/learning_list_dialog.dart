@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/learning/learning_list/blocs/add_remove_knowledges_bloc.dart';
@@ -67,8 +68,7 @@ class _LearningListDialogState extends State<LearningListDialog> {
                     return const Center(child: Loading());
                   } else if (state is GetLearningListsSuccess) {
                     if (state.learningLists.isEmpty) {
-                      return const Center(
-                          child: Text('No learning lists available'));
+                      return Center(child: Text('no_more_items_to_load'.tr()));
                     }
                     return ListView.builder(
                       shrinkWrap: true,
@@ -94,7 +94,7 @@ class _LearningListDialogState extends State<LearningListDialog> {
                     return Center(
                         child: Text('Error: ${state.messages.join('\n')}'));
                   } else {
-                    return const Center(child: Text('No data available'));
+                    return Center(child: Text('no_data_available'.tr()));
                   }
                 },
               ),
@@ -111,7 +111,7 @@ class _LearningListDialogState extends State<LearningListDialog> {
                   Navigator.pop(context, true);
                 }
               },
-              child: const Text("Or Create Learning List"),
+              child: Text("or_create_learning_list".tr()),
             ),
             ElevatedButton(
               onPressed: _selectedLearningList == null
@@ -130,7 +130,7 @@ class _LearningListDialogState extends State<LearningListDialog> {
                     },
               child: _isLoading
                   ? const Loading()
-                  : const Text("Done", style: TextStyle(fontSize: 22)),
+                  : Text("done".tr(), style: const TextStyle(fontSize: 22)),
             ),
             const SizedBox(height: 26),
           ],

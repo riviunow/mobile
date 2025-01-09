@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +11,8 @@ import 'package:udetxen/shared/constants/urls.dart';
 import 'package:udetxen/shared/services/theme_service.dart';
 import 'package:udetxen/shared/widgets/layouts/authenticated_layout.dart';
 import 'package:udetxen/shared/widgets/loader.dart';
+
+import 'language_setting_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   static route() {
@@ -105,21 +108,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const Divider(),
                   ListTile(
                     leading: const Icon(Icons.edit),
-                    title: const Text('Update Profile'),
-                    onTap: () {
-                      Navigator.push(context, UpdateProfileScreen.route());
-                    },
+                    title: Text('update_profile'.tr()),
+                    onTap: () =>
+                        Navigator.push(context, UpdateProfileScreen.route()),
                   ),
                   ListTile(
                     leading: Icon(isDark ? Icons.dark_mode : Icons.light_mode),
-                    title: Text(isDark
-                        ? 'Switch to Light Mode'
-                        : 'Switch to Dark Mode'),
+                    title:
+                        Text(isDark ? 'switch_light'.tr() : 'switch_dark'.tr()),
                     onTap: toggleTheme,
                   ),
                   ListTile(
+                    leading: const Icon(Icons.language),
+                    title: Text("language_settings".tr()),
+                    onTap: () =>
+                        Navigator.push(context, LanguageSettingsScreen.route()),
+                  ),
+                  ListTile(
                     leading: const Icon(Icons.logout),
-                    title: const Text('Logout'),
+                    title: Text('logout'.tr()),
                     onTap: () {
                       context.read<AuthBloc>().add(LogoutRequested());
                       Navigator.popUntil(context, (route) => route.isFirst);
@@ -132,7 +139,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           } else if (state is ProfileError) {
             return Center(child: Text('Error: ${state.messages.join('\n')}'));
           } else {
-            return const Center(child: Text('No data available'));
+            return Center(child: Text('no_data_available'.tr()));
           }
         },
       ),

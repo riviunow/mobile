@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udetxen/features/learning/knowledge_learning/screens/screen_view/learning_screen_view.dart';
@@ -38,8 +39,8 @@ class _LearningListsScreenState extends State<LearningListsScreen> {
                 return const Center(child: Loading());
               } else if (state is GetLearningListsSuccess) {
                 if (state.learningLists.isEmpty) {
-                  return const Center(
-                      child: Text('No learning lists available'));
+                  return Center(
+                      child: Text('no_learning_lists_available'.tr()));
                 }
                 return ListView.builder(
                   itemCount: state.learningLists.length,
@@ -57,7 +58,7 @@ class _LearningListsScreenState extends State<LearningListsScreen> {
                 return Center(
                     child: Text('Error: ${state.messages.join('\n')}'));
               } else {
-                return const Center(child: Text('No data available'));
+                return Center(child: Text('no_data_available'.tr()));
               }
             },
           ),
