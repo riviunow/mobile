@@ -2,16 +2,18 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:udetxen/features/creating/publication_request/services/publication_request_service.dart';
-import 'package:udetxen/features/exploring/knowledge/blocs/knowledge_detail_bloc.dart';
-import 'package:udetxen/features/learning/knowledge_learning/blocs/unlisted_learnings_bloc.dart';
-import 'package:udetxen/features/learning/learning_list/blocs/add_remove_knowledges_bloc.dart';
-import 'package:udetxen/features/learning/learning_list/blocs/create_learning_list_bloc.dart';
-import 'package:udetxen/features/learning/learning_list/blocs/get_learning_list_by_id_bloc.dart';
-import 'package:udetxen/features/learning/learning_list/blocs/get_learning_lists_bloc.dart';
-import 'package:udetxen/features/learning/learning_list/blocs/remove_learning_list_bloc.dart';
-import 'package:udetxen/features/learning/learning_list/blocs/update_learning_list_bloc.dart';
-import 'package:udetxen/shared/services/translation_service.dart';
+import 'features/creating/publication_request/services/publication_request_service.dart';
+import 'features/exploring/knowledge/blocs/knowledge_detail_bloc.dart';
+import 'features/learning/knowledge_learning/blocs/unlisted_learnings_bloc.dart';
+import 'features/learning/learning_list/blocs/add_remove_knowledges_bloc.dart';
+import 'features/learning/learning_list/blocs/create_learning_list_bloc.dart';
+import 'features/learning/learning_list/blocs/get_learning_list_by_id_bloc.dart';
+import 'features/learning/learning_list/blocs/get_learning_lists_bloc.dart';
+import 'features/learning/learning_list/blocs/remove_learning_list_bloc.dart';
+import 'features/learning/learning_list/blocs/update_learning_list_bloc.dart';
+import 'features/migration/blocs/get_for_migration_bloc.dart';
+import 'features/migration/blocs/migrate_bloc.dart';
+import 'shared/services/translation_service.dart';
 import 'features/auth/bloc/auth_bloc.dart';
 import 'features/auth/services/jwt_service.dart';
 import 'features/creating/knowledge/services/knowledge_service.dart'
@@ -42,6 +44,8 @@ import 'features/learning/learn_and_review/blocs/get_to_review_bloc.dart';
 import 'features/learning/learn_and_review/services/learn_and_review_service.dart';
 import 'features/learning/learning_list/services/learning_list_service.dart';
 import 'features/profile/bloc/profile_bloc.dart';
+import 'features/migration/services/knowledge_topic_service.dart' as migration;
+import 'features/migration/services/knowledge_service.dart' as migration;
 import 'shared/widgets/splash_screen.dart';
 import 'features/auth/services/auth_service.dart';
 import 'features/profile/services/profile_service.dart';
@@ -202,6 +206,15 @@ class MainApp extends StatelessWidget {
           BlocProvider(
             create: (context) => GetToReviewBloc(getIt<LearnAndReviewService>(),
                 BlocProvider.of<GameBloc>(context)),
+          ),
+          BlocProvider(
+            create: (context) =>
+                GetForMigrationBloc(getIt<migration.KnowledgeTopicService>()),
+          ),
+          BlocProvider(
+            create: (context) => MigrateBloc(
+                getIt<migration.KnowledgeService>(),
+                BlocProvider.of<GetForMigrationBloc>(context)),
           ),
         ],
         child: MultiProvider(

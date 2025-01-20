@@ -238,5 +238,8 @@
         "noPublicationRequestsFound": "Không tìm thấy yêu cầu xuất bản nào."
     },
     "switch_light": "Chuyển sang chế độ sáng",
-    "switch_dark": "Chuyển sang chế độ tối"
+    "switch_dark": "Chuyển sang chế độ tối",
+    "select_to_migrate": "Chọn kiến thức đã biết",
+    "migrate": "Đánh dấu là đã biết",
+    "start_migration": "Đánh dấu kiến thức là đã biết"
 }

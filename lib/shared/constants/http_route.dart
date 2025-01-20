@@ -46,6 +46,7 @@ class HttpRoute {
   static String deleteKnowledge(String id) => "knowledge/delete/$id";
   static String publishKnowledge(String id) => "knowledge/publish/$id";
   static const String getKnowledgesToLearn = "knowledge/to-learn";
+  static const String migrate = "knowledge/migrate";
 
   // KnowledgeType
   static const String getKnowledgeTypes = "knowledgeType/list";
@@ -64,6 +65,8 @@ class HttpRoute {
   static const String createKnowledgeTopic = "knowledgeTopic/create";
   static const String updateKnowledgeTopic = "knowledgeTopic/update";
   static String deleteKnowledgeTopic(String id) => "knowledgeTopic/delete/$id";
+  static String getTopicsForMigration =
+      "knowledgeTopic/get-topics-for-migration";
 
   // Learning
   static const String learnKnowledge = "learning/learn";

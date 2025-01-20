@@ -18,9 +18,20 @@ class Loading extends StatelessWidget {
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.5),
       child: Center(
-        child: _getLoader(context),
+        child: LoadingSmall(loaderType: loaderType),
       ),
     );
+  }
+}
+
+class LoadingSmall extends StatelessWidget {
+  final LoaderType? loaderType;
+
+  const LoadingSmall({super.key, this.loaderType = LoaderType.chasingDots});
+
+  @override
+  Widget build(BuildContext context) {
+    return _getLoader(context);
   }
 
   Widget _getLoader(BuildContext context) {

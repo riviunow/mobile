@@ -26,6 +26,7 @@ class LearningsScreen extends StatefulWidget {
 class _LearningsScreenState extends State<LearningsScreen> {
   bool _isSelectionMode = false;
   final Set<Knowledge> _selectedKnowledges = {};
+  List<Knowledge> _knowledges = [];
 
   @override
   void initState() {
@@ -66,6 +67,7 @@ class _LearningsScreenState extends State<LearningsScreen> {
               if (state is LearningsLoading) {
                 return const Center(child: Loading());
               } else if (state is LearningsLoaded) {
+                _knowledges = state.knowledges;
                 return KnowledgeList(
                     knowledges: state.knowledges,
                     hasNext: false,
@@ -103,7 +105,16 @@ class _LearningsScreenState extends State<LearningsScreen> {
                           padding: const EdgeInsets.symmetric(vertical: 16),
                         ),
                         onPressed: _selectedKnowledges.isEmpty
-                            ? () {} // TODO: review generally
+                            ? () => Navigator.push(
+                                context,
+                                ReviewKnowledgeScreen.route(
+                                    knowledgeIds: _knowledges
+                                        .where((e) =>
+                                            e.currentUserLearning?.isDue ==
+                                            true)
+                                        .map((e) => e.id)
+                                        .take(200)
+                                        .toList()))
                             : _selectedKnowledges.every(
                                     (e) => e.currentUserLearning?.isDue == true)
                                 ? () {

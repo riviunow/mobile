@@ -18,6 +18,10 @@ import 'package:udetxen/features/learning/knowledge_learning/services/learning_s
 import 'package:udetxen/features/learning/learn_and_review/services/learn_and_review_service.dart';
 import 'package:udetxen/features/learning/learning_list/services/learning_list_service.dart';
 import 'package:udetxen/features/profile/services/profile_service.dart';
+import 'package:udetxen/features/migration/services/knowledge_topic_service.dart'
+    as migration;
+import 'package:udetxen/features/migration/services/knowledge_service.dart'
+    as migration;
 import 'package:udetxen/shared/services/connectivity_service.dart';
 import 'package:udetxen/shared/services/theme_service.dart';
 import '../services/notification_service.dart';
@@ -58,6 +62,10 @@ Future<void> setupLocator() async {
       creating.KnowledgeService());
   getIt.registerSingleton<PublicationRequestService>(
       PublicationRequestService());
+  getIt.registerSingleton<migration.KnowledgeService>(
+      migration.KnowledgeService());
+  getIt.registerSingleton<migration.KnowledgeTopicService>(
+      migration.KnowledgeTopicService());
 
   getIt.registerSingleton<ValueNotifier<AuthenticatedLayoutSettings>>(
       ValueNotifier<AuthenticatedLayoutSettings>(

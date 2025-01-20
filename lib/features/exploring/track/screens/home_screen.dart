@@ -6,6 +6,7 @@ import 'package:udetxen/features/exploring/track/widgets/home.app_bar.dart';
 import 'package:udetxen/features/exploring/track/widgets/home.list_tracks.dart';
 import 'package:udetxen/features/learning/knowledge_learning/screens/current_user_learning_screen.dart';
 import 'package:udetxen/features/learning/learning_list/screens/learning_lists_screen.dart';
+import 'package:udetxen/features/migration/screens/migration_screen.dart';
 import 'package:udetxen/shared/config/service_locator.dart';
 import 'package:udetxen/shared/widgets/layouts/authenticated_layout.dart';
 
@@ -57,6 +58,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    ListTile(
+                      title: Text("start_migration".tr()),
+                      trailing: const Icon(Icons.arrow_forward),
+                      onTap: () =>
+                          Navigator.push(context, MigrationScreen.route()),
+                    ),
                     ListTile(
                       title: Text("review_your".tr()),
                       trailing: const Icon(Icons.arrow_forward),

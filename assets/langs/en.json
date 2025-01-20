@@ -238,5 +238,8 @@
         "noPublicationRequestsFound": "No publication requests found."
     },
     "switch_light": "Switch to Light Mode",
-    "switch_dark": "Switch to Dark Mode"
+    "switch_dark": "Switch to Dark Mode",
+    "select_to_migrate": "Select known knowledges",
+    "migrate": "Mark as known",
+    "start_migration": "Mark knowledges as already known"
 }
