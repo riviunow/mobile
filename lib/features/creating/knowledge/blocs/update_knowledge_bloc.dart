@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/creating/knowledge/models/update.dart';
-import 'package:udetxen/shared/models/index.dart';
+import 'package:rvnow/features/creating/knowledge/models/update.dart';
+import 'package:rvnow/shared/models/index.dart';
 import '../services/knowledge_service.dart';
 import 'created_knowledges_bloc.dart';
 

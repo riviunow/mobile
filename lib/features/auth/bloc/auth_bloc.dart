@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/shared/models/index.dart';
-import 'package:udetxen/features/profile/bloc/profile_bloc.dart';
+import 'package:rvnow/shared/models/index.dart';
+import 'package:rvnow/features/profile/bloc/profile_bloc.dart';
 import '../models/confirm_registration.dart';
 import '../models/login.dart';
 import '../models/register.dart';

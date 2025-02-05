@@ -1,15 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/exploring/knowledge/screens/search_knowledge_screen.dart';
-import 'package:udetxen/features/learning/learn_and_review/screens/learn_knowledge_screen.dart';
-import 'package:udetxen/features/learning/learn_and_review/screens/review_knowledge_screen.dart';
-import 'package:udetxen/shared/config/service_locator.dart';
-import 'package:udetxen/shared/config/theme/colors.dart';
-import 'package:udetxen/shared/models/index.dart';
-import 'package:udetxen/shared/widgets/layouts/authenticated_layout.dart';
-import 'package:udetxen/shared/widgets/loader.dart';
-import 'package:udetxen/shared/widgets/spaced_divider.dart';
+import 'package:rvnow/features/exploring/knowledge/screens/search_knowledge_screen.dart';
+import 'package:rvnow/features/learning/learn_and_review/screens/learn_knowledge_screen.dart';
+import 'package:rvnow/features/learning/learn_and_review/screens/review_knowledge_screen.dart';
+import 'package:rvnow/shared/config/service_locator.dart';
+import 'package:rvnow/shared/config/theme/colors.dart';
+import 'package:rvnow/shared/models/index.dart';
+import 'package:rvnow/shared/widgets/layouts/authenticated_layout.dart';
+import 'package:rvnow/shared/widgets/loader.dart';
+import 'package:rvnow/shared/widgets/spaced_divider.dart';
 
 import '../blocs/add_remove_knowledges_bloc.dart';
 import '../blocs/get_learning_list_by_id_bloc.dart';

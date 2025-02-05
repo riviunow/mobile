@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:udetxen/shared/config/theme/colors.dart';
+import 'package:rvnow/shared/config/theme/colors.dart';
 import 'package:video_player/video_player.dart' as video_player;
 
 class VideoPlayer extends StatefulWidget {

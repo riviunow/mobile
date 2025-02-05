@@ -1,16 +1,20 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/learning/knowledge_learning/screens/screen_view/learning_screen_view.dart';
-import 'package:udetxen/features/learning/learning_list/blocs/get_learning_lists_bloc.dart';
-import 'package:udetxen/features/learning/learning_list/screens/create_learning_list_screen.dart';
-import 'package:udetxen/shared/widgets/loader.dart';
+import 'package:rvnow/features/learning/knowledge_learning/screens/screen_view/learning_screen_view.dart';
+import 'package:rvnow/features/learning/learning_list/blocs/get_learning_lists_bloc.dart';
+import 'package:rvnow/features/learning/learning_list/screens/create_learning_list_screen.dart';
+import 'package:rvnow/shared/widgets/loader.dart';
 
 import '../widgets/learning_lists.tile.dart';
 
 class LearningListsScreen extends StatefulWidget {
   static route() {
     return LearningScreenView.route(1);
+  }
+
+  static navigate() {
+    return LearningScreenView.navigate(1);
   }
 
   const LearningListsScreen({super.key});

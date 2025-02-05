@@ -1,8 +1,8 @@
-import 'package:udetxen/features/creating/publication_request/models/publish_knowledge.dart';
-import 'package:udetxen/shared/constants/http_route.dart';
-import 'package:udetxen/shared/models/index.dart';
-import 'package:udetxen/shared/services/api_service.dart';
-import 'package:udetxen/shared/types/index.dart';
+import 'package:rvnow/features/creating/publication_request/models/publish_knowledge.dart';
+import 'package:rvnow/shared/constants/http_route.dart';
+import 'package:rvnow/shared/models/index.dart';
+import 'package:rvnow/shared/services/api_service.dart';
+import 'package:rvnow/shared/types/index.dart';
 
 import '../models/get_requests.dart';
 

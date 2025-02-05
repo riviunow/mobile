@@ -106,11 +106,12 @@
     "filter": "Lọc",
     "ascending": "Tăng dần",
     "descending": "Giảm dần",
-    "review_your": "Ôn tập kiến thức của bạn",
-    "your_learning_lists": "Danh sách học của bạn",
+    "review_your": "Ôn tập kiến thức",
+    "your_learning_lists": "Danh sách học",
     "title_for_your_knowledge": "Tiêu đề cho kiến thức của bạn",
-    "create_your_knowledge": "Tạo kiến thức của bạn",
-    "view_your_knowledges": "Xem kiến thức của bạn",
+    "enter_title": "Nhập tiêu đề...",
+    "create_your_knowledge": "Tạo kiến thức",
+    "view_your_knowledges": "Xem kiến thức đã tạo",
     "subjects": "Chủ đề",
     "no_tracks_avalable": "Không có lộ trình nào",
     "knowledges": "Kiến thức",
@@ -241,5 +242,10 @@
     "switch_dark": "Chuyển sang chế độ tối",
     "select_to_migrate": "Chọn kiến thức đã biết",
     "migrate": "Đánh dấu là đã biết",
-    "start_migration": "Đánh dấu kiến thức là đã biết"
+    "start_migration": "Đánh dấu đã biết",
+    "need_to_review": "Kiến thức cần ôn tập",
+    "search_knowledge_type": "Tìm loại kiến thức",
+    "search_knowledge_topic": "Tìm chủ đề",
+    "order": "Sắp xếp",
+    "order_by": "Sắp xếp theo"
 }

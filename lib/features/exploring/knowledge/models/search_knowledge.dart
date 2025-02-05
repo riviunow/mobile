@@ -21,7 +21,7 @@ class SearchKnowledgesRequest {
     this.knowledgeTopicIds,
     this.level,
     this.orderBy = OrderByType.Title,
-    this.ascending,
+    this.ascending = true,
   });
 
   Map<String, dynamic> toJson() {

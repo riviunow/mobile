@@ -1,14 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:udetxen/features/creating/publication_request/screens/publish_knowledge_screen.dart';
-import 'package:udetxen/features/creating/publication_request/widgets/delete_publication_request_dialog.dart';
-import 'package:udetxen/features/exploring/knowledge/screens/knowledge_detail_screen.dart';
-import 'package:udetxen/shared/config/theme/colors.dart';
-import 'package:udetxen/shared/models/enums/knowledge_level.dart';
-import 'package:udetxen/shared/models/enums/knowledge_visibility.dart';
-import 'package:udetxen/shared/models/enums/publication_request_status.dart';
-import 'package:udetxen/shared/models/index.dart';
-import 'package:udetxen/shared/widgets/loader.dart';
+import 'package:rvnow/features/creating/publication_request/screens/publish_knowledge_screen.dart';
+import 'package:rvnow/features/creating/publication_request/widgets/delete_publication_request_dialog.dart';
+import 'package:rvnow/features/exploring/knowledge/screens/knowledge_detail_screen.dart';
+import 'package:rvnow/shared/config/theme/colors.dart';
+import 'package:rvnow/shared/models/enums/knowledge_level.dart';
+import 'package:rvnow/shared/models/enums/knowledge_visibility.dart';
+import 'package:rvnow/shared/models/enums/publication_request_status.dart';
+import 'package:rvnow/shared/models/index.dart';
+import 'package:rvnow/shared/widgets/loader.dart';
 
 import '../screens/update_knowledge_screen.dart';
 import 'delete_knowledge_dialog.dart';

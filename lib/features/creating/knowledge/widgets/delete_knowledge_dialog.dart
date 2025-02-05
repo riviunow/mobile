@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/creating/knowledge/blocs/delete_knowledge_bloc.dart';
-import 'package:udetxen/shared/models/index.dart';
+import 'package:rvnow/features/creating/knowledge/blocs/delete_knowledge_bloc.dart';
+import 'package:rvnow/shared/models/index.dart';
 
 class DeleteKnowledgeDialog extends StatelessWidget {
   final Knowledge knowledge;
@@ -15,7 +15,7 @@ class DeleteKnowledgeDialog extends StatelessWidget {
       listener: (context, state) {
         if (state is DeleteKnowledgeSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
-             SnackBar(content: Text('knowledge_deleted_successfully'.tr())),
+            SnackBar(content: Text('knowledge_deleted_successfully'.tr())),
           );
           Navigator.pop(context);
         } else if (state is DeleteKnowledgeError) {

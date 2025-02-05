@@ -1,4 +1,4 @@
-import 'package:udetxen/shared/config/service_locator.dart';
+import 'package:rvnow/shared/config/service_locator.dart';
 
 import '../services/connectivity_service.dart';
 import '../services/notification_service.dart';

@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/shared/config/theme/colors.dart';
-import 'package:udetxen/shared/widgets/spaced_divider.dart';
+import 'package:rvnow/shared/config/theme/colors.dart';
+import 'package:rvnow/shared/widgets/spaced_divider.dart';
 import '../blocs/knowledge_topic_bloc.dart';
 import '../blocs/knowledge_type_bloc.dart';
 import '../models/knowledge_topic.dart';
@@ -75,7 +75,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                               });
                             },
                             decoration:
-                                const InputDecoration(labelText: 'Order By'),
+                                InputDecoration(labelText: 'sort_by'.tr()),
                           ),
                         ),
                         const SizedBox(width: 5),
@@ -98,7 +98,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                               });
                             },
                             decoration:
-                                const InputDecoration(labelText: 'Order'),
+                                InputDecoration(labelText: 'order'.tr()),
                           ),
                         ),
                       ],

@@ -4,10 +4,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:udetxen/features/profile/bloc/profile_bloc.dart';
-import 'package:udetxen/features/profile/models/update_profile.dart';
-import 'package:udetxen/shared/config/theme/colors.dart';
-import 'package:udetxen/shared/constants/urls.dart';
+import 'package:rvnow/features/profile/bloc/profile_bloc.dart';
+import 'package:rvnow/features/profile/models/update_profile.dart';
+import 'package:rvnow/shared/config/theme/colors.dart';
+import 'package:rvnow/shared/constants/urls.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
   const UpdateProfileScreen({super.key});
@@ -110,9 +110,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             : (userPhotoUrl != null
                                 ? NetworkImage(
                                     "${Urls.mediaUrl}/${userPhotoUrl!}")
-                                : const AssetImage(
-                                        'assets/images/default_avatar.png')
-                                    as ImageProvider),
+                                : null),
+                        child: userPhotoUrl == null && _image == null
+                            ? const Icon(Icons.person, size: 50)
+                            : null,
                       ),
                       Positioned(
                         bottom: 0,

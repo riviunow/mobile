@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/exploring/knowledge/screens/knowledge_detail_screen.dart';
-import 'package:udetxen/shared/config/theme/colors.dart';
-import 'package:udetxen/shared/models/enums/knowledge_level.dart';
-import 'package:udetxen/shared/models/index.dart';
+import 'package:rvnow/features/exploring/knowledge/screens/knowledge_detail_screen.dart';
+import 'package:rvnow/shared/config/theme/colors.dart';
+import 'package:rvnow/shared/models/enums/knowledge_level.dart';
+import 'package:rvnow/shared/models/index.dart';
 
 import '../blocs/add_remove_knowledges_bloc.dart';
 import '../models/add_remove_knowledges.dart';

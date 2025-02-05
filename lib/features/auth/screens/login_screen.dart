@@ -1,11 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/auth/screens/confirm_email_screen.dart';
-import 'package:udetxen/features/auth/screens/forgot_password_screen.dart';
-import 'package:udetxen/features/auth/screens/register_screen.dart';
-import 'package:udetxen/features/exploring/track/screens/home_screen.dart';
-import 'package:udetxen/shared/constants/error_message.dart';
+import 'package:rvnow/features/auth/screens/confirm_email_screen.dart';
+import 'package:rvnow/features/auth/screens/forgot_password_screen.dart';
+import 'package:rvnow/features/auth/screens/register_screen.dart';
+import 'package:rvnow/features/exploring/track/screens/home_screen.dart';
+import 'package:rvnow/shared/constants/error_message.dart';
 import '../bloc/auth_bloc.dart';
 import '../models/login.dart';
 

@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/shared/config/theme/colors.dart';
-import 'package:udetxen/shared/models/index.dart';
+import 'package:rvnow/shared/config/theme/colors.dart';
+import 'package:rvnow/shared/models/index.dart';
 import '../models/knowledge_type.dart';
 import '../blocs/knowledge_type_bloc.dart';
 
@@ -68,7 +68,7 @@ class _KnowledgeTypeFilterState extends State<KnowledgeTypeFilter> {
         TextField(
           controller: _typeSearchController,
           decoration: InputDecoration(
-            labelText: 'Search Knowledge Types',
+            labelText: 'search_knowledge_type'.tr(),
             prefixIcon: const Icon(Icons.search),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),

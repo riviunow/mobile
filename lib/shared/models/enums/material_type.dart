@@ -15,13 +15,13 @@ enum MaterialType {
 
 extension MaterialTypeExtension on MaterialType {
   static List<MaterialType> nonRestValues() {
-    return MaterialType.values
-        .where((type) =>
-            type != MaterialType.video &&
-            type != MaterialType.image &&
-            type != MaterialType.audio &&
-            type != MaterialType.subtitle)
-        .toList();
+    return [
+      MaterialType.interpretation,
+      MaterialType.textSmall,
+      MaterialType.textMedium,
+      MaterialType.textLarge,
+      MaterialType.unknown,
+    ];
   }
 
   static TextStyle getTextStyle(MaterialType type, BuildContext context) {
@@ -130,11 +130,11 @@ extension MaterialTypeExtension on MaterialType {
       case MaterialType.interpretation:
         return 'material_type.interpretation'.tr();
       case MaterialType.textSmall:
-        return 'material_type.text_small'.tr();
+        return 'material_type.textSmall'.tr();
       case MaterialType.textMedium:
-        return 'material_type.text_medium'.tr();
+        return 'material_type.textMedium'.tr();
       case MaterialType.textLarge:
-        return 'material_type.text_large'.tr();
+        return 'material_type.textLarge'.tr();
       case MaterialType.image:
         return 'material_type.image'.tr();
       case MaterialType.video:

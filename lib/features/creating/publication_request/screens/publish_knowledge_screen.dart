@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/creating/publication_request/blocs/publish_knowledge_bloc.dart';
-import 'package:udetxen/features/creating/publication_request/models/publish_knowledge.dart';
-import 'package:udetxen/shared/models/index.dart';
+import 'package:rvnow/features/creating/publication_request/blocs/publish_knowledge_bloc.dart';
+import 'package:rvnow/features/creating/publication_request/models/publish_knowledge.dart';
+import 'package:rvnow/shared/models/index.dart';
 
 class PublishKnowledgeScreen extends StatefulWidget {
   final Knowledge knowledge;

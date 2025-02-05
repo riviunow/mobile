@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:udetxen/shared/config/theme/colors.dart';
-import 'package:udetxen/shared/constants/urls.dart';
-import 'package:udetxen/shared/models/index.dart';
-import 'package:udetxen/shared/widgets/audio_player.dart';
-import 'package:udetxen/shared/widgets/video_player.dart';
+import 'package:rvnow/shared/config/theme/colors.dart';
+import 'package:rvnow/shared/constants/urls.dart';
+import 'package:rvnow/shared/models/index.dart';
+import 'package:rvnow/shared/widgets/audio_player.dart';
+import 'package:rvnow/shared/widgets/video_player.dart';
 
 class KnowledgeMediaWidget extends StatefulWidget {
   final Knowledge knowledge;

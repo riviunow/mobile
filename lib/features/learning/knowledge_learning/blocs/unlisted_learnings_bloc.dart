@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/learning/knowledge_learning/services/learning_service.dart';
-import 'package:udetxen/shared/models/index.dart';
+import 'package:rvnow/features/learning/knowledge_learning/services/learning_service.dart';
+import 'package:rvnow/shared/models/index.dart';
 
 // Events
 abstract class UnlistedLearningsEvent {}

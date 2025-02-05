@@ -109,7 +109,8 @@
     "review_your": "Review your Learning",
     "your_learning_lists": "Your Learning Lists",
     "title_for_your_knowledge": "Title for your knowledge",
-    "create_your_knowledge": "Create your knowledge",
+    "enter_title": "Enter title...",
+    "create_your_knowledge": "Create Knowledge",
     "view_your_knowledges": "View your knowledges",
     "subjects": "Subjects",
     "no_tracks_avalable": "No tracks available",
@@ -241,5 +242,10 @@
     "switch_dark": "Switch to Dark Mode",
     "select_to_migrate": "Select known knowledges",
     "migrate": "Mark as known",
-    "start_migration": "Mark knowledges as already known"
+    "start_migration": "Mark knowledges as already known",
+    "need_to_review": "Knowledge need to review",
+    "search_knowledge_type": "Search knowledge type",
+    "search_knowledge_topic": "Search topic",
+    "order": "Order",
+    "order_by": "Order by"
 }

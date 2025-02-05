@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:udetxen/shared/config/theme/colors.dart';
-import 'package:udetxen/shared/models/index.dart';
-import 'package:udetxen/features/learning/learning_list/screens/get_learning_list_by_id_screen.dart';
+import 'package:rvnow/shared/config/theme/colors.dart';
+import 'package:rvnow/shared/models/index.dart';
+import 'package:rvnow/features/learning/learning_list/screens/get_learning_list_by_id_screen.dart';
 
 class LearningListsTile extends StatelessWidget {
   final LearningList learningList;

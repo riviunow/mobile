@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:udetxen/shared/config/theme/colors.dart';
-import 'package:udetxen/shared/models/enums/material_type.dart';
-import 'package:udetxen/shared/models/index.dart' as models;
-import 'package:udetxen/shared/services/translation_service.dart';
-import 'package:udetxen/shared/widgets/loader.dart';
+import 'package:rvnow/shared/config/theme/colors.dart';
+import 'package:rvnow/shared/models/enums/material_type.dart';
+import 'package:rvnow/shared/models/index.dart' as models;
+import 'package:rvnow/shared/services/translation_service.dart';
+import 'package:rvnow/shared/widgets/loader.dart';
 
 class KnowledgeMaterialList extends StatelessWidget {
   final List<models.Material> materials;

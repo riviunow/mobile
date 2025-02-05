@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'features/creating/publication_request/services/publication_request_service.dart';
 import 'features/exploring/knowledge/blocs/knowledge_detail_bloc.dart';
@@ -64,6 +65,11 @@ void main() async {
   await setupLocator();
 
   await initialize();
+
+  const String env = String.fromEnvironment('ENV', defaultValue: 'development');
+  await dotenv.load(fileName: ".env.$env");
+
+  print('Environment: $env');
 
   runApp(EasyLocalization(
     supportedLocales: const [Locale('en'), Locale('vi')],
@@ -192,13 +198,16 @@ class MainApp extends StatelessWidget {
                 BlocProvider.of<UnlistedLearningsBloc>(context)),
           ),
           BlocProvider(
-              create: (context) => GameBloc(
-                  getIt<LearnAndReviewService>(),
-                  BlocProvider.of<SubjectBloc>(context),
-                  BlocProvider.of<SearchKnowledgesBloc>(context),
-                  BlocProvider.of<GetCurrentUserLearningsBloc>(context),
-                  BlocProvider.of<UnlistedLearningsBloc>(context),
-                  BlocProvider.of<GetLearningListByIdBloc>(context))),
+            create: (context) => GameBloc(
+              getIt<LearnAndReviewService>(),
+              BlocProvider.of<SubjectBloc>(context),
+              BlocProvider.of<SearchKnowledgesBloc>(context),
+              BlocProvider.of<GetCurrentUserLearningsBloc>(context),
+              BlocProvider.of<UnlistedLearningsBloc>(context),
+              BlocProvider.of<GetLearningListByIdBloc>(context),
+              BlocProvider.of<GetLearningListsBloc>(context),
+            ),
+          ),
           BlocProvider(
             create: (context) => GetToLearnBloc(getIt<LearnAndReviewService>(),
                 BlocProvider.of<GameBloc>(context)),

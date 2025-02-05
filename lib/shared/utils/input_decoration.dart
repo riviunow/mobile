@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:udetxen/shared/config/theme/colors.dart';
+import 'package:rvnow/shared/config/theme/colors.dart';
 
 InputDecoration getInputDecoration(BuildContext context,
     {String? hintText, String? labelText}) {

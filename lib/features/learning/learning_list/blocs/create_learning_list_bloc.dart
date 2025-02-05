@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/learning/learning_list/services/learning_list_service.dart';
+import 'package:rvnow/features/learning/learning_list/services/learning_list_service.dart';
 import '../models/create_learning_list.dart';
-import 'package:udetxen/shared/models/index.dart';
+import 'package:rvnow/shared/models/index.dart';
 
 import 'get_learning_lists_bloc.dart';
 

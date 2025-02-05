@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:udetxen/features/exploring/subject/screens/subject_detail_screen.dart';
-import 'package:udetxen/shared/config/theme/colors.dart';
-import 'package:udetxen/shared/models/index.dart';
+import 'package:rvnow/features/exploring/subject/screens/subject_detail_screen.dart';
+import 'package:rvnow/shared/config/theme/colors.dart';
+import 'package:rvnow/shared/models/index.dart';
 
 class TrackDetailListSubjects extends StatelessWidget {
   final Track track;

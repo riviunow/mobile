@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:udetxen/shared/config/theme/colors.dart';
-import 'package:udetxen/shared/models/enums/knowledge_level.dart';
-import 'package:udetxen/shared/models/index.dart';
+import 'package:rvnow/shared/config/theme/colors.dart';
+import 'package:rvnow/shared/models/enums/knowledge_level.dart';
+import 'package:rvnow/shared/models/index.dart';
 
 class KnowledgeTagsWidget extends StatelessWidget {
   final Knowledge knowledge;

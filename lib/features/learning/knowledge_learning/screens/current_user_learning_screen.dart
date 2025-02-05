@@ -1,13 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/exploring/knowledge/screens/knowledge_detail_screen.dart';
-import 'package:udetxen/features/exploring/knowledge/widgets/knowledge_list.dart';
-import 'package:udetxen/features/learning/knowledge_learning/blocs/current_user_learnings_bloc.dart';
-import 'package:udetxen/features/learning/learn_and_review/screens/review_knowledge_screen.dart';
-import 'package:udetxen/shared/config/theme/colors.dart';
-import 'package:udetxen/shared/models/index.dart';
-import 'package:udetxen/shared/widgets/loader.dart';
+import 'package:rvnow/features/exploring/knowledge/screens/knowledge_detail_screen.dart';
+import 'package:rvnow/features/exploring/knowledge/widgets/knowledge_list.dart';
+import 'package:rvnow/features/learning/knowledge_learning/blocs/current_user_learnings_bloc.dart';
+import 'package:rvnow/features/learning/learn_and_review/screens/review_knowledge_screen.dart';
+import 'package:rvnow/shared/config/theme/colors.dart';
+import 'package:rvnow/shared/models/index.dart';
+import 'package:rvnow/shared/widgets/loader.dart';
 
 import '../models/current_user_learning.dart';
 import 'screen_view/learning_screen_view.dart';
@@ -15,6 +15,10 @@ import 'screen_view/learning_screen_view.dart';
 class LearningsScreen extends StatefulWidget {
   static route() {
     return LearningScreenView.route(0);
+  }
+
+  static navigate() {
+    return LearningScreenView.navigate(0);
   }
 
   const LearningsScreen({super.key});
@@ -118,13 +122,13 @@ class _LearningsScreenState extends State<LearningsScreen> {
                             : _selectedKnowledges.every(
                                     (e) => e.currentUserLearning?.isDue == true)
                                 ? () {
-                                    _toggleSelectionMode();
                                     Navigator.push(
                                         context,
                                         ReviewKnowledgeScreen.route(
                                             knowledgeIds: _selectedKnowledges
                                                 .map((e) => e.id)
                                                 .toList()));
+                                    _toggleSelectionMode();
                                   }
                                 : null,
                         child: Text(

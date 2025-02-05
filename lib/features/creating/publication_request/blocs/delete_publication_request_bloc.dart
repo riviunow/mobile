@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/creating/knowledge/blocs/created_knowledges_bloc.dart';
-import 'package:udetxen/features/creating/publication_request/services/publication_request_service.dart';
+import 'package:rvnow/features/creating/knowledge/blocs/created_knowledges_bloc.dart';
+import 'package:rvnow/features/creating/publication_request/services/publication_request_service.dart';
 
 import 'get_publication_requests_bloc.dart';
 

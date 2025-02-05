@@ -5,12 +5,12 @@ import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:udetxen/features/auth/screens/login_screen.dart';
-import 'package:udetxen/main.dart';
-import 'package:udetxen/shared/constants/error_message.dart';
-import 'package:udetxen/shared/constants/http_route.dart';
-import 'package:udetxen/shared/constants/pref_keys.dart';
-import 'package:udetxen/shared/constants/urls.dart';
+import 'package:rvnow/features/auth/screens/login_screen.dart';
+import 'package:rvnow/main.dart';
+import 'package:rvnow/shared/constants/error_message.dart';
+import 'package:rvnow/shared/constants/http_route.dart';
+import 'package:rvnow/shared/constants/pref_keys.dart';
+import 'package:rvnow/shared/constants/urls.dart';
 
 import '../config/service_locator.dart';
 import '../types/index.dart';

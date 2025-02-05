@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/auth/screens/login_screen.dart';
-import 'package:udetxen/features/exploring/track/screens/home_screen.dart';
-import 'package:udetxen/features/profile/bloc/profile_bloc.dart';
-import 'package:udetxen/shared/widgets/loader.dart';
+import 'package:rvnow/features/auth/screens/login_screen.dart';
+import 'package:rvnow/features/exploring/track/screens/home_screen.dart';
+import 'package:rvnow/features/profile/bloc/profile_bloc.dart';
+import 'package:rvnow/shared/widgets/loader.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

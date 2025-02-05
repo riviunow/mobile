@@ -1,4 +1,4 @@
-import 'package:udetxen/shared/models/enums/learning_level.dart';
+import 'package:rvnow/shared/models/enums/learning_level.dart';
 
 class GetCurrentUserLearningRequest {
   final String? search;

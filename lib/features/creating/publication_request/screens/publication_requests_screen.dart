@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/creating/publication_request/blocs/get_publication_requests_bloc.dart';
-import 'package:udetxen/features/creating/publication_request/models/get_requests.dart';
-import 'package:udetxen/features/creating/publication_request/widgets/publication_request_list.dart';
-import 'package:udetxen/shared/widgets/loader.dart';
+import 'package:rvnow/features/creating/publication_request/blocs/get_publication_requests_bloc.dart';
+import 'package:rvnow/features/creating/publication_request/models/get_requests.dart';
+import 'package:rvnow/features/creating/publication_request/widgets/publication_request_list.dart';
+import 'package:rvnow/shared/widgets/loader.dart';
 
 class PublicationRequestsScreen extends StatefulWidget {
   const PublicationRequestsScreen({super.key});

@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/auth/services/jwt_service.dart';
-import 'package:udetxen/features/profile/models/update_profile.dart';
-import 'package:udetxen/features/profile/services/profile_service.dart';
-import 'package:udetxen/shared/models/index.dart';
+import 'package:rvnow/features/auth/services/jwt_service.dart';
+import 'package:rvnow/features/profile/models/update_profile.dart';
+import 'package:rvnow/features/profile/services/profile_service.dart';
+import 'package:rvnow/shared/models/index.dart';
 
 abstract class ProfileEvent {}
 

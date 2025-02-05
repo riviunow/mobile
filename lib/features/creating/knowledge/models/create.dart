@@ -1,6 +1,6 @@
 import 'package:image_picker/image_picker.dart';
-import 'package:udetxen/shared/models/enums/knowledge_level.dart';
-import 'package:udetxen/shared/models/enums/material_type.dart';
+import 'package:rvnow/shared/models/enums/knowledge_level.dart';
+import 'package:rvnow/shared/models/enums/material_type.dart';
 
 class MaterialParams {
   final MaterialType type;

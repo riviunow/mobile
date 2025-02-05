@@ -1,4 +1,4 @@
-import 'package:udetxen/shared/models/enums/publication_request_status.dart';
+import 'package:rvnow/shared/models/enums/publication_request_status.dart';
 
 class GetPublicationRequests {
   final String? searchTerm;

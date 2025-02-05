@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:udetxen/features/creating/knowledge/models/create.dart';
-import 'package:udetxen/shared/models/enums/material_type.dart' as enums;
+import 'package:rvnow/features/creating/knowledge/models/create.dart';
+import 'package:rvnow/shared/models/enums/material_type.dart' as enums;
 
 class MaterialSection extends StatelessWidget {
   final List<MaterialParams> materials;

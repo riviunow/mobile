@@ -1,11 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/creating/knowledge/blocs/created_knowledges_bloc.dart';
-import 'package:udetxen/features/creating/knowledge/models/get_created.dart';
-import 'package:udetxen/features/creating/knowledge/widgets/created_knowledge_list.dart';
-import 'package:udetxen/features/creating/publication_request/screens/publication_requests_screen.dart';
-import 'package:udetxen/shared/widgets/loader.dart';
+import 'package:rvnow/features/creating/knowledge/blocs/created_knowledges_bloc.dart';
+import 'package:rvnow/features/creating/knowledge/models/get_created.dart';
+import 'package:rvnow/features/creating/knowledge/widgets/created_knowledge_list.dart';
+import 'package:rvnow/features/creating/publication_request/screens/publication_requests_screen.dart';
+import 'package:rvnow/shared/widgets/loader.dart';
 
 class CreatedKnowledgesScreen extends StatefulWidget {
   const CreatedKnowledgesScreen({super.key});

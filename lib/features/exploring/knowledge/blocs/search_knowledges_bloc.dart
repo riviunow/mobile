@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/shared/models/index.dart';
+import 'package:rvnow/shared/models/index.dart';
 import '../models/search_knowledge.dart';
 import '../services/knowledge_service.dart';
 

@@ -1,13 +1,14 @@
 import 'dart:collection';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/exploring/knowledge/blocs/search_knowledges_bloc.dart';
-import 'package:udetxen/features/exploring/subject/blocs/subject_bloc.dart';
-import 'package:udetxen/features/learning/knowledge_learning/blocs/current_user_learnings_bloc.dart';
-import 'package:udetxen/features/learning/knowledge_learning/blocs/unlisted_learnings_bloc.dart';
-import 'package:udetxen/features/learning/learn_and_review/models/playing_widget.dart';
-import 'package:udetxen/features/learning/learn_and_review/models/review_learning.dart';
-import 'package:udetxen/features/learning/learning_list/blocs/get_learning_list_by_id_bloc.dart';
-import 'package:udetxen/shared/models/index.dart';
+import 'package:rvnow/features/exploring/knowledge/blocs/search_knowledges_bloc.dart';
+import 'package:rvnow/features/exploring/subject/blocs/subject_bloc.dart';
+import 'package:rvnow/features/learning/knowledge_learning/blocs/current_user_learnings_bloc.dart';
+import 'package:rvnow/features/learning/knowledge_learning/blocs/unlisted_learnings_bloc.dart';
+import 'package:rvnow/features/learning/learn_and_review/models/playing_widget.dart';
+import 'package:rvnow/features/learning/learn_and_review/models/review_learning.dart';
+import 'package:rvnow/features/learning/learning_list/blocs/get_learning_list_by_id_bloc.dart';
+import 'package:rvnow/features/learning/learning_list/blocs/get_learning_lists_bloc.dart';
+import 'package:rvnow/shared/models/index.dart';
 
 import '../models/learn_knowledge.dart';
 import '../services/learn_and_review_service.dart';
@@ -85,6 +86,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   final GetCurrentUserLearningsBloc _getCurrentUserLearningsBloc;
   final UnlistedLearningsBloc _unlistedLearningsBloc;
   final GetLearningListByIdBloc _getLearningListByIdBloc;
+  final GetLearningListsBloc _getLearningListsBloc;
 
   late Task task;
   late Queue<PlayingWidget> widgets;
@@ -103,7 +105,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       this._searchKnowledgesBloc,
       this._getCurrentUserLearningsBloc,
       this._unlistedLearningsBloc,
-      this._getLearningListByIdBloc)
+      this._getLearningListByIdBloc,
+      this._getLearningListsBloc)
       : super(GameInitial()) {
     on<InitWidgetQueue>((event, emit) {
       widgets = event.widgets;
@@ -189,9 +192,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
             learnings.addAll(result);
             updateSubjectBloc(learnings);
             updateSearchKnowledgesBloc(learnings);
-            updateCurrentUserLearningsBloc(learnings);
-            updateUnlistedLearningsBloc(learnings);
-            updateGetLearningListByIdBloc(learnings);
+            updateCurrentUserLearningsBloc(learnings, false);
+            updateUnlistedLearningsBloc(learnings, false);
+            updateGetLearningListByIdBloc(learnings, false);
           },
           onFailure: (errors, _) => emit(GameFailure(errors)),
         );
@@ -221,9 +224,11 @@ class GameBloc extends Bloc<GameEvent, GameState> {
             learnings.addAll(result);
             updateSubjectBloc(learnings);
             updateSearchKnowledgesBloc(learnings);
-            updateCurrentUserLearningsBloc(learnings);
-            updateUnlistedLearningsBloc(learnings);
-            updateGetLearningListByIdBloc(learnings);
+            updateCurrentUserLearningsBloc(learnings, true);
+            updateUnlistedLearningsBloc(learnings, true);
+            updateGetLearningListByIdBloc(learnings, true);
+            _getLearningListsBloc
+                .add(GetLearningListsRequested(learningLists: null));
           },
           onFailure: (errors, _) => emit(GameFailure(errors)),
         );
@@ -310,61 +315,83 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     }
   }
 
-  void updateCurrentUserLearningsBloc(List<Learning> learnings) {
+  void updateCurrentUserLearningsBloc(List<Learning> learnings, bool isAdd) {
     if (_getCurrentUserLearningsBloc.state is LearningsLoaded) {
       final state = _getCurrentUserLearningsBloc.state as LearningsLoaded;
-      _getCurrentUserLearningsBloc.add(LearningsUpdated(state.knowledges
-          .map((k) => learnings.any((l) => l.knowledgeId == k.id)
-              ? k.copyWith(
-                  currentUserLearning: learnings
-                      .firstWhere((l) => l.knowledgeId == k.id)
-                      .copyWith(
-                        knowledge: null,
-                      ))
-              : k)
-          .toList()));
+      _getCurrentUserLearningsBloc.add(LearningsUpdated(isAdd
+          ? (() {
+              final updatedKnowledges = state.knowledges +
+                  learnings
+                      .map((l) => l.knowledge!.copyWith(
+                          currentUserLearning: l.copyWith(knowledge: null)))
+                      .toList();
+              updatedKnowledges.sort((a, b) => a
+                  .currentUserLearning!.nextReviewDate
+                  .compareTo(b.currentUserLearning!.nextReviewDate));
+              return updatedKnowledges;
+            })()
+          : (() {
+              final updatedKnowledges = state.knowledges
+                  .map((k) => learnings.any((l) => l.knowledgeId == k.id)
+                      ? k.copyWith(
+                          currentUserLearning: learnings
+                              .firstWhere((l) => l.knowledgeId == k.id)
+                              .copyWith(
+                                knowledge: null,
+                              ))
+                      : k)
+                  .toList();
+              updatedKnowledges.sort((a, b) => a
+                  .currentUserLearning!.nextReviewDate
+                  .compareTo(b.currentUserLearning!.nextReviewDate));
+              return updatedKnowledges;
+            })()));
     }
   }
 
-  void updateUnlistedLearningsBloc(List<Learning> learnings) {
+  void updateUnlistedLearningsBloc(List<Learning> learnings, bool isAdd) {
     if (_unlistedLearningsBloc.state is UnlistedLearningsLoaded) {
       final state = _unlistedLearningsBloc.state as UnlistedLearningsLoaded;
       _unlistedLearningsBloc.add(FetchUnlistedLearnings(
-          knowledges: state.knowledges
-              .map((k) => learnings.any((l) => l.knowledgeId == k.id)
-                  ? k.copyWith(
-                      currentUserLearning: learnings
-                          .firstWhere((l) => l.knowledgeId == k.id)
-                          .copyWith(
-                            knowledge: null,
-                          ))
-                  : k)
-              .toList()));
+          knowledges: isAdd
+              ? null
+              : state.knowledges
+                  .map((k) => learnings.any((l) => l.knowledgeId == k.id)
+                      ? k.copyWith(
+                          currentUserLearning: learnings
+                              .firstWhere((l) => l.knowledgeId == k.id)
+                              .copyWith(
+                                knowledge: null,
+                              ))
+                      : k)
+                  .toList()));
     }
   }
 
-  void updateGetLearningListByIdBloc(List<Learning> learnings) {
+  void updateGetLearningListByIdBloc(List<Learning> learnings, bool isAdd) {
     if (_getLearningListByIdBloc.state is GetLearningListByIdSuccess) {
       final state =
           _getLearningListByIdBloc.state as GetLearningListByIdSuccess;
       _getLearningListByIdBloc
           .add(GetLearningListByIdRequested(state.learningList.id,
-              learningList: state.learningList.copyWith(
-                learningListKnowledges: state
-                    .learningList.learningListKnowledges
-                    .map((llk) => learnings
-                            .any((l) => l.knowledgeId == llk.knowledgeId)
-                        ? llk.copyWith(
-                            knowledge: llk.knowledge!.copyWith(
-                              currentUserLearning: learnings
-                                  .firstWhere(
-                                      (l) => l.knowledgeId == llk.knowledgeId)
-                                  .copyWith(knowledge: null),
-                            ),
-                          )
-                        : llk)
-                    .toList(),
-              )));
+              learningList: isAdd
+                  ? null
+                  : state.learningList.copyWith(
+                      learningListKnowledges: state
+                          .learningList.learningListKnowledges
+                          .map((llk) => learnings
+                                  .any((l) => l.knowledgeId == llk.knowledgeId)
+                              ? llk.copyWith(
+                                  knowledge: llk.knowledge!.copyWith(
+                                    currentUserLearning: learnings
+                                        .firstWhere((l) =>
+                                            l.knowledgeId == llk.knowledgeId)
+                                        .copyWith(knowledge: null),
+                                  ),
+                                )
+                              : llk)
+                          .toList(),
+                    )));
     }
   }
 }

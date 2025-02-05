@@ -1,5 +1,7 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class Urls {
-  static const baseUrl = 'https://399e-115-76-51-181.ngrok-free.app';
-  static const apiUrl = '$baseUrl/api';
-  static const mediaUrl = '$baseUrl/Upload/Files';
+  static final baseUrl = dotenv.env['BASE_URL']!;
+  static final apiUrl = '$baseUrl/api';
+  static final mediaUrl = '$baseUrl/Upload/Files';
 }

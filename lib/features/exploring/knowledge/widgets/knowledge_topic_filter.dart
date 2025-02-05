@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/shared/config/theme/colors.dart';
-import 'package:udetxen/shared/models/index.dart';
+import 'package:rvnow/shared/config/theme/colors.dart';
+import 'package:rvnow/shared/models/index.dart';
 import '../models/knowledge_topic.dart';
 import '../blocs/knowledge_topic_bloc.dart';
 
@@ -68,7 +68,7 @@ class _KnowledgeTopicFilterState extends State<KnowledgeTopicFilter> {
         TextField(
           controller: _topicSearchController,
           decoration: InputDecoration(
-            labelText: 'Search Knowledge Topics',
+            labelText: 'search_knowledge_topic'.tr(),
             prefixIcon: const Icon(Icons.search),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),

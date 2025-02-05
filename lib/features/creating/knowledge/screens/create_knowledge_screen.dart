@@ -2,17 +2,18 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:udetxen/features/creating/knowledge/blocs/create_knowledge_bloc.dart';
-import 'package:udetxen/features/creating/knowledge/models/create.dart';
-import 'package:udetxen/features/exploring/knowledge/blocs/knowledge_topic_bloc.dart';
-import 'package:udetxen/features/exploring/knowledge/blocs/knowledge_type_bloc.dart';
-import 'package:udetxen/features/exploring/knowledge/models/knowledge_topic.dart';
-import 'package:udetxen/features/exploring/knowledge/models/knowledge_type.dart';
-import 'package:udetxen/features/exploring/knowledge/widgets/knowledge_type_filter.dart';
-import 'package:udetxen/features/exploring/knowledge/widgets/knowledge_topic_filter.dart';
-import 'package:udetxen/shared/models/enums/knowledge_level.dart';
-import 'package:udetxen/shared/models/enums/material_type.dart' as enums;
-import 'package:udetxen/shared/widgets/spaced_divider.dart';
+import 'package:rvnow/features/creating/knowledge/blocs/create_knowledge_bloc.dart';
+import 'package:rvnow/features/creating/knowledge/models/create.dart';
+import 'package:rvnow/features/exploring/knowledge/blocs/knowledge_topic_bloc.dart';
+import 'package:rvnow/features/exploring/knowledge/blocs/knowledge_type_bloc.dart';
+import 'package:rvnow/features/exploring/knowledge/models/knowledge_topic.dart';
+import 'package:rvnow/features/exploring/knowledge/models/knowledge_type.dart';
+import 'package:rvnow/features/exploring/knowledge/screens/knowledge_detail_screen.dart';
+import 'package:rvnow/features/exploring/knowledge/widgets/knowledge_type_filter.dart';
+import 'package:rvnow/features/exploring/knowledge/widgets/knowledge_topic_filter.dart';
+import 'package:rvnow/shared/models/enums/knowledge_level.dart';
+import 'package:rvnow/shared/models/enums/material_type.dart' as enums;
+import 'package:rvnow/shared/widgets/spaced_divider.dart';
 
 import '../widgets/file_picker_section.dart';
 import '../widgets/material_section.dart';
@@ -120,7 +121,11 @@ class _CreateKnowledgeScreenState extends State<CreateKnowledgeScreen> {
 
           if (state is CreateKnowledgeSuccess) {
             Future.microtask(() {
-              if (mounted) Navigator.pop(context);
+              if (mounted) {
+                Navigator.pop(context);
+                Navigator.push(context,
+                    KnowledgeDetailScreen.route(knowledge: state.knowledge));
+              }
             });
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('knowledge_created_successfully'.tr())),
@@ -179,7 +184,6 @@ class _CreateKnowledgeScreenState extends State<CreateKnowledgeScreen> {
                       curve: Curves.easeInOut,
                     );
                   }),
-                  onSubmit: _currentStep == 4 ? _submit : null,
                 ),
               ],
             ),
@@ -371,6 +375,7 @@ class _CreateKnowledgeScreenState extends State<CreateKnowledgeScreen> {
                 });
               },
             ),
+            _buildNextButton(4),
           ],
         ),
       ),
@@ -392,6 +397,7 @@ class _CreateKnowledgeScreenState extends State<CreateKnowledgeScreen> {
                 });
               },
             ),
+            _buildNextButton(5),
           ],
         ),
       ),
@@ -403,6 +409,10 @@ class _CreateKnowledgeScreenState extends State<CreateKnowledgeScreen> {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
+          if (nextStep == 5) {
+            _submit();
+            return;
+          }
           setState(() {
             _currentStep = nextStep;
             _pageController.jumpToPage(nextStep);

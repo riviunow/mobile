@@ -1,15 +1,15 @@
 {
   "project_info": {
     "project_number": "791957746525",
-    "project_id": "udetxen",
-    "storage_bucket": "udetxen.appspot.com"
+    "project_id": "rvnow",
+    "storage_bucket": "rvnow.appspot.com"
   },
   "client": [
     {
       "client_info": {
         "mobilesdk_app_id": "1:791957746525:android:0cbcfe64389db39e4a6eb4",
         "android_client_info": {
-          "package_name": "com.example.udetxen"
+          "package_name": "com.example.rvnow"
         }
       },
       "oauth_client": [

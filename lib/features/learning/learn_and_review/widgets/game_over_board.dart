@@ -1,12 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/exploring/knowledge/widgets/learning_list_dialog.dart';
-import 'package:udetxen/features/learning/learn_and_review/blocs/game_bloc.dart';
-import 'package:udetxen/shared/config/theme/colors.dart';
-import 'package:udetxen/shared/models/enums/learning_level.dart';
-import 'package:udetxen/shared/models/index.dart';
-import 'package:udetxen/shared/widgets/spaced_divider.dart';
+import 'package:rvnow/features/exploring/knowledge/widgets/learning_list_dialog.dart';
+import 'package:rvnow/features/learning/learn_and_review/blocs/game_bloc.dart';
+import 'package:rvnow/shared/config/theme/colors.dart';
+import 'package:rvnow/shared/models/enums/learning_level.dart';
+import 'package:rvnow/shared/models/index.dart';
+import 'package:rvnow/shared/widgets/spaced_divider.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class GameOverBoard extends StatefulWidget {

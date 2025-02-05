@@ -1,4 +1,4 @@
-package com.example.udetxen
+package com.example.rvnow
 
 import io.flutter.embedding.android.FlutterActivity
 

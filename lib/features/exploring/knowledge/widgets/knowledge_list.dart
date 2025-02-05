@@ -1,12 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/learning/learning_list/blocs/add_remove_knowledges_bloc.dart';
-import 'package:udetxen/features/learning/learning_list/models/add_remove_knowledges.dart';
-import 'package:udetxen/shared/config/theme/colors.dart';
-import 'package:udetxen/shared/models/enums/knowledge_level.dart';
-import 'package:udetxen/shared/models/index.dart';
-import 'package:udetxen/shared/widgets/loader.dart';
+import 'package:rvnow/features/learning/learning_list/blocs/add_remove_knowledges_bloc.dart';
+import 'package:rvnow/features/learning/learning_list/models/add_remove_knowledges.dart';
+import 'package:rvnow/shared/config/theme/colors.dart';
+import 'package:rvnow/shared/models/enums/knowledge_level.dart';
+import 'package:rvnow/shared/models/index.dart';
+import 'package:rvnow/shared/widgets/loader.dart';
 
 class KnowledgeList extends StatelessWidget {
   final List<Knowledge> knowledges;

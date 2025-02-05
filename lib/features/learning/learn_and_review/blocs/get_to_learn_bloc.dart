@@ -1,8 +1,8 @@
 import 'dart:collection';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/learning/learn_and_review/models/get_to_learn.dart';
-import 'package:udetxen/features/learning/learn_and_review/services/learn_and_review_service.dart';
-import 'package:udetxen/shared/models/index.dart';
+import 'package:rvnow/features/learning/learn_and_review/models/get_to_learn.dart';
+import 'package:rvnow/features/learning/learn_and_review/services/learn_and_review_service.dart';
+import 'package:rvnow/shared/models/index.dart';
 
 import '../models/playing_widget.dart';
 import '../widgets/flash_card.dart';

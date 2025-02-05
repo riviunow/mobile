@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:udetxen/shared/config/theme/colors.dart';
-import 'package:udetxen/shared/models/enums/game_option_type.dart';
-import 'package:udetxen/shared/models/index.dart';
+import 'package:rvnow/shared/config/theme/colors.dart';
+import 'package:rvnow/shared/models/enums/game_option_type.dart';
+import 'package:rvnow/shared/models/index.dart';
 
 import '../knowledge_info.dart';
 
@@ -41,7 +41,7 @@ class _ArrangeWordsState extends State<ArrangeWords> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return SingleChildScrollView(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/exploring/subject/services/subject_service.dart';
-import 'package:udetxen/features/exploring/track/blocs/track_bloc.dart';
-import 'package:udetxen/shared/models/index.dart';
+import 'package:rvnow/features/exploring/subject/services/subject_service.dart';
+import 'package:rvnow/features/exploring/track/blocs/track_bloc.dart';
+import 'package:rvnow/shared/models/index.dart';
 
 abstract class SubjectEvent {}
 

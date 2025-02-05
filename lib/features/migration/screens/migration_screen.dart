@@ -1,8 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/shared/models/index.dart';
-import 'package:udetxen/shared/widgets/loader.dart';
+import 'package:rvnow/shared/config/theme/colors.dart';
+import 'package:rvnow/shared/models/index.dart';
+import 'package:rvnow/shared/widgets/loader.dart';
 
 import '../blocs/get_for_migration_bloc.dart';
 import '../blocs/migrate_bloc.dart';
@@ -153,6 +154,7 @@ class _MigrationScreenState extends State<MigrationScreen> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(26),
                     ),
+                    backgroundColor: AppColors.secondary,
                   ),
                   child: BlocBuilder<MigrateBloc, MigrateState>(
                     builder: (context, state) {

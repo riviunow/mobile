@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/shared/widgets/loader.dart';
+import 'package:rvnow/shared/widgets/loader.dart';
 
 import '../blocs/game_bloc.dart';
 import '../blocs/get_to_learn_bloc.dart';
@@ -36,11 +36,6 @@ class _LearnKnowledgeScreenState extends State<LearnKnowledgeScreen> {
   @override
   void initState() {
     super.initState();
-    // final bloc = context.read<GetToLearnBloc>();
-    // if (bloc.state is! GetToLearnSuccess ||
-    //     (bloc.state is GetToLearnSuccess &&
-    //         !(bloc.state as GetToLearnSuccess).groupedKnowledges.every(
-    //             (gr) => gr.every((k) => widget.knowledgeIds.contains(k.id)))))
     context
         .read<GetToLearnBloc>()
         .add(GetToLearnRequested(GetKnowledgesToLearnRequest(

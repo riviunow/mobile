@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/shared/models/index.dart';
-import 'package:udetxen/shared/widgets/loader.dart';
+import 'package:rvnow/shared/models/index.dart';
+import 'package:rvnow/shared/widgets/loader.dart';
 import '../blocs/track_bloc.dart';
 import '../widgets/track_detail.app_bar.dart';
 import '../widgets/track_detail.list_subjects.dart';

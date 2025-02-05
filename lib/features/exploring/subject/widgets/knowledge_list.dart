@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:udetxen/shared/models/index.dart';
+import 'package:rvnow/shared/models/index.dart';
 
 class KnowledgeList extends StatelessWidget {
   final List<Knowledge> knowledges;

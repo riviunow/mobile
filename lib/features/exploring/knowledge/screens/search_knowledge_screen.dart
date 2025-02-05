@@ -3,16 +3,16 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/learning/learn_and_review/screens/learn_knowledge_screen.dart';
-import 'package:udetxen/features/learning/learn_and_review/screens/review_knowledge_screen.dart';
-import 'package:udetxen/features/learning/learning_list/blocs/add_remove_knowledges_bloc.dart';
-import 'package:udetxen/features/learning/learning_list/blocs/get_learning_list_by_id_bloc.dart';
-import 'package:udetxen/features/learning/learning_list/models/add_remove_knowledges.dart';
-import 'package:udetxen/shared/config/service_locator.dart';
-import 'package:udetxen/shared/config/theme/colors.dart';
-import 'package:udetxen/shared/models/index.dart';
-import 'package:udetxen/shared/widgets/layouts/authenticated_layout.dart';
-import 'package:udetxen/shared/widgets/loader.dart';
+import 'package:rvnow/features/learning/learn_and_review/screens/learn_knowledge_screen.dart';
+import 'package:rvnow/features/learning/learn_and_review/screens/review_knowledge_screen.dart';
+import 'package:rvnow/features/learning/learning_list/blocs/add_remove_knowledges_bloc.dart';
+import 'package:rvnow/features/learning/learning_list/blocs/get_learning_list_by_id_bloc.dart';
+import 'package:rvnow/features/learning/learning_list/models/add_remove_knowledges.dart';
+import 'package:rvnow/shared/config/service_locator.dart';
+import 'package:rvnow/shared/config/theme/colors.dart';
+import 'package:rvnow/shared/models/index.dart';
+import 'package:rvnow/shared/widgets/layouts/authenticated_layout.dart';
+import 'package:rvnow/shared/widgets/loader.dart';
 import '../blocs/search_knowledges_bloc.dart';
 import '../models/search_knowledge.dart';
 import '../widgets/knowledge_list.dart';
@@ -204,6 +204,10 @@ class _SearchKnowledgeScreenState extends State<SearchKnowledgeScreen> {
                               context
                                   .read<SearchKnowledgesBloc>()
                                   .add(SearchKnowledges(_searchRequest));
+                            });
+                          } else {
+                            setState(() {
+                              _searchRequest = _searchRequest.copyWith(page: 1);
                             });
                           }
                         },

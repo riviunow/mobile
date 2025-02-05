@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:udetxen/features/exploring/knowledge/screens/search_knowledge_screen.dart';
-import 'package:udetxen/features/exploring/track/screens/home_screen.dart';
-import 'package:udetxen/features/profile/screens/profile_screen.dart';
-import 'package:udetxen/features/learning/knowledge_learning/screens/screen_view/learning_screen_view.dart';
+import 'package:rvnow/features/exploring/knowledge/screens/search_knowledge_screen.dart';
+import 'package:rvnow/features/exploring/track/screens/home_screen.dart';
+import 'package:rvnow/features/profile/screens/profile_screen.dart';
+import 'package:rvnow/features/learning/knowledge_learning/screens/screen_view/learning_screen_view.dart';
 
 class AuthenticatedLayoutSettings {
   final int initialIndex;

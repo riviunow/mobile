@@ -1,11 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:udetxen/shared/config/theme/colors.dart';
-import 'package:udetxen/shared/models/index.dart';
-import 'package:udetxen/shared/services/translation_service.dart';
-import 'package:udetxen/shared/widgets/loader.dart';
-import 'package:udetxen/shared/widgets/spaced_divider.dart';
+import 'package:rvnow/shared/config/theme/colors.dart';
+import 'package:rvnow/shared/models/index.dart';
+import 'package:rvnow/shared/services/translation_service.dart';
+import 'package:rvnow/shared/widgets/loader.dart';
+import 'package:rvnow/shared/widgets/spaced_divider.dart';
 import '../../blocs/game_bloc.dart';
 import '../../models/playing_widget.dart';
 
@@ -36,7 +36,6 @@ class _WordMatchState extends State<WordMatch> {
 
     translationService =
         Provider.of<TranslationService>(context, listen: false);
-    showTranslation = translationService.showTranslationEn;
 
     if (widget.knowledgeList.length == 1) {
       final knowledgeToAnswers = <String, WordMatchAnswer>{

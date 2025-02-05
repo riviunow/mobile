@@ -1,12 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/exploring/knowledge/widgets/knowledge_list.dart';
-import 'package:udetxen/features/learning/learn_and_review/screens/learn_knowledge_screen.dart';
-import 'package:udetxen/features/learning/learn_and_review/screens/review_knowledge_screen.dart';
-import 'package:udetxen/shared/config/theme/colors.dart';
-import 'package:udetxen/shared/constants/urls.dart';
-import 'package:udetxen/shared/models/index.dart';
+import 'package:rvnow/features/exploring/knowledge/widgets/knowledge_list.dart';
+import 'package:rvnow/features/learning/learn_and_review/screens/learn_knowledge_screen.dart';
+import 'package:rvnow/features/learning/learn_and_review/screens/review_knowledge_screen.dart';
+import 'package:rvnow/shared/config/theme/colors.dart';
+import 'package:rvnow/shared/constants/urls.dart';
+import 'package:rvnow/shared/models/index.dart';
 import '../blocs/subject_bloc.dart';
 // import '../widgets/knowledge_list.dart';
 
@@ -38,9 +38,13 @@ class SubjectDetailScreen extends StatefulWidget {
 }
 
 class _SubjectDetailScreenState extends State<SubjectDetailScreen> {
+  late bool learnAllKnowledge;
+
   @override
   void initState() {
     super.initState();
+
+    learnAllKnowledge = widget.learnAllKnowledge;
 
     var bloc = context.read<SubjectBloc>();
     if (bloc.state is! SubjectLoaded ||
@@ -107,9 +111,12 @@ class _SubjectDetailScreenState extends State<SubjectDetailScreen> {
                       if (state is SubjectLoading) {
                         return const Center(child: CircularProgressIndicator());
                       } else if (state is SubjectLoaded) {
-                        if (widget.learnAllKnowledge) {
+                        if (learnAllKnowledge) {
                           WidgetsBinding.instance
                               .addPostFrameCallback((_) async {
+                            setState(() {
+                              learnAllKnowledge = false;
+                            });
                             await _navigateToLearnKnowledgeScreen(
                               state.subject.subjectKnowledges
                                   .where((sk) =>

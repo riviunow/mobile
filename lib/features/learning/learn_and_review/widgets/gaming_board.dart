@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/learning/learn_and_review/widgets/games/arrange_words.dart';
-import 'package:udetxen/shared/constants/games.dart';
-import 'package:udetxen/shared/models/index.dart';
+import 'package:rvnow/features/learning/learn_and_review/widgets/games/arrange_words.dart';
+import 'package:rvnow/shared/constants/games.dart';
+import 'package:rvnow/shared/models/index.dart';
 
 import '../blocs/game_bloc.dart';
 import 'games/choose_correct_answer.dart';

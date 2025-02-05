@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:udetxen/features/learning/knowledge_learning/screens/current_user_learning_screen.dart';
-import 'package:udetxen/features/learning/knowledge_learning/screens/unlisted_learning_screen.dart';
-import 'package:udetxen/features/learning/learning_list/screens/learning_lists_screen.dart';
-import 'package:udetxen/shared/config/service_locator.dart';
-import 'package:udetxen/shared/widgets/layouts/authenticated_layout.dart';
+import 'package:rvnow/features/learning/knowledge_learning/screens/current_user_learning_screen.dart';
+import 'package:rvnow/features/learning/knowledge_learning/screens/unlisted_learning_screen.dart';
+import 'package:rvnow/features/learning/learning_list/screens/learning_lists_screen.dart';
+import 'package:rvnow/shared/config/service_locator.dart';
+import 'package:rvnow/shared/widgets/layouts/authenticated_layout.dart';
 
 class LearningScreenView extends StatefulWidget {
   final ValueNotifier<AuthenticatedLayoutSettings> layoutSettings;
@@ -12,6 +12,13 @@ class LearningScreenView extends StatefulWidget {
     return MaterialPageRoute<void>(
       builder: (_) => getInstance(index),
     );
+  }
+
+  static void navigate(int index) {
+    getIt<ValueNotifier<AuthenticatedLayoutSettings>>().value =
+        getIt<ValueNotifier<AuthenticatedLayoutSettings>>()
+            .value
+            .copyWith(initialIndex: 2, initialLearningListIndex: index);
   }
 
   static Widget getInstance(int index) {

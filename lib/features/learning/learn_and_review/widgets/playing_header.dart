@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/learning/learn_and_review/blocs/game_bloc.dart';
+import 'package:rvnow/features/learning/learn_and_review/blocs/game_bloc.dart';
 
 import 'status_bar.dart';
 

@@ -1,4 +1,4 @@
-import 'package:udetxen/shared/models/enums/knowledge_level.dart';
+import 'package:rvnow/shared/models/enums/knowledge_level.dart';
 
 class UpdateKnowledgeRequest {
   final String id;

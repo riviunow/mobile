@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:udetxen/shared/models/index.dart';
+import 'package:rvnow/shared/models/index.dart';
 
 import '../screens/remove_learning_list_screen.dart';
 import '../screens/update_learning_list_screen.dart';

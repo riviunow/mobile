@@ -2,9 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:udetxen/shared/models/index.dart';
-import 'package:udetxen/shared/services/translation_service.dart';
-import 'package:udetxen/shared/widgets/loader.dart';
+import 'package:rvnow/shared/models/index.dart';
+import 'package:rvnow/shared/services/translation_service.dart';
+import 'package:rvnow/shared/widgets/loader.dart';
 
 import '../blocs/knowledge_detail_bloc.dart';
 import '../widgets/knowledge.media_widget.dart';

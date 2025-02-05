@@ -102,4 +102,20 @@ class Learning extends SingleIdPivotEntity {
       return 'ready_to_review'.tr();
     }
   }
+
+  String timeLeft() {
+    final now = DateTime.now();
+    final difference = nextReviewDate.difference(now);
+    if (difference.inDays > 0) {
+      return '${difference.inDays}d';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours}h';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes}m';
+    } else if (difference.inSeconds > 0) {
+      return '${difference.inSeconds}s';
+    } else {
+      return 'ready';
+    }
+  }
 }

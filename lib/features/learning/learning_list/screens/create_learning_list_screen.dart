@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/learning/learning_list/blocs/create_learning_list_bloc.dart';
-import 'package:udetxen/shared/widgets/loader.dart';
+import 'package:rvnow/features/learning/learning_list/blocs/create_learning_list_bloc.dart';
+import 'package:rvnow/shared/widgets/loader.dart';
 
 import '../models/create_learning_list.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/shared/config/service_locator.dart';
-import 'package:udetxen/shared/widgets/layouts/authenticated_layout.dart';
+import 'package:rvnow/shared/config/service_locator.dart';
+import 'package:rvnow/shared/widgets/layouts/authenticated_layout.dart';
 import '../../../../shared/constants/urls.dart';
 import '../../../profile/bloc/profile_bloc.dart';
 

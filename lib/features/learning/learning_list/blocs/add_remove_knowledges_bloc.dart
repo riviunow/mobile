@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/learning/knowledge_learning/blocs/unlisted_learnings_bloc.dart';
-import 'package:udetxen/features/learning/learning_list/services/learning_list_service.dart';
-import 'package:udetxen/shared/models/index.dart';
+import 'package:rvnow/features/learning/knowledge_learning/blocs/unlisted_learnings_bloc.dart';
+import 'package:rvnow/features/learning/learning_list/services/learning_list_service.dart';
+import 'package:rvnow/shared/models/index.dart';
 import '../models/add_remove_knowledges.dart';
 import 'get_learning_list_by_id_bloc.dart';
 // import 'get_learning_lists_bloc.dart';

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart' as audio_player;
-import 'package:udetxen/shared/config/theme/colors.dart';
-import 'package:udetxen/shared/constants/urls.dart';
+import 'package:rvnow/shared/config/theme/colors.dart';
+import 'package:rvnow/shared/constants/urls.dart';
 
 class AudioPlayer extends StatefulWidget {
   final String url;
 
-  const AudioPlayer({super.key, required String url})
-      : url = "${Urls.mediaUrl}/$url";
+  AudioPlayer({super.key, required String url}) : url = "${Urls.mediaUrl}/$url";
 
   @override
   State<AudioPlayer> createState() => _AudioPlayerState();

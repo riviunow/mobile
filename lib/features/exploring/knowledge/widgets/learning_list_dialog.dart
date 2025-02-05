@@ -1,14 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/learning/learning_list/blocs/add_remove_knowledges_bloc.dart';
-import 'package:udetxen/features/learning/learning_list/blocs/get_learning_lists_bloc.dart';
-import 'package:udetxen/features/learning/learning_list/models/add_remove_knowledges.dart';
-import 'package:udetxen/features/learning/learning_list/screens/create_learning_list_screen.dart';
-import 'package:udetxen/features/learning/learning_list/screens/get_learning_list_by_id_screen.dart';
-import 'package:udetxen/features/learning/learning_list/widgets/learning_lists.tile.dart';
-import 'package:udetxen/shared/models/index.dart';
-import 'package:udetxen/shared/widgets/loader.dart';
+import 'package:rvnow/features/learning/learning_list/blocs/add_remove_knowledges_bloc.dart';
+import 'package:rvnow/features/learning/learning_list/blocs/get_learning_lists_bloc.dart';
+import 'package:rvnow/features/learning/learning_list/models/add_remove_knowledges.dart';
+import 'package:rvnow/features/learning/learning_list/screens/create_learning_list_screen.dart';
+import 'package:rvnow/features/learning/learning_list/screens/get_learning_list_by_id_screen.dart';
+import 'package:rvnow/features/learning/learning_list/widgets/learning_lists.tile.dart';
+import 'package:rvnow/shared/models/index.dart';
+import 'package:rvnow/shared/widgets/loader.dart';
 
 class LearningListDialog extends StatefulWidget {
   final List<String> knowledgeIds;

@@ -2,15 +2,15 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:udetxen/features/auth/bloc/auth_bloc.dart';
-import 'package:udetxen/features/auth/screens/login_screen.dart';
-import 'package:udetxen/features/profile/bloc/profile_bloc.dart';
-import 'package:udetxen/features/profile/screens/update_profile_screen.dart';
-import 'package:udetxen/shared/config/service_locator.dart';
-import 'package:udetxen/shared/constants/urls.dart';
-import 'package:udetxen/shared/services/theme_service.dart';
-import 'package:udetxen/shared/widgets/layouts/authenticated_layout.dart';
-import 'package:udetxen/shared/widgets/loader.dart';
+import 'package:rvnow/features/auth/bloc/auth_bloc.dart';
+import 'package:rvnow/features/auth/screens/login_screen.dart';
+import 'package:rvnow/features/profile/bloc/profile_bloc.dart';
+import 'package:rvnow/features/profile/screens/update_profile_screen.dart';
+import 'package:rvnow/shared/config/service_locator.dart';
+import 'package:rvnow/shared/constants/urls.dart';
+import 'package:rvnow/shared/services/theme_service.dart';
+import 'package:rvnow/shared/widgets/layouts/authenticated_layout.dart';
+import 'package:rvnow/shared/widgets/loader.dart';
 
 import 'language_setting_screen.dart';
 

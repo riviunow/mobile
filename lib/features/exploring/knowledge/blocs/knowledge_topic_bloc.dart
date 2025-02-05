@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/exploring/knowledge/models/knowledge_topic.dart';
-import 'package:udetxen/features/exploring/knowledge/services/knowledge_topic_service.dart';
-import 'package:udetxen/shared/models/index.dart';
+import 'package:rvnow/features/exploring/knowledge/models/knowledge_topic.dart';
+import 'package:rvnow/features/exploring/knowledge/services/knowledge_topic_service.dart';
+import 'package:rvnow/shared/models/index.dart';
 
 abstract class KnowledgeTopicEvent {}
 

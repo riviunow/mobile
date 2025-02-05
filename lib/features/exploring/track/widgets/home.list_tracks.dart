@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/exploring/track/blocs/list_tracks_bloc.dart';
+import 'package:rvnow/features/exploring/track/blocs/list_tracks_bloc.dart';
 import '../screens/track_detail_screen.dart';
 
 class HomeListTracks extends StatefulWidget {

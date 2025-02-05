@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:udetxen/features/creating/knowledge/blocs/update_knowledge_bloc.dart';
-import 'package:udetxen/features/creating/knowledge/models/update.dart';
-import 'package:udetxen/shared/models/enums/knowledge_level.dart';
-import 'package:udetxen/shared/models/index.dart';
+import 'package:rvnow/features/creating/knowledge/blocs/update_knowledge_bloc.dart';
+import 'package:rvnow/features/creating/knowledge/models/update.dart';
+import 'package:rvnow/shared/models/enums/knowledge_level.dart';
+import 'package:rvnow/shared/models/index.dart';
 
 class UpdateKnowledgeScreen extends StatefulWidget {
   final Knowledge knowledge;

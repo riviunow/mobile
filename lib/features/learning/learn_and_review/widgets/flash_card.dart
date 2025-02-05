@@ -3,11 +3,11 @@ import 'dart:math';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:udetxen/features/exploring/knowledge/widgets/knowledge.material_list.dart';
-import 'package:udetxen/features/exploring/knowledge/widgets/knowledge.media_widget.dart';
-import 'package:udetxen/shared/config/theme/colors.dart';
-import 'package:udetxen/shared/models/index.dart' as models;
-import 'package:udetxen/shared/services/translation_service.dart';
+import 'package:rvnow/features/exploring/knowledge/widgets/knowledge.material_list.dart';
+import 'package:rvnow/features/exploring/knowledge/widgets/knowledge.media_widget.dart';
+import 'package:rvnow/shared/config/theme/colors.dart';
+import 'package:rvnow/shared/models/index.dart' as models;
+import 'package:rvnow/shared/services/translation_service.dart';
 
 import '../blocs/game_bloc.dart';
 
@@ -23,7 +23,7 @@ class FlashCard extends StatefulWidget {
 class _FlashCardState extends State<FlashCard> {
   bool isFront = true;
   bool isFlipped = false;
-  late bool showTranslation;
+  bool showTranslation = false;
   late TranslationService translationService;
 
   @override
@@ -31,7 +31,6 @@ class _FlashCardState extends State<FlashCard> {
     super.initState();
     translationService =
         Provider.of<TranslationService>(context, listen: false);
-    showTranslation = translationService.showTranslationEn;
   }
 
   @override
