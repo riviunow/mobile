@@ -284,7 +284,7 @@ class _GameOverBoardState extends State<GameOverBoard> {
                     '${"level".tr()}: ${latestHistory?.learningLevel.toStr() ?? 'N/A'}'),
                 Text(
                     '${"memorized".tr()}: ${latestHistory?.isMemorized ?? 'N/A'}'),
-                Text(learning.calculateTimeLeft()),
+                learning.reviewCountDown(),
               ],
             ),
             trailing: _isSelectionMode

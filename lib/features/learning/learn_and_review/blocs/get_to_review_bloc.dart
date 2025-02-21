@@ -11,7 +11,6 @@ import '../widgets/games/word_match.dart';
 import '../widgets/gaming_board.dart';
 import 'game_bloc.dart';
 
-// Events
 abstract class GetToReviewEvent {
   const GetToReviewEvent();
 }
@@ -22,7 +21,6 @@ class GetToReviewRequested extends GetToReviewEvent {
   const GetToReviewRequested(this.request);
 }
 
-// States
 abstract class GetToReviewState {
   const GetToReviewState();
 }
@@ -43,7 +41,6 @@ class GetToReviewFailure extends GetToReviewState {
   const GetToReviewFailure(this.messages);
 }
 
-// BLoC
 class GetToReviewBloc extends Bloc<GetToReviewEvent, GetToReviewState> {
   final LearnAndReviewService _learnAndReviewService;
   final GameBloc _gameBloc;

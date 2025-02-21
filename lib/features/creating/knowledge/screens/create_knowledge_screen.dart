@@ -133,60 +133,57 @@ class _CreateKnowledgeScreenState extends State<CreateKnowledgeScreen> {
           } else if (state is CreateKnowledgeError) {
             if (mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Error: ${state.messages.join(', ')}')),
+                SnackBar(content: Text(state.messages.join(', '))),
               );
             }
           }
         },
         child: Form(
           key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                StepStatusBar(
-                  currentStep: _currentStep,
-                  onStepTapped: (index) => setState(() {
-                    _currentStep = index;
-                    _pageController.jumpToPage(index);
-                  }),
+          child: Column(
+            children: [
+              StepStatusBar(
+                currentStep: _currentStep,
+                onStepTapped: (index) => setState(() {
+                  _currentStep = index;
+                  _pageController.jumpToPage(index);
+                }),
+              ),
+              Expanded(
+                child: PageView(
+                  controller: _pageController,
+                  onPageChanged: (index) {
+                    setState(() {
+                      _currentStep = index;
+                    });
+                  },
+                  children: [
+                    _buildStepTitle(),
+                    _buildStepFilePicker(),
+                    _buildStepMaterial(),
+                    _buildStepKnowledgeTopic(),
+                    _buildStepKnowledgeType(),
+                  ],
                 ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height - kToolbarHeight,
-                  child: PageView(
-                    controller: _pageController,
-                    onPageChanged: (index) {
-                      setState(() {
-                        _currentStep = index;
-                      });
-                    },
-                    children: [
-                      _buildStepTitle(),
-                      _buildStepFilePicker(),
-                      _buildStepMaterial(),
-                      _buildStepKnowledgeTopic(),
-                      _buildStepKnowledgeType(),
-                    ],
-                  ),
-                ),
-                NavigationButtons(
-                  currentStep: _currentStep,
-                  onBack: () => setState(() {
-                    _currentStep--;
-                    _pageController.previousPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    );
-                  }),
-                  onNext: () => setState(() {
-                    _currentStep++;
-                    _pageController.nextPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    );
-                  }),
-                ),
-              ],
-            ),
+              ),
+              NavigationButtons(
+                currentStep: _currentStep,
+                onBack: () => setState(() {
+                  _currentStep--;
+                  _pageController.previousPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  );
+                }),
+                onNext: () => setState(() {
+                  _currentStep++;
+                  _pageController.nextPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  );
+                }),
+              ),
+            ],
           ),
         ),
       ),

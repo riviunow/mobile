@@ -18,7 +18,7 @@ class Track extends SingleIdEntity {
   factory Track.fromJson(Map<String, dynamic> json) {
     return Track(
       id: json['id'],
-      createdAt: DateTime.parse(json['createdAt']),
+      createdAt: parseUtcDateTime(json['createdAt'] as String),
       name: json['name'],
       description: json['description'],
       trackSubjects: (json['trackSubjects'] as List<dynamic>?)

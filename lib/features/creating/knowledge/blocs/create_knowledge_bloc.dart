@@ -4,7 +4,6 @@ import 'package:rvnow/shared/models/index.dart';
 
 import '../services/knowledge_service.dart';
 
-// Events
 abstract class CreateKnowledgeEvent {}
 
 class CreateKnowledge extends CreateKnowledgeEvent {
@@ -13,7 +12,6 @@ class CreateKnowledge extends CreateKnowledgeEvent {
   CreateKnowledge(this.request);
 }
 
-// States
 abstract class CreateKnowledgeState {}
 
 class CreateKnowledgeInitial extends CreateKnowledgeState {}
@@ -32,7 +30,6 @@ class CreateKnowledgeError extends CreateKnowledgeState {
   CreateKnowledgeError({this.messages = const []});
 }
 
-// Bloc
 class CreateKnowledgeBloc
     extends Bloc<CreateKnowledgeEvent, CreateKnowledgeState> {
   final KnowledgeService _knowledgeService;

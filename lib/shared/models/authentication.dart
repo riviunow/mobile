@@ -28,15 +28,15 @@ class Authentication extends SingleIdEntity {
   factory Authentication.fromJson(Map<String, dynamic> json) {
     return Authentication(
       id: json['id'],
-      createdAt: DateTime.parse(json['createdAt']),
+      createdAt: parseUtcDateTime(json['createdAt'] as String),
       hashedPassword: json['hashedPassword'],
       refreshToken: json['refreshToken'],
       refreshTokenExpiryTime: json['refreshTokenExpiryTime'] != null
-          ? DateTime.parse(json['refreshTokenExpiryTime'])
+          ? parseUtcDateTime(json['refreshTokenExpiryTime'] as String)
           : null,
       confirmationCode: json['confirmationCode'],
       confirmationCodeExpiryTime: json['confirmationCodeExpiryTime'] != null
-          ? DateTime.parse(json['confirmationCodeExpiryTime'])
+          ? parseUtcDateTime(json['confirmationCodeExpiryTime'] as String)
           : null,
       isEmailConfirmed: json['isEmailConfirmed'],
       isActivated: json['isActivated'],

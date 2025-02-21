@@ -34,7 +34,7 @@ class LearningList extends SingleIdEntity {
   factory LearningList.fromJson(Map<String, dynamic> json) {
     return LearningList(
       id: json['id'],
-      createdAt: DateTime.parse(json['createdAt']),
+      createdAt: parseUtcDateTime(json['createdAt'] as String),
       title: json['title'],
       learnerId: json['learnerId'],
       learner: json['learner'] != null ? User.fromJson(json['learner']) : null,

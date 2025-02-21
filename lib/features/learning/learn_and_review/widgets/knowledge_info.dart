@@ -6,7 +6,8 @@ import 'package:rvnow/shared/widgets/audio_player.dart';
 
 class KnowledgeInfo extends StatelessWidget {
   final Knowledge knowledge;
-  const KnowledgeInfo({super.key, required this.knowledge});
+  final double? imageHeight;
+  const KnowledgeInfo({super.key, required this.knowledge, this.imageHeight});
 
   @override
   Widget build(BuildContext context) {
@@ -14,33 +15,53 @@ class KnowledgeInfo extends StatelessWidget {
       children: [
         if (knowledge.imageMaterials.isNotEmpty)
           SizedBox(
-            height: 200,
+            height: imageHeight ?? 200,
             child: Image.network(
-                "${Urls.mediaUrl}/${knowledge.imageMaterials.first.content}"),
+                "${Urls.mediaUrl}/${knowledge.imageMaterials.first.content}",
+                fit: BoxFit.cover),
           ),
-        if (knowledge.audioMaterials.isNotEmpty)
-          Positioned(
-            bottom: 0,
-            right: knowledge.imageMaterials.isNotEmpty ? 0 : null,
-            left: knowledge.imageMaterials.isNotEmpty ? null : 0,
+        if (knowledge.audioMaterials.isNotEmpty &&
+            knowledge.imageMaterials.isEmpty)
+          Center(
             child: Row(
-              mainAxisAlignment: knowledge.imageMaterials.isNotEmpty
-                  ? MainAxisAlignment.end
-                  : MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ...knowledge.audioMaterials.map((material) => Container(
                       decoration: const BoxDecoration(
                         color: AppColors.secondary,
                         shape: BoxShape.circle,
                       ),
-                      margin:
-                          const EdgeInsets.only(left: 8, right: 2, bottom: 2),
                       padding: const EdgeInsets.all(4.0),
+                      margin: const EdgeInsets.all(2.0),
                       child: AudioPlayer(
                         url: material.content,
                       ),
                     )),
               ],
+            ),
+          ),
+        if (knowledge.audioMaterials.isNotEmpty &&
+            knowledge.imageMaterials.isNotEmpty)
+          Positioned(
+            bottom: 0,
+            right: knowledge.imageMaterials.isNotEmpty ? 0 : null,
+            left: knowledge.imageMaterials.isNotEmpty ? null : 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: knowledge.audioMaterials
+                  .map((material) => Container(
+                        decoration: const BoxDecoration(
+                          color: AppColors.secondary,
+                          shape: BoxShape.circle,
+                        ),
+                        margin:
+                            const EdgeInsets.only(left: 8, right: 2, bottom: 2),
+                        padding: const EdgeInsets.all(4.0),
+                        child: AudioPlayer(
+                          url: material.content,
+                        ),
+                      ))
+                  .toList(),
             ),
           ),
       ],

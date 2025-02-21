@@ -46,6 +46,7 @@ class _ConfirmPasswordResetScreenState
     super.initState();
     emailController.text = widget.email;
     confirmationCodeExpiryTime = widget.confirmationCodeExpiryTime;
+    codeFocusNode.requestFocus();
   }
 
   @override
@@ -108,68 +109,73 @@ class _ConfirmPasswordResetScreenState
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Focus(
+                TextField(
+                  onTapOutside: (_) {
+                    if (emailFocusNode.hasFocus) emailFocusNode.unfocus();
+                  },
                   focusNode: emailFocusNode,
-                  child: TextField(
-                    controller: emailController,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      errorText: fieldErrors['Email']?.join(', '),
-                    ),
-                    textInputAction: TextInputAction.next,
-                    onSubmitted: (_) {
-                      FocusScope.of(context).requestFocus(codeFocusNode);
-                    },
+                  controller: emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    errorText: fieldErrors['Email']?.join(', '),
                   ),
+                  textInputAction: TextInputAction.next,
+                  onSubmitted: (_) {
+                    FocusScope.of(context).requestFocus(codeFocusNode);
+                  },
                 ),
                 const SizedBox(height: 10),
-                Focus(
+                TextField(
+                  onTapOutside: (_) {
+                    if (codeFocusNode.hasFocus) codeFocusNode.unfocus();
+                  },
                   focusNode: codeFocusNode,
-                  child: TextField(
-                    controller: codeController,
-                    decoration: InputDecoration(
-                      labelText: 'Confirmation Code',
-                      errorText: fieldErrors['ConfirmationCode']?.join(', '),
-                    ),
-                    textInputAction: TextInputAction.next,
-                    onSubmitted: (_) {
-                      FocusScope.of(context).requestFocus(newPasswordFocusNode);
-                    },
+                  controller: codeController,
+                  decoration: InputDecoration(
+                    labelText: 'Confirmation Code',
+                    errorText: fieldErrors['ConfirmationCode']?.join(', '),
                   ),
+                  textInputAction: TextInputAction.next,
+                  onSubmitted: (_) {
+                    FocusScope.of(context).requestFocus(newPasswordFocusNode);
+                  },
                 ),
                 const SizedBox(height: 10),
-                Focus(
+                TextField(
+                  onTapOutside: (_) {
+                    if (newPasswordFocusNode.hasFocus)
+                      newPasswordFocusNode.unfocus();
+                  },
                   focusNode: newPasswordFocusNode,
-                  child: TextField(
-                    controller: newPasswordController,
-                    decoration: InputDecoration(
-                      labelText: 'New Password',
-                      errorText: fieldErrors['Password']?.join(', '),
-                    ),
-                    obscureText: true,
-                    textInputAction: TextInputAction.next,
-                    onSubmitted: (_) {
-                      FocusScope.of(context)
-                          .requestFocus(confirmPasswordFocusNode);
-                    },
+                  controller: newPasswordController,
+                  decoration: InputDecoration(
+                    labelText: 'New Password',
+                    errorText: fieldErrors['Password']?.join(', '),
                   ),
+                  obscureText: true,
+                  textInputAction: TextInputAction.next,
+                  onSubmitted: (_) {
+                    FocusScope.of(context)
+                        .requestFocus(confirmPasswordFocusNode);
+                  },
                 ),
                 const SizedBox(height: 10),
-                Focus(
+                TextField(
+                  onTapOutside: (_) {
+                    if (confirmPasswordFocusNode.hasFocus)
+                      confirmPasswordFocusNode.unfocus();
+                  },
                   focusNode: confirmPasswordFocusNode,
-                  child: TextField(
-                    controller: confirmPasswordController,
-                    decoration: InputDecoration(
-                      labelText: 'Confirm Password',
-                      errorText:
-                          fieldErrors['ConfirmationPassword']?.join(', '),
-                    ),
-                    obscureText: true,
-                    textInputAction: TextInputAction.done,
-                    onSubmitted: (_) {
-                      _resetPassword(context);
-                    },
+                  controller: confirmPasswordController,
+                  decoration: InputDecoration(
+                    labelText: 'Confirm Password',
+                    errorText: fieldErrors['ConfirmationPassword']?.join(', '),
                   ),
+                  obscureText: true,
+                  textInputAction: TextInputAction.done,
+                  onSubmitted: (_) {
+                    _resetPassword(context);
+                  },
                 ),
                 const SizedBox(height: 20),
                 if (confirmationCodeExpiryTime != null &&

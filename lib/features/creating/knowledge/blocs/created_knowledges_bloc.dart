@@ -3,7 +3,6 @@ import 'package:rvnow/features/creating/knowledge/models/get_created.dart';
 import 'package:rvnow/shared/models/index.dart';
 import '../services/knowledge_service.dart';
 
-// Events
 abstract class CreatedKnowledgesEvent {}
 
 class GetCreatedKnowledges extends CreatedKnowledgesEvent {
@@ -42,7 +41,6 @@ class PublicationDeleted extends CreatedKnowledgesEvent {
   PublicationDeleted(this.request);
 }
 
-// States
 abstract class CreatedKnowledgesState {}
 
 class CreatedKnowledgesInitial extends CreatedKnowledgesState {}
@@ -62,7 +60,6 @@ class CreatedKnowledgesError extends CreatedKnowledgesState {
   CreatedKnowledgesError({this.messages = const []});
 }
 
-// Bloc
 class CreatedKnowledgesBloc
     extends Bloc<CreatedKnowledgesEvent, CreatedKnowledgesState> {
   final KnowledgeService _knowledgeService;

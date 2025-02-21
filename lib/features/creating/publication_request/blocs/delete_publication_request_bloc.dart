@@ -4,7 +4,6 @@ import 'package:rvnow/features/creating/publication_request/services/publication
 
 import 'get_publication_requests_bloc.dart';
 
-// Events
 abstract class DeletePublicationRequestEvent {}
 
 class DeletePublicationRequest extends DeletePublicationRequestEvent {
@@ -13,7 +12,6 @@ class DeletePublicationRequest extends DeletePublicationRequestEvent {
   DeletePublicationRequest(this.requestId);
 }
 
-// States
 abstract class DeletePublicationRequestState {}
 
 class DeletePublicationRequestInitial extends DeletePublicationRequestState {}
@@ -32,7 +30,6 @@ class DeletePublicationRequestError extends DeletePublicationRequestState {
   DeletePublicationRequestError({this.messages = const []});
 }
 
-// Bloc
 class DeletePublicationRequestBloc
     extends Bloc<DeletePublicationRequestEvent, DeletePublicationRequestState> {
   final PublicationRequestService _publicationRequestService;

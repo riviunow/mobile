@@ -6,7 +6,6 @@ import 'package:rvnow/shared/models/index.dart';
 
 import 'get_publication_requests_bloc.dart';
 
-// Events
 abstract class PublishKnowledgeEvent {}
 
 class PublishKnowledgeRequested extends PublishKnowledgeEvent {
@@ -15,7 +14,6 @@ class PublishKnowledgeRequested extends PublishKnowledgeEvent {
   PublishKnowledgeRequested(this.request);
 }
 
-// States
 abstract class PublishKnowledgeState {}
 
 class PublishKnowledgeInitial extends PublishKnowledgeState {}
@@ -34,7 +32,6 @@ class PublishKnowledgeError extends PublishKnowledgeState {
   PublishKnowledgeError({this.messages = const []});
 }
 
-// Bloc
 class PublishKnowledgeBloc
     extends Bloc<PublishKnowledgeEvent, PublishKnowledgeState> {
   final PublicationRequestService _publicationRequestService;

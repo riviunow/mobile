@@ -2,7 +2,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rvnow/features/learning/knowledge_learning/services/learning_service.dart';
 import 'package:rvnow/shared/models/index.dart';
 
-// Events
 abstract class UnlistedLearningsEvent {}
 
 class FetchUnlistedLearnings extends UnlistedLearningsEvent {
@@ -11,7 +10,6 @@ class FetchUnlistedLearnings extends UnlistedLearningsEvent {
   FetchUnlistedLearnings({this.knowledges});
 }
 
-// States
 abstract class UnlistedLearningsState {}
 
 class UnlistedLearningsInitial extends UnlistedLearningsState {}
@@ -30,7 +28,6 @@ class UnlistedLearningsError extends UnlistedLearningsState {
   UnlistedLearningsError({this.messages = const []});
 }
 
-// Bloc
 class UnlistedLearningsBloc
     extends Bloc<UnlistedLearningsEvent, UnlistedLearningsState> {
   final LearningService _learningService;

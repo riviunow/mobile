@@ -13,7 +13,6 @@ import 'package:rvnow/shared/models/index.dart';
 import '../models/learn_knowledge.dart';
 import '../services/learn_and_review_service.dart';
 
-// States
 class GameState {}
 
 class GameInitial extends GameState {}
@@ -36,7 +35,6 @@ class GameFailure extends GameState {
   GameFailure(this.messages);
 }
 
-// Events
 class GameEvent {}
 
 class InitWidgetQueue extends GameEvent {
@@ -77,10 +75,8 @@ class LearningListed extends GameEvent {
   LearningListed(this.learningIds);
 }
 
-// Bloc
 class GameBloc extends Bloc<GameEvent, GameState> {
   final LearnAndReviewService _learnAndReviewService;
-  // TODO:
   final SubjectBloc _subjectBloc;
   final SearchKnowledgesBloc _searchKnowledgesBloc;
   final GetCurrentUserLearningsBloc _getCurrentUserLearningsBloc;
@@ -316,37 +312,41 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   }
 
   void updateCurrentUserLearningsBloc(List<Learning> learnings, bool isAdd) {
+    LearningsLoaded state;
     if (_getCurrentUserLearningsBloc.state is LearningsLoaded) {
-      final state = _getCurrentUserLearningsBloc.state as LearningsLoaded;
-      _getCurrentUserLearningsBloc.add(LearningsUpdated(isAdd
-          ? (() {
-              final updatedKnowledges = state.knowledges +
-                  learnings
-                      .map((l) => l.knowledge!.copyWith(
-                          currentUserLearning: l.copyWith(knowledge: null)))
-                      .toList();
-              updatedKnowledges.sort((a, b) => a
-                  .currentUserLearning!.nextReviewDate
-                  .compareTo(b.currentUserLearning!.nextReviewDate));
-              return updatedKnowledges;
-            })()
-          : (() {
-              final updatedKnowledges = state.knowledges
-                  .map((k) => learnings.any((l) => l.knowledgeId == k.id)
-                      ? k.copyWith(
-                          currentUserLearning: learnings
-                              .firstWhere((l) => l.knowledgeId == k.id)
-                              .copyWith(
-                                knowledge: null,
-                              ))
-                      : k)
-                  .toList();
-              updatedKnowledges.sort((a, b) => a
-                  .currentUserLearning!.nextReviewDate
-                  .compareTo(b.currentUserLearning!.nextReviewDate));
-              return updatedKnowledges;
-            })()));
+      state = _getCurrentUserLearningsBloc.state as LearningsLoaded;
+    } else {
+      state = LearningsLoaded([], false);
     }
+
+    _getCurrentUserLearningsBloc.add(LearningsUpdated(isAdd
+        ? (() {
+            final updatedKnowledges = state.knowledges +
+                learnings
+                    .map((l) => l.knowledge!.copyWith(
+                        currentUserLearning: l.copyWith(knowledge: null)))
+                    .toList();
+            updatedKnowledges.sort((a, b) => a
+                .currentUserLearning!.nextReviewDate
+                .compareTo(b.currentUserLearning!.nextReviewDate));
+            return updatedKnowledges;
+          })()
+        : (() {
+            final updatedKnowledges = state.knowledges
+                .map((k) => learnings.any((l) => l.knowledgeId == k.id)
+                    ? k.copyWith(
+                        currentUserLearning: learnings
+                            .firstWhere((l) => l.knowledgeId == k.id)
+                            .copyWith(
+                              knowledge: null,
+                            ))
+                    : k)
+                .toList();
+            updatedKnowledges.sort((a, b) => a
+                .currentUserLearning!.nextReviewDate
+                .compareTo(b.currentUserLearning!.nextReviewDate));
+            return updatedKnowledges;
+          })()));
   }
 
   void updateUnlistedLearningsBloc(List<Learning> learnings, bool isAdd) {

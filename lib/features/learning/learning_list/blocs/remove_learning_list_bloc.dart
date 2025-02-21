@@ -3,7 +3,6 @@ import 'package:rvnow/features/learning/learning_list/blocs/get_learning_lists_b
 import 'package:rvnow/features/learning/learning_list/services/learning_list_service.dart';
 import 'package:rvnow/shared/models/index.dart';
 
-// Events
 abstract class RemoveLearningListEvent {}
 
 class RemoveLearningListRequested extends RemoveLearningListEvent {
@@ -12,7 +11,6 @@ class RemoveLearningListRequested extends RemoveLearningListEvent {
   RemoveLearningListRequested(this.id);
 }
 
-// States
 abstract class RemoveLearningListState {}
 
 class RemoveLearningListInitial extends RemoveLearningListState {}
@@ -31,7 +29,6 @@ class RemoveLearningListError extends RemoveLearningListState {
   RemoveLearningListError({this.messages = const []});
 }
 
-// Bloc
 class RemoveLearningListBloc
     extends Bloc<RemoveLearningListEvent, RemoveLearningListState> {
   final LearningListService _learningListService;

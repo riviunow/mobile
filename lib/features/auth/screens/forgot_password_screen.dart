@@ -24,6 +24,19 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final FocusNode emailFocusNode = FocusNode();
 
   @override
+  void dispose() {
+    emailController.dispose();
+    emailFocusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    emailFocusNode.requestFocus();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocConsumer<AuthBloc, AuthState>(
@@ -63,19 +76,20 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Focus(
+                TextField(
+                  onTapOutside: (_) {
+                    if (emailFocusNode.hasFocus) emailFocusNode.unfocus();
+                  },
                   focusNode: emailFocusNode,
-                  child: TextField(
-                    controller: emailController,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      errorText: fieldErrors['Email']?.join('\n'),
-                    ),
-                    textInputAction: TextInputAction.done,
-                    onSubmitted: (_) {
-                      _sendResetCode(context);
-                    },
+                  controller: emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    errorText: fieldErrors['Email']?.join('\n'),
                   ),
+                  textInputAction: TextInputAction.done,
+                  onSubmitted: (_) {
+                    _sendResetCode(context);
+                  },
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(

@@ -6,7 +6,6 @@ import '../models/add_remove_knowledges.dart';
 import 'get_learning_list_by_id_bloc.dart';
 // import 'get_learning_lists_bloc.dart';
 
-// Events
 abstract class AddRemoveKnowledgesEvent {}
 
 class AddRemoveKnowledgesRequested extends AddRemoveKnowledgesEvent {
@@ -15,7 +14,6 @@ class AddRemoveKnowledgesRequested extends AddRemoveKnowledgesEvent {
   AddRemoveKnowledgesRequested(this.request);
 }
 
-// States
 abstract class AddRemoveKnowledgesState {}
 
 class AddRemoveKnowledgesInitial extends AddRemoveKnowledgesState {}
@@ -34,7 +32,6 @@ class AddRemoveKnowledgesError extends AddRemoveKnowledgesState {
   AddRemoveKnowledgesError({this.messages = const []});
 }
 
-// Bloc
 class AddRemoveKnowledgesBloc
     extends Bloc<AddRemoveKnowledgesEvent, AddRemoveKnowledgesState> {
   final LearningListService _learningListService;

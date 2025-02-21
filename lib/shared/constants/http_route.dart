@@ -16,6 +16,7 @@ class HttpRoute {
   // Profile
   static const String getProfile = "profile/get";
   static const String updateProfile = "profile/update";
+  static const String deleteAccount = "profile/delete-account";
 
   // Track
   static const String getTracks = "track/list";

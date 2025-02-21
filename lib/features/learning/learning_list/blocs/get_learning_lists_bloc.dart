@@ -2,7 +2,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rvnow/features/learning/learning_list/services/learning_list_service.dart';
 import 'package:rvnow/shared/models/index.dart';
 
-// Events
 abstract class GetLearningListsEvent {}
 
 class GetLearningListsRequested extends GetLearningListsEvent {
@@ -11,7 +10,6 @@ class GetLearningListsRequested extends GetLearningListsEvent {
   GetLearningListsRequested({this.learningLists = const []});
 }
 
-// States
 abstract class GetLearningListsState {}
 
 class GetLearningListsInitial extends GetLearningListsState {}
@@ -30,7 +28,6 @@ class GetLearningListsError extends GetLearningListsState {
   GetLearningListsError({this.messages = const []});
 }
 
-// Bloc
 class GetLearningListsBloc
     extends Bloc<GetLearningListsEvent, GetLearningListsState> {
   final LearningListService _learningListService;

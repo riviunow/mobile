@@ -24,7 +24,7 @@ class GameOption extends SingleIdEntity {
   factory GameOption.fromJson(Map<String, dynamic> json) {
     return GameOption(
       id: json['id'],
-      createdAt: DateTime.parse(json['createdAt']),
+      createdAt: parseUtcDateTime(json['createdAt'] as String),
       gameKnowledgeSubscriptionId: json['gameKnowledgeSubscriptionId'],
       gameKnowledgeSubscription: json['gameKnowledgeSubscription'] != null
           ? GameKnowledgeSubscription.fromJson(

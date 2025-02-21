@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rvnow/features/exploring/track/blocs/list_tracks_bloc.dart';
+import 'package:rvnow/features/profile/bloc/profile_bloc.dart';
 import '../screens/track_detail_screen.dart';
 
 class HomeListTracks extends StatefulWidget {
@@ -12,10 +13,12 @@ class HomeListTracks extends StatefulWidget {
 }
 
 class _HomeListTracksState extends State<HomeListTracks> {
+  late ProfileState profileState;
   @override
   void initState() {
     super.initState();
     BlocProvider.of<ListTracksBloc>(context).add(GetListTracks());
+    profileState = BlocProvider.of<ProfileBloc>(context).state;
   }
 
   @override
@@ -52,12 +55,14 @@ class _HomeListTracksState extends State<HomeListTracks> {
                                 fontSize: 16, color: Colors.grey)),
                       ],
                     ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        TrackDetailScreen.route(track: track),
-                      );
-                    },
+                    onTap: profileState is UnauthenticatedProfile
+                        ? null
+                        : () {
+                            Navigator.push(
+                              context,
+                              TrackDetailScreen.route(track: track),
+                            );
+                          },
                   ),
                 );
               },
@@ -70,7 +75,7 @@ class _HomeListTracksState extends State<HomeListTracks> {
           );
         } else {
           return SliverToBoxAdapter(
-            child: Center(child: Text('no_tracks_avalable'.tr())),
+            child: Center(child: Text('no_tracks_available'.tr())),
           );
         }
       },

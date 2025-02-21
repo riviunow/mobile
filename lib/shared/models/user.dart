@@ -24,7 +24,7 @@ class User extends SingleIdEntity {
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       id: json['id'],
-      createdAt: DateTime.parse(json['createdAt']),
+      createdAt: parseUtcDateTime(json['createdAt'] as String),
       userName: json['userName'],
       email: json['email'],
       photoUrl: json['photoUrl'],
@@ -37,7 +37,7 @@ class User extends SingleIdEntity {
           .map((item) => LearningList.fromJson(item))
           .toList(),
       confirmationCodeExpiryTime: json['confirmationCodeExpiryTime'] != null
-          ? DateTime.parse(json['confirmationCodeExpiryTime'])
+          ? parseUtcDateTime(json['confirmationCodeExpiryTime'] as String)
           : null,
     );
   }

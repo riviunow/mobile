@@ -48,7 +48,7 @@ class _TrackDetailScreenState extends State<TrackDetailScreen> {
           } else if (state is TrackLoaded) {
             return TrackDetailListSubjects(track: state.track);
           } else if (state is TrackError) {
-            return Center(child: Text('Error: ${state.messages.join('\n')}'));
+            return Center(child: Text(state.messages.join('\n')));
           } else {
             return Center(child: Text('no_data_available'.tr()));
           }

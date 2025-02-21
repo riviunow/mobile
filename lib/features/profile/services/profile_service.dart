@@ -19,4 +19,8 @@ class ProfileService extends ApiService {
             ? [(request.image!, request.imageFieldName)]
             : []);
   }
+
+  ApiResponse<User> deleteAccount() {
+    return delete<User>(HttpRoute.deleteAccount, User.fromJson, null);
+  }
 }

@@ -19,15 +19,17 @@ class WordMatch extends StatefulWidget {
 }
 
 class _WordMatchState extends State<WordMatch> {
-  late List<(String, String, String)> knowledgeTupples;
-  late List<String> shuffledInterpretations;
+  late final List<(String, String, String)>
+      knowledgeTupples; // id / title / interpretation
+  late final List<String> shuffledInterpretations;
 
   String? selectedTitle;
   String? selectedInterpretation;
-  Map<String, String?> matchedPairs = {};
-  Map<String, bool> matchResults = {};
+  Map<String, String?> matchedPairs = {}; // title / interpretation
+  Map<String, bool> matchResults = {}; // title or interpretation / is matched
 
   bool showTranslation = false;
+  bool isLoading = false;
   late TranslationService translationService;
 
   @override
@@ -122,8 +124,10 @@ class _WordMatchState extends State<WordMatch> {
                             matchedPairs.length == knowledgeTupples.length
                                 ? () => _submitResults(context)
                                 : null,
-                        child: Text('submit_results'.tr(),
-                            style: const TextStyle(fontSize: 20)),
+                        child: isLoading
+                            ? const LoadingSmall()
+                            : Text('submit_results'.tr(),
+                                style: const TextStyle(fontSize: 20)),
                       ),
                     ),
                   ],
@@ -145,20 +149,21 @@ class _WordMatchState extends State<WordMatch> {
       itemBuilder: (context, index) {
         final item = items[index];
         final isSelected = selectedItem == item;
-        final isMatched =
+        final isInMatchedPairs =
             matchedPairs.containsKey(item) || matchedPairs.containsValue(item);
+        final isInResults = matchResults.containsKey(item);
 
-        Color borderColor = Colors.grey;
-        if (isMatched) {
-          if (matchResults[item] == true) {
-            borderColor = Colors.green;
-          } else if (matchResults[item] == false) {
-            borderColor = Colors.red;
-          }
+        Color borderColor;
+        if (matchResults[item] == true && isInMatchedPairs) {
+          borderColor = Colors.green;
+        } else if (matchResults[item] == false) {
+          borderColor = Colors.red;
+        } else {
+          borderColor = Colors.grey;
         }
 
         return GestureDetector(
-          onTap: isMatched ? null : () => _handleSelection(item, isTitle),
+          onTap: isInResults ? null : () => _handleSelection(item, isTitle),
           child: Card(
             shape: RoundedRectangleBorder(
               side: BorderSide(color: borderColor, width: 2),
@@ -228,7 +233,9 @@ class _WordMatchState extends State<WordMatch> {
         );
 
         matchResults[selectedTitle!] = matchFound;
-        matchResults[selectedInterpretation!] = matchFound;
+        var interpretationOfSelectedTitle =
+            knowledgeTupples.firstWhere((pair) => pair.$2 == selectedTitle).$3;
+        matchResults[interpretationOfSelectedTitle] = matchFound;
 
         selectedTitle = null;
         selectedInterpretation = null;
@@ -237,6 +244,10 @@ class _WordMatchState extends State<WordMatch> {
   }
 
   void _submitResults(BuildContext context) {
+    setState(() {
+      isLoading = true;
+    });
+
     final knowledgeToAnswers = <String, WordMatchAnswer>{};
 
     for (var pair in knowledgeTupples) {

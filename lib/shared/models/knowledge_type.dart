@@ -20,7 +20,7 @@ class KnowledgeType extends SingleIdEntity {
   factory KnowledgeType.fromJson(Map<String, dynamic> json) {
     return KnowledgeType(
       id: json['id'],
-      createdAt: DateTime.parse(json['createdAt']),
+      createdAt: parseUtcDateTime(json['createdAt'] as String),
       name: json['name'],
       parentId: json['parentId'],
       parent: json['parent'] != null

@@ -6,7 +6,6 @@ import 'package:rvnow/shared/models/index.dart';
 import 'get_learning_list_by_id_bloc.dart';
 // import 'get_learning_lists_bloc.dart';
 
-// Events
 abstract class UpdateLearningListEvent {}
 
 class UpdateLearningListRequested extends UpdateLearningListEvent {
@@ -15,7 +14,6 @@ class UpdateLearningListRequested extends UpdateLearningListEvent {
   UpdateLearningListRequested(this.request);
 }
 
-// States
 abstract class UpdateLearningListState {}
 
 class UpdateLearningListInitial extends UpdateLearningListState {}
@@ -34,7 +32,6 @@ class UpdateLearningListError extends UpdateLearningListState {
   UpdateLearningListError({this.messages = const []});
 }
 
-// Bloc
 class UpdateLearningListBloc
     extends Bloc<UpdateLearningListEvent, UpdateLearningListState> {
   final LearningListService _learningListService;
