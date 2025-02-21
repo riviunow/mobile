@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rvnow/features/exploring/knowledge/screens/knowledge_detail_screen.dart';
 import 'package:rvnow/features/exploring/knowledge/widgets/knowledge_list.dart';
 import 'package:rvnow/features/learning/learn_and_review/screens/learn_knowledge_screen.dart';
 import 'package:rvnow/features/learning/learn_and_review/screens/review_knowledge_screen.dart';
@@ -8,7 +9,6 @@ import 'package:rvnow/shared/config/theme/colors.dart';
 import 'package:rvnow/shared/constants/urls.dart';
 import 'package:rvnow/shared/models/index.dart';
 import '../blocs/subject_bloc.dart';
-// import '../widgets/knowledge_list.dart';
 
 class SubjectDetailScreen extends StatefulWidget {
   final String trackName;
@@ -136,12 +136,14 @@ class _SubjectDetailScreenState extends State<SubjectDetailScreen> {
                             onLoadMore: () {},
                             isSelectionMode: false,
                             selectedKnowledgeIds: const <String>{},
-                            onKnowledgeSelected: (_) {},
+                            onKnowledgeSelected: (knowledge) => Navigator.push(
+                                context,
+                                KnowledgeDetailScreen.route(
+                                    knowledge: knowledge)),
                           ),
                         );
                       } else if (state is SubjectError) {
-                        return Center(
-                            child: Text('Error: ${state.messages.join('\n')}'));
+                        return Center(child: Text(state.messages.join('\n')));
                       } else {
                         return Center(child: Text('no_data_available'.tr()));
                       }

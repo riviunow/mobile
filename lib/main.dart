@@ -69,8 +69,6 @@ void main() async {
   const String env = String.fromEnvironment('ENV', defaultValue: 'development');
   await dotenv.load(fileName: ".env.$env");
 
-  print('Environment: $env');
-
   runApp(EasyLocalization(
     supportedLocales: const [Locale('en'), Locale('vi')],
     path: 'assets/langs',
@@ -223,7 +221,11 @@ class MainApp extends StatelessWidget {
           BlocProvider(
             create: (context) => MigrateBloc(
                 getIt<migration.KnowledgeService>(),
-                BlocProvider.of<GetForMigrationBloc>(context)),
+                BlocProvider.of<GetForMigrationBloc>(context),
+                BlocProvider.of<GetCurrentUserLearningsBloc>(context),
+                BlocProvider.of<UnlistedLearningsBloc>(context),
+                BlocProvider.of<GetLearningListByIdBloc>(context),
+                BlocProvider.of<GetLearningListsBloc>(context)),
           ),
         ],
         child: MultiProvider(
@@ -244,6 +246,7 @@ class MainApp extends StatelessWidget {
               authBloc.add(AppStarted());
               return MaterialApp(
                 navigatorKey: navigatorKey,
+                debugShowCheckedModeBanner: false,
                 theme: themeService.isDarkMode
                     ? AppTheme.darkTheme
                     : AppTheme.lightTheme,

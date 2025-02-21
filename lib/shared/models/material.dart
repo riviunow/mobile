@@ -22,7 +22,7 @@ class Material extends SingleIdEntity {
   factory Material.fromJson(Map<String, dynamic> json) {
     return Material(
       id: json['id'],
-      createdAt: DateTime.parse(json['createdAt']),
+      createdAt: parseUtcDateTime(json['createdAt'] as String),
       type: MaterialTypeExtension.fromJson(json['type']),
       content: json['content'],
       knowledgeId: json['knowledgeId'],

@@ -3,7 +3,6 @@ import 'package:rvnow/features/learning/learning_list/blocs/get_learning_lists_b
 import 'package:rvnow/features/learning/learning_list/services/learning_list_service.dart';
 import 'package:rvnow/shared/models/index.dart';
 
-// Events
 abstract class GetLearningListByIdEvent {}
 
 class GetLearningListByIdRequested extends GetLearningListByIdEvent {
@@ -13,7 +12,6 @@ class GetLearningListByIdRequested extends GetLearningListByIdEvent {
   GetLearningListByIdRequested(this.id, {this.learningList});
 }
 
-// States
 abstract class GetLearningListByIdState {}
 
 class GetLearningListByIdInitial extends GetLearningListByIdState {}
@@ -32,7 +30,6 @@ class GetLearningListByIdError extends GetLearningListByIdState {
   GetLearningListByIdError({this.messages = const []});
 }
 
-// Bloc
 class GetLearningListByIdBloc
     extends Bloc<GetLearningListByIdEvent, GetLearningListByIdState> {
   final LearningListService _learningListService;

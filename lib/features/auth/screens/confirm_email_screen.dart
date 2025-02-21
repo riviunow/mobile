@@ -39,6 +39,7 @@ class _ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
     super.initState();
     emailController.text = widget.email;
     confirmationCodeExpiryTime = widget.confirmationCodeExpiryTime;
+    codeFocusNode.requestFocus();
   }
 
   @override
@@ -105,34 +106,36 @@ class _ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Focus(
+                TextField(
+                  onTapOutside: (_) {
+                    if (emailFocusNode.hasFocus) emailFocusNode.unfocus();
+                  },
                   focusNode: emailFocusNode,
-                  child: TextField(
-                    controller: emailController,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      errorText: fieldErrors['Email']?.join('\n'),
-                    ),
-                    textInputAction: TextInputAction.next,
-                    onSubmitted: (_) {
-                      FocusScope.of(context).requestFocus(codeFocusNode);
-                    },
+                  controller: emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    errorText: fieldErrors['Email']?.join('\n'),
                   ),
+                  textInputAction: TextInputAction.next,
+                  onSubmitted: (_) {
+                    FocusScope.of(context).requestFocus(codeFocusNode);
+                  },
                 ),
                 const SizedBox(height: 10),
-                Focus(
+                TextField(
+                  onTapOutside: (_) {
+                    if (codeFocusNode.hasFocus) codeFocusNode.unfocus();
+                  },
                   focusNode: codeFocusNode,
-                  child: TextField(
-                    controller: codeController,
-                    decoration: InputDecoration(
-                      labelText: 'Confirmation Code',
-                      errorText: fieldErrors['ConfirmationCode']?.join('\n'),
-                    ),
-                    textInputAction: TextInputAction.done,
-                    onSubmitted: (_) {
-                      _confirmEmail(context);
-                    },
+                  controller: codeController,
+                  decoration: InputDecoration(
+                    labelText: 'Confirmation Code',
+                    errorText: fieldErrors['ConfirmationCode']?.join('\n'),
                   ),
+                  textInputAction: TextInputAction.done,
+                  onSubmitted: (_) {
+                    _confirmEmail(context);
+                  },
                 ),
                 const SizedBox(height: 20),
                 if (confirmationCodeExpiryTime != null &&

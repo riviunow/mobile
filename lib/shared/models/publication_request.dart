@@ -16,7 +16,7 @@ class PublicationRequest extends SingleIdEntity {
   factory PublicationRequest.fromJson(Map<String, dynamic> json) {
     return PublicationRequest(
       id: json['id'],
-      createdAt: DateTime.parse(json['createdAt']),
+      createdAt: parseUtcDateTime(json['createdAt'] as String),
       knowledgeId: json['knowledgeId'],
       knowledge: json['knowledge'] != null
           ? Knowledge.fromJson(json['knowledge'])

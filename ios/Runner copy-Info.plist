@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Flutter Application 3</string>
+	<string>Review Now</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -27,15 +27,15 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>We need access to your camera to take photos.</string>
+	<string>Allow camera access to take photos for your profile and upload content.</string>
 	<key>NSDocumentsFolderUsageDescription</key>
-	<string>We need access to your documents folder to select files.</string>
+	<string>Allow access to your documents folder to select and upload files for sharing and storage.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>We need access to your microphone to record videos.</string>
+	<string>Allow microphone access to record audio while capturing videos.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>We need access to your photo library to save files.</string>
+	<string>Allow photo library access to save edited images and videos to your device.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We need access to your photo library to upload images.</string>
+	<string>Allow photo library access to choose a photo for your profile and contribute pictures for knowledge creation.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

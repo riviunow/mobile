@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,13 +33,15 @@ class _LearningsScreenState extends State<LearningsScreen> {
   bool _isSelectionMode = false;
   final Set<Knowledge> _selectedKnowledges = {};
   List<Knowledge> _knowledges = [];
+  late GetCurrentUserLearningRequest _request;
+  Timer? _debounce;
+  bool _isLoadingMore = false;
 
   @override
   void initState() {
     super.initState();
-    context
-        .read<GetCurrentUserLearningsBloc>()
-        .add(FetchLearnings(GetCurrentUserLearningRequest()));
+    _request = GetCurrentUserLearningRequest();
+    context.read<GetCurrentUserLearningsBloc>().add(FetchLearnings(_request));
   }
 
   void _toggleSelectionMode() {
@@ -60,6 +64,21 @@ class _LearningsScreenState extends State<LearningsScreen> {
     });
   }
 
+  void _loadMore() {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      if (!_isLoadingMore) {
+        setState(() {
+          _isLoadingMore = true;
+        });
+        _request = _request.copyWith(page: _request.page + 1);
+        context
+            .read<GetCurrentUserLearningsBloc>()
+            .add(LoadMoreLearnings(_request));
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,16 +92,17 @@ class _LearningsScreenState extends State<LearningsScreen> {
               } else if (state is LearningsLoaded) {
                 _knowledges = state.knowledges;
                 return KnowledgeList(
-                    knowledges: state.knowledges,
-                    hasNext: false,
-                    onLoadMore: () {},
-                    isSelectionMode: _isSelectionMode,
-                    selectedKnowledgeIds:
-                        _selectedKnowledges.map((e) => e.id).toSet(),
-                    onKnowledgeSelected: _isSelectionMode
-                        ? (knowledge) => _onKnowledgeSelected(knowledge)
-                        : (knowledge) => Navigator.push(context,
-                            KnowledgeDetailScreen.route(knowledge: knowledge)));
+                  knowledges: state.knowledges,
+                  hasNext: state.hasNext,
+                  onLoadMore: _loadMore,
+                  isSelectionMode: _isSelectionMode,
+                  selectedKnowledgeIds:
+                      _selectedKnowledges.map((e) => e.id).toSet(),
+                  onKnowledgeSelected: _isSelectionMode
+                      ? (knowledge) => _onKnowledgeSelected(knowledge)
+                      : (knowledge) => Navigator.push(context,
+                          KnowledgeDetailScreen.route(knowledge: knowledge)),
+                );
               } else if (state is LearningsError) {
                 return Center(child: Text(state.messages.join('\n')));
               } else {

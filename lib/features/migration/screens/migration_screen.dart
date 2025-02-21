@@ -136,8 +136,7 @@ class _MigrationScreenState extends State<MigrationScreen> {
                 );
               } else if (getForMigrationBloc.errorMessages.isNotEmpty) {
                 return Center(
-                    child: Text(
-                        'Error: ${getForMigrationBloc.errorMessages.join(', ')}'));
+                    child: Text(getForMigrationBloc.errorMessages.join(', ')));
               }
               return Container();
             },

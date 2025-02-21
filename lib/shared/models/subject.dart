@@ -24,7 +24,7 @@ class Subject extends SingleIdEntity {
   factory Subject.fromJson(Map<String, dynamic> json) {
     return Subject(
       id: json['id'],
-      createdAt: DateTime.parse(json['createdAt']),
+      createdAt: parseUtcDateTime(json['createdAt'] as String),
       name: json['name'],
       description: json['description'],
       photo: json['photo'],

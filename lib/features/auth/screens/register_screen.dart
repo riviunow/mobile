@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rvnow/features/auth/screens/confirm_email_screen.dart';
 import 'package:rvnow/shared/constants/error_message.dart';
+import 'package:rvnow/shared/widgets/layouts/unauthenticated_layout.dart';
+import 'package:rvnow/shared/widgets/spaced_divider.dart';
 import '../bloc/auth_bloc.dart';
 import '../models/register.dart';
 import 'login_screen.dart';
@@ -26,6 +28,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final FocusNode emailFocusNode = FocusNode();
   final FocusNode passwordFocusNode = FocusNode();
   final FocusNode confirmationPasswordFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    confirmationPasswordController.dispose();
+    emailFocusNode.dispose();
+    passwordFocusNode.dispose();
+    confirmationPasswordFocusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    emailFocusNode.requestFocus();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,53 +84,56 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Focus(
+                TextField(
+                  onTapOutside: (_) {
+                    if (emailFocusNode.hasFocus) emailFocusNode.unfocus();
+                  },
                   focusNode: emailFocusNode,
-                  child: TextField(
-                    controller: emailController,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      errorText: fieldErrors['Email']?.join('\n'),
-                    ),
-                    textInputAction: TextInputAction.next,
-                    onSubmitted: (_) {
-                      FocusScope.of(context).requestFocus(passwordFocusNode);
-                    },
+                  controller: emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    errorText: fieldErrors['Email']?.join('\n'),
                   ),
+                  textInputAction: TextInputAction.next,
+                  onSubmitted: (_) {
+                    FocusScope.of(context).requestFocus(passwordFocusNode);
+                  },
                 ),
                 const SizedBox(height: 10),
-                Focus(
+                TextField(
+                  onTapOutside: (_) {
+                    if (passwordFocusNode.hasFocus) passwordFocusNode.unfocus();
+                  },
                   focusNode: passwordFocusNode,
-                  child: TextField(
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      errorText: fieldErrors['Password']?.join('\n'),
-                    ),
-                    obscureText: true,
-                    textInputAction: TextInputAction.next,
-                    onSubmitted: (_) {
-                      FocusScope.of(context)
-                          .requestFocus(confirmationPasswordFocusNode);
-                    },
+                  controller: passwordController,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    errorText: fieldErrors['Password']?.join('\n'),
                   ),
+                  obscureText: true,
+                  textInputAction: TextInputAction.next,
+                  onSubmitted: (_) {
+                    FocusScope.of(context)
+                        .requestFocus(confirmationPasswordFocusNode);
+                  },
                 ),
                 const SizedBox(height: 10),
-                Focus(
+                TextField(
+                  onTapOutside: (_) {
+                    if (confirmationPasswordFocusNode.hasFocus)
+                      confirmationPasswordFocusNode.unfocus();
+                  },
                   focusNode: confirmationPasswordFocusNode,
-                  child: TextField(
-                    controller: confirmationPasswordController,
-                    decoration: InputDecoration(
-                      labelText: 'Confirm Password',
-                      errorText:
-                          fieldErrors['ConfirmationPassword']?.join('\n'),
-                    ),
-                    obscureText: true,
-                    textInputAction: TextInputAction.done,
-                    onSubmitted: (_) {
-                      _register(context);
-                    },
+                  controller: confirmationPasswordController,
+                  decoration: InputDecoration(
+                    labelText: 'Confirm Password',
+                    errorText: fieldErrors['ConfirmationPassword']?.join('\n'),
                   ),
+                  obscureText: true,
+                  textInputAction: TextInputAction.done,
+                  onSubmitted: (_) {
+                    _register(context);
+                  },
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
@@ -130,6 +152,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     }
                   },
                   child: Text('login'.tr()),
+                ),
+                const SizedBox(height: 5),
+                Row(
+                  children: [
+                    const Expanded(child: SpacedDivider()),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Text('or'.tr()),
+                    ),
+                    const Expanded(child: SpacedDivider()),
+                  ],
+                ),
+                const SizedBox(height: 5),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                        context, UnauthenticatedLayout.route());
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 30),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  child: Text('explore_app'.tr()),
                 ),
               ],
             ),

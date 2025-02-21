@@ -57,7 +57,7 @@ class _PublicationRequestsScreenState extends State<PublicationRequestsScreen> {
               },
             );
           } else if (state is GetPublicationRequestsError) {
-            return Center(child: Text('Error: ${state.messages.join('\n')}'));
+            return Center(child: Text(state.messages.join(', ')));
           } else {
             return Center(child: Text('no_data_available'.tr()));
           }

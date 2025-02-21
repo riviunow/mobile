@@ -3,7 +3,6 @@ import 'package:rvnow/features/creating/publication_request/models/get_requests.
 import 'package:rvnow/features/creating/publication_request/services/publication_request_service.dart';
 import 'package:rvnow/shared/models/index.dart';
 
-// Events
 abstract class GetPublicationRequestsEvent {}
 
 class GetPublicationRequestsRequested extends GetPublicationRequestsEvent {
@@ -30,7 +29,6 @@ class PublicationRequestCreated extends GetPublicationRequestsEvent {
   PublicationRequestCreated(this.request);
 }
 
-// States
 abstract class GetPublicationRequestsState {}
 
 class GetPublicationRequestsInitial extends GetPublicationRequestsState {}
@@ -50,7 +48,6 @@ class GetPublicationRequestsError extends GetPublicationRequestsState {
   GetPublicationRequestsError({this.messages = const []});
 }
 
-// Bloc
 class GetPublicationRequestsBloc
     extends Bloc<GetPublicationRequestsEvent, GetPublicationRequestsState> {
   final PublicationRequestService _publicationRequestService;

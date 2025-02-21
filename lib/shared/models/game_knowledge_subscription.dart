@@ -26,9 +26,9 @@ class GameKnowledgeSubscription extends SingleIdPivotEntity {
       id: json['id'],
       modifiedBy: json['modifiedBy'],
       modifiedAt: json['modifiedAt'] != null
-          ? DateTime.parse(json['modifiedAt'])
+          ? parseUtcDateTime(json['modifiedAt'] as String)
           : null,
-      createdAt: DateTime.parse(json['createdAt']),
+      createdAt: parseUtcDateTime(json['createdAt'] as String),
       gameId: json['gameId'],
       game: json['game'] != null ? Game.fromJson(json['game']) : null,
       knowledgeId: json['knowledgeId'],

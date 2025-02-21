@@ -67,7 +67,7 @@ class Knowledge extends SingleIdEntity {
   factory Knowledge.fromJson(Map<String, dynamic> json) {
     return Knowledge(
       id: json['id'],
-      createdAt: DateTime.parse(json['createdAt']),
+      createdAt: parseUtcDateTime(json['createdAt'] as String),
       title: json['title'],
       visibility: KnowledgeVisibilityExtension.fromJson(json['visibility']),
       level: KnowledgeLevelExtension.fromJson(json['level']),

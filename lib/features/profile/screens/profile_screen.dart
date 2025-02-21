@@ -4,9 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:rvnow/features/auth/bloc/auth_bloc.dart';
 import 'package:rvnow/features/auth/screens/login_screen.dart';
+import 'package:rvnow/features/auth/screens/register_screen.dart';
 import 'package:rvnow/features/profile/bloc/profile_bloc.dart';
 import 'package:rvnow/features/profile/screens/update_profile_screen.dart';
 import 'package:rvnow/shared/config/service_locator.dart';
+import 'package:rvnow/shared/config/theme/colors.dart';
 import 'package:rvnow/shared/constants/urls.dart';
 import 'package:rvnow/shared/services/theme_service.dart';
 import 'package:rvnow/shared/widgets/layouts/authenticated_layout.dart';
@@ -40,9 +42,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     var bloc = context.read<ProfileBloc>();
-    if (bloc.state is! ProfileLoaded) {
+    if (bloc.state is! ProfileLoaded && bloc.state is! UnauthenticatedProfile) {
       bloc.add(LoadProfile());
     }
+  }
+
+  void _confirmDeleteAccount(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('delete_account'.tr()),
+          content: Text('delete_account_confirmation'.tr()),
+          actions: <Widget>[
+            TextButton(
+              child: Text('cancel'.tr()),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('delete'.tr()),
+              onPressed: () {
+                context.read<ProfileBloc>().add(DeleteAccount());
+                Navigator.popUntil(context, (route) => route.isFirst);
+                Navigator.push(context, LoginScreen.route());
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -133,11 +163,55 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Navigator.push(context, LoginScreen.route());
                     },
                   ),
+                  ListTile(
+                    leading: const Icon(Icons.delete, color: AppColors.error),
+                    title: Text('delete_account'.tr(),
+                        style: const TextStyle(color: AppColors.error)),
+                    onTap: () => _confirmDeleteAccount(context),
+                  ),
                 ],
               ),
             );
+          } else if (state is UnauthenticatedProfile) {
+            final themeService = Provider.of<ThemeService>(context);
+            final isDark = themeService.isDarkMode;
+            final toggleTheme = themeService.toggleThemeMode;
+
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () => Navigator.pushReplacement(
+                          context, LoginScreen.route()),
+                      child: Text('login'.tr()),
+                    ),
+                    const SizedBox(width: 10),
+                    ElevatedButton(
+                      onPressed: () => Navigator.pushReplacement(
+                          context, RegisterScreen.route()),
+                      child: Text('register'.tr()),
+                    ),
+                  ],
+                ),
+                ListTile(
+                  leading: Icon(isDark ? Icons.dark_mode : Icons.light_mode),
+                  title:
+                      Text(isDark ? 'switch_light'.tr() : 'switch_dark'.tr()),
+                  onTap: toggleTheme,
+                ),
+                ListTile(
+                  leading: const Icon(Icons.language),
+                  title: Text("language_settings".tr()),
+                  onTap: () =>
+                      Navigator.push(context, LanguageSettingsScreen.route()),
+                ),
+              ],
+            );
           } else if (state is ProfileError) {
-            return Center(child: Text('Error: ${state.messages.join('\n')}'));
+            return Center(child: Text(state.messages.join('\n')));
           } else {
             return Center(child: Text('no_data_available'.tr()));
           }

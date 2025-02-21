@@ -20,6 +20,10 @@ class UpdateProfile extends ProfileEvent {
   UpdateProfile(this.request);
 }
 
+class DeleteAccount extends ProfileEvent {}
+
+class RemoveProfile extends ProfileEvent {}
+
 abstract class ProfileState {}
 
 class ProfileLoaded extends ProfileState {
@@ -41,6 +45,10 @@ class ProfileError extends ProfileState {
   ProfileError({this.messages = const [], this.fieldErrors = const {}});
 }
 
+class ProfileDeleted extends ProfileState {}
+
+class UnauthenticatedProfile extends ProfileState {}
+
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final ProfileService profileService;
   final JwtService jwtService;
@@ -55,7 +63,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       var response = await profileService.getUser();
       await response.on(
           onFailure: (errors, fieldErrors) {
-            emit(ProfileError(messages: errors, fieldErrors: fieldErrors));
+            emit(UnauthenticatedProfile());
             jwtService.removeAccessToken();
             jwtService.removeRefreshToken();
           },
@@ -72,6 +80,22 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         sleep(const Duration(seconds: 1));
         emit(ProfileLoaded(data));
       });
+    });
+
+    on<DeleteAccount>((event, emit) async {
+      emit(ProfileLoading());
+      var response = await profileService.deleteAccount();
+      await response.on(onFailure: (errors, _) {
+        emit(ProfileError(messages: errors));
+      }, onSuccess: (_) {
+        jwtService.removeAccessToken();
+        jwtService.removeRefreshToken();
+        emit(ProfileDeleted());
+      });
+    });
+
+    on<RemoveProfile>((event, emit) async {
+      emit(UnauthenticatedProfile());
     });
   }
 }

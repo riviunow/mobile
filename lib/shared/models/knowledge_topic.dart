@@ -22,7 +22,7 @@ class KnowledgeTopic extends SingleIdEntity {
   factory KnowledgeTopic.fromJson(Map<String, dynamic> json) {
     return KnowledgeTopic(
       id: json['id'],
-      createdAt: DateTime.parse(json['createdAt']),
+      createdAt: parseUtcDateTime(json['createdAt'] as String),
       title: json['title'],
       order: json['order'],
       parentId: json['parentId'],

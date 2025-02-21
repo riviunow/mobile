@@ -48,7 +48,10 @@ class KnowledgeList extends StatelessWidget {
                     child: Loading(
                       loaderType: LoaderType.wave,
                     ))
-                : Center(child: Text('no_more_items_to_load'.tr()));
+                : Padding(
+                    padding: const EdgeInsets.only(bottom: 80, top: 20),
+                    child: Center(child: Text('no_more_items_to_load'.tr())),
+                  );
           }
           final knowledge = knowledges[index];
           final isSelected = selectedKnowledgeIds.contains(knowledge.id);
@@ -56,7 +59,7 @@ class KnowledgeList extends StatelessWidget {
           return Stack(
             children: [
               Card(
-                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                   side: BorderSide(
@@ -71,7 +74,10 @@ class KnowledgeList extends StatelessWidget {
                 elevation: 4,
                 child: ListTile(
                   onTap: () => onKnowledgeSelected(knowledge),
-                  contentPadding: const EdgeInsets.all(16),
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 4,
+                    horizontal: 16,
+                  ),
                   title: Text(
                     knowledge.title,
                     style: const TextStyle(
@@ -84,12 +90,7 @@ class KnowledgeList extends StatelessWidget {
                     children: [
                       if (knowledge.currentUserLearning != null) ...[
                         const SizedBox(height: 8),
-                        Text(
-                          '${knowledge.currentUserLearning?.calculateTimeLeft()}',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
+                        knowledge.currentUserLearning!.reviewCountDown(),
                         const SizedBox(height: 8),
                       ],
                       if (learningList != null)
@@ -114,7 +115,7 @@ class KnowledgeList extends StatelessWidget {
                             label: Text(
                               learningList!.containsKnowledge(knowledge.id)
                                   ? '${"remove_from".tr()} ${learningList!.title.length > 12 ? '${learningList!.title.substring(0, 12)}...' : learningList!.title}'
-                                  : '${"add_to"} ${learningList!.title.length > 12 ? '${learningList!.title.substring(0, 12)}...' : learningList!.title}',
+                                  : '${"add_to".tr()} ${learningList!.title.length > 12 ? '${learningList!.title.substring(0, 12)}...' : learningList!.title}',
                               style: const TextStyle(color: Colors.white),
                             ),
                             style: ElevatedButton.styleFrom(

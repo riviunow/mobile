@@ -1,5 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rvnow/shared/widgets/loader.dart';
+
+import '../blocs/create_knowledge_bloc.dart';
 
 class NavigationButtons extends StatelessWidget {
   final int currentStep;
@@ -31,10 +35,18 @@ class NavigationButtons extends StatelessWidget {
               onPressed: onNext,
               child: Text('next'.tr()),
             ),
-          if (currentStep == 4 && onSubmit != null)
-            ElevatedButton(
-              onPressed: onSubmit,
-              child: Text('submit'.tr()),
+          if (currentStep == 4)
+            BlocBuilder<CreateKnowledgeBloc, CreateKnowledgeState>(
+              builder: (context, state) {
+                if (state is CreateKnowledgeLoading) {
+                  return const LoadingSmall();
+                } else {
+                  return ElevatedButton(
+                    onPressed: onSubmit,
+                    child: Text('submit'.tr()),
+                  );
+                }
+              },
             ),
         ],
       ),

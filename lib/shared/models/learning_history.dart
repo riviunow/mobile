@@ -24,7 +24,7 @@ class LearningHistory extends SingleIdEntity {
   factory LearningHistory.fromJson(Map<String, dynamic> json) {
     return LearningHistory(
       id: json['id'],
-      createdAt: DateTime.parse(json['createdAt']),
+      createdAt: parseUtcDateTime(json['createdAt'] as String),
       learningId: json['learningId'],
       learning:
           json['learning'] != null ? Learning.fromJson(json['learning']) : null,

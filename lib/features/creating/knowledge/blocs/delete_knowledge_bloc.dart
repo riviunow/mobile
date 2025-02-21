@@ -2,7 +2,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../services/knowledge_service.dart';
 import 'created_knowledges_bloc.dart';
 
-// Events
 abstract class DeleteKnowledgeEvent {}
 
 class DeleteKnowledge extends DeleteKnowledgeEvent {
@@ -11,7 +10,6 @@ class DeleteKnowledge extends DeleteKnowledgeEvent {
   DeleteKnowledge(this.id);
 }
 
-// States
 abstract class DeleteKnowledgeState {}
 
 class DeleteKnowledgeInitial extends DeleteKnowledgeState {}
@@ -26,7 +24,6 @@ class DeleteKnowledgeError extends DeleteKnowledgeState {
   DeleteKnowledgeError({this.messages = const []});
 }
 
-// Bloc
 class DeleteKnowledgeBloc
     extends Bloc<DeleteKnowledgeEvent, DeleteKnowledgeState> {
   final KnowledgeService _knowledgeService;

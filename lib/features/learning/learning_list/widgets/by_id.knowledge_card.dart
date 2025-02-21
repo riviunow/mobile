@@ -63,13 +63,15 @@ class _ByIdKnowledgeCardState extends State<ByIdKnowledgeCard> {
             borderRadius: BorderRadius.circular(10),
           ),
           child: ListTile(
-            title: Text(widget.knowledge.title),
+            title: Text(widget.knowledge.title,
+                style: const TextStyle(fontSize: 16)),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(height: 4),
                 if (widget.knowledge.currentUserLearning != null)
-                  Text(
-                      '${widget.knowledge.currentUserLearning?.calculateTimeLeft()}'),
+                  widget.knowledge.currentUserLearning!
+                      .reviewCountDown(fontSize: 12),
               ],
             ),
             onTap: widget.isSelectionMode

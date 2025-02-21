@@ -60,7 +60,7 @@ class _UpdateKnowledgeScreenState extends State<UpdateKnowledgeScreen> {
             Navigator.pop(context);
           } else if (state is UpdateKnowledgeError) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Error: ${state.messages.join('\n')}')),
+              SnackBar(content: Text(state.messages.join(', '))),
             );
           }
         },

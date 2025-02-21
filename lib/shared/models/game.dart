@@ -18,7 +18,7 @@ class Game extends SingleIdEntity {
   factory Game.fromJson(Map<String, dynamic> json) {
     return Game(
       id: json['id'],
-      createdAt: DateTime.parse(json['createdAt']),
+      createdAt: parseUtcDateTime(json['createdAt'] as String),
       name: json['name'],
       description: json['description'],
       imageUrl: json['imageUrl'],

@@ -8,6 +8,7 @@ import 'package:rvnow/features/learning/learn_and_review/screens/review_knowledg
 import 'package:rvnow/features/learning/learning_list/blocs/add_remove_knowledges_bloc.dart';
 import 'package:rvnow/features/learning/learning_list/blocs/get_learning_list_by_id_bloc.dart';
 import 'package:rvnow/features/learning/learning_list/models/add_remove_knowledges.dart';
+import 'package:rvnow/features/profile/bloc/profile_bloc.dart';
 import 'package:rvnow/shared/config/service_locator.dart';
 import 'package:rvnow/shared/config/theme/colors.dart';
 import 'package:rvnow/shared/models/index.dart';
@@ -121,6 +122,9 @@ class _SearchKnowledgeScreenState extends State<SearchKnowledgeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var profileBloc = context.read<ProfileBloc>();
+    var profileState = profileBloc.state;
+
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -212,11 +216,13 @@ class _SearchKnowledgeScreenState extends State<SearchKnowledgeScreen> {
                           }
                         },
                       ),
-                      IconButton(
-                        icon: Icon(
-                            _isSelectionMode ? Icons.cancel : Icons.select_all),
-                        onPressed: _toggleSelectionMode,
-                      ),
+                      if (profileState is! UnauthenticatedProfile)
+                        IconButton(
+                          icon: Icon(_isSelectionMode
+                              ? Icons.cancel
+                              : Icons.select_all),
+                          onPressed: _toggleSelectionMode,
+                        ),
                     ],
                   ),
                 ),
@@ -254,8 +260,7 @@ class _SearchKnowledgeScreenState extends State<SearchKnowledgeScreen> {
                           },
                         );
                       } else if (state is KnowledgeError) {
-                        return Center(
-                            child: Text('Error: ${state.messages.join('\n')}'));
+                        return Center(child: Text(state.messages.join('\n')));
                       } else {
                         return Center(child: Text('no_data_available'.tr()));
                       }
@@ -264,7 +269,7 @@ class _SearchKnowledgeScreenState extends State<SearchKnowledgeScreen> {
                 ),
               ],
             ),
-            if (_isSelectionMode)
+            if (_isSelectionMode && profileState is! UnauthenticatedProfile)
               Positioned(
                 bottom: 0,
                 left: 0,

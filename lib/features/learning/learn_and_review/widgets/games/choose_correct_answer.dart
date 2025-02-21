@@ -49,10 +49,34 @@ class _ChooseCorrectAnswerState extends State<ChooseCorrectAnswer> {
               style:
                   const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
-          Text(
-            question.value,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
+          if (showTranslation)
+            FutureBuilder<String>(
+              future: translationService.translate(question.value),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Container(
+                    height: 10,
+                    decoration: BoxDecoration(
+                      color: AppColors.hint,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  return const SizedBox();
+                } else {
+                  return Text(
+                    snapshot.data ?? '',
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
+                  );
+                }
+              },
+            )
+          else
+            Text(
+              question.value,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
           const SizedBox(height: 16),
           Expanded(
             child: ListView(

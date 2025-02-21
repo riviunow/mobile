@@ -261,8 +261,7 @@ class _GetLearningListByIdScreenState extends State<GetLearningListByIdScreen> {
                     ),
                   );
                 } else if (state is GetLearningListByIdError) {
-                  return Center(
-                      child: Text('Error: ${state.messages.join('\n')}'));
+                  return Center(child: Text(state.messages.join('\n')));
                 } else {
                   return Center(child: Text('no_data_available'.tr()));
                 }

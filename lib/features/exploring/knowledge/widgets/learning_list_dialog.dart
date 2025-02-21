@@ -91,8 +91,7 @@ class _LearningListDialogState extends State<LearningListDialog> {
                       },
                     );
                   } else if (state is GetLearningListsError) {
-                    return Center(
-                        child: Text('Error: ${state.messages.join('\n')}'));
+                    return Center(child: Text(state.messages.join('\n')));
                   } else {
                     return Center(child: Text('no_data_available'.tr()));
                   }

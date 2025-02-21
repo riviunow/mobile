@@ -53,14 +53,14 @@ class _KnowledgeDetailScreenState extends State<KnowledgeDetailScreen> {
       body: SafeArea(
           child: Stack(
         children: [
-          SingleChildScrollView(
-            child: BlocBuilder<KnowledgeDetailBloc, KnowledgeDetailState>(
-              builder: (context, state) {
-                if (state is KnowledgeDetailLoading) {
-                  return const Center(child: Loading());
-                } else if (state is KnowledgeDetailLoaded) {
-                  final knowledge = state.knowledge;
-                  return Column(
+          BlocBuilder<KnowledgeDetailBloc, KnowledgeDetailState>(
+            builder: (context, state) {
+              if (state is KnowledgeDetailLoading) {
+                return const Center(child: Loading());
+              } else if (state is KnowledgeDetailLoaded) {
+                final knowledge = state.knowledge;
+                return SingleChildScrollView(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       KnowledgeMediaWidget(knowledge: knowledge),
@@ -73,15 +73,14 @@ class _KnowledgeDetailScreenState extends State<KnowledgeDetailScreen> {
                       const SizedBox(height: 16),
                       KnowledgeTagsWidget(knowledge: knowledge),
                     ],
-                  );
-                } else if (state is KnowledgeDetailError) {
-                  return Center(
-                      child: Text('Error: ${state.messages.join('\n')}'));
-                } else {
-                  return Center(child: Text('no_data_available'.tr()));
-                }
-              },
-            ),
+                  ),
+                );
+              } else if (state is KnowledgeDetailError) {
+                return Center(child: Text(state.messages.join('\n')));
+              } else {
+                return Center(child: Text('no_data_available'.tr()));
+              }
+            },
           ),
           Positioned(
             top: 10,

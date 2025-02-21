@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
       listener: (context, state) {
         if (state is ProfileLoaded) {
           Navigator.pushReplacement(context, HomeScreen.route());
-        } else if (state is ProfileError) {
+        } else if (state is UnauthenticatedProfile) {
           Navigator.pushReplacement(context, LoginScreen.route());
         }
       },

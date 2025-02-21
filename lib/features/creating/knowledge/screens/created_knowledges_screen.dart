@@ -56,8 +56,7 @@ class _CreatedKnowledgesScreenState extends State<CreatedKnowledgesScreen> {
                   },
                 );
               } else if (state is CreatedKnowledgesError) {
-                return Center(
-                    child: Text('Error: ${state.messages.join('\n')}'));
+                return Center(child: Text(state.messages.join('\n')));
               } else {
                 return Center(child: Text('no_data_available'.tr()));
               }

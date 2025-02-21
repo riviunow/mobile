@@ -31,9 +31,9 @@ class Learning extends SingleIdPivotEntity {
       id: json['id'] as String,
       modifiedBy: json['modifiedBy'] as String?,
       modifiedAt: json['modifiedAt'] != null
-          ? DateTime.parse(json['modifiedAt'] as String)
+          ? parseUtcDateTime(json['createdAt'] as String)
           : null,
-      createdAt: DateTime.parse(json['createdAt'] as String),
+      createdAt: parseUtcDateTime(json['createdAt'] as String),
       knowledgeId: json['knowledgeId'] as String,
       knowledge: json['knowledge'] != null
           ? Knowledge.fromJson(json['knowledge'] as Map<String, dynamic>)
@@ -42,7 +42,7 @@ class Learning extends SingleIdPivotEntity {
       user: json['user'] != null
           ? User.fromJson(json['user'] as Map<String, dynamic>)
           : null,
-      nextReviewDate: DateTime.parse(json['nextReviewDate'] as String),
+      nextReviewDate: parseUtcDateTime(json['nextReviewDate'] as String),
       learningHistories: (json['learningHistories'] as List<dynamic>?)
               ?.whereType<Map<String, dynamic>>()
               .map((e) => LearningHistory.fromJson(e))
@@ -87,35 +87,38 @@ class Learning extends SingleIdPivotEntity {
     );
   }
 
-  String calculateTimeLeft() {
-    final now = DateTime.now();
-    final difference = nextReviewDate.difference(now);
-    if (difference.inDays > 0) {
-      return '${"next_rv".tr()} ${difference.inDays}d';
-    } else if (difference.inHours > 0) {
-      return '${"next_rv".tr()} ${difference.inHours}h';
-    } else if (difference.inMinutes > 0) {
-      return '${"next_rv".tr()} ${difference.inMinutes}m';
-    } else if (difference.inSeconds > 0) {
-      return '${"next_rv".tr()} ${difference.inSeconds}s';
-    } else {
-      return 'ready_to_review'.tr();
-    }
-  }
+  flutter_material.Widget reviewCountDown({double fontSize = 14}) {
+    final nowUtc = DateTime.now().toUtc();
+    final difference = nextReviewDate.difference(nowUtc);
 
-  String timeLeft() {
-    final now = DateTime.now();
-    final difference = nextReviewDate.difference(now);
-    if (difference.inDays > 0) {
-      return '${difference.inDays}d';
-    } else if (difference.inHours > 0) {
-      return '${difference.inHours}h';
-    } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes}m';
-    } else if (difference.inSeconds > 0) {
-      return '${difference.inSeconds}s';
-    } else {
-      return 'ready';
+    if (difference.isNegative) {
+      return flutter_material.Text('ready_to_review'.tr());
     }
+
+    CountDownTimerFormat format;
+    if (difference.inDays > 0) {
+      format = CountDownTimerFormat.daysHoursMinutesSeconds;
+    } else if (difference.inHours > 0) {
+      format = CountDownTimerFormat.hoursMinutesSeconds;
+    } else if (difference.inMinutes > 0) {
+      format = CountDownTimerFormat.minutesSeconds;
+    } else {
+      format = CountDownTimerFormat.secondsOnly;
+    }
+
+    return TimerCountdown(
+      format: format,
+      endTime: nextReviewDate,
+      hoursDescription: 'hours'.tr(),
+      minutesDescription: 'minutes'.tr(),
+      secondsDescription: 'seconds'.tr(),
+      daysDescription: 'days'.tr(),
+      timeTextStyle: flutter_material.TextStyle(
+        fontSize: fontSize,
+      ),
+      descriptionTextStyle: flutter_material.TextStyle(
+        fontSize: fontSize,
+      ),
+    );
   }
 }

@@ -10,7 +10,6 @@ import '../widgets/games/word_match.dart';
 import '../widgets/gaming_board.dart';
 import 'game_bloc.dart';
 
-// Events
 abstract class GetToLearnEvent {
   const GetToLearnEvent();
 }
@@ -21,7 +20,6 @@ class GetToLearnRequested extends GetToLearnEvent {
   const GetToLearnRequested(this.request);
 }
 
-// States
 abstract class GetToLearnState {
   const GetToLearnState();
 }
@@ -42,7 +40,6 @@ class GetToLearnFailure extends GetToLearnState {
   const GetToLearnFailure(this.messages);
 }
 
-// BLoC
 class GetToLearnBloc extends Bloc<GetToLearnEvent, GetToLearnState> {
   final LearnAndReviewService _learnAndReviewService;
   final GameBloc _gameBloc;

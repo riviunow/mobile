@@ -48,6 +48,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           onFailure: (errors, fieldErrors) =>
               emit(AuthError(errors, fieldErrors, AuthScreen.logout)),
           onSuccess: (data) {
+            profileBloc.add(RemoveProfile());
             emit(AuthLogoutSuccess(data));
           });
       await jwtService.removeAccessToken();
