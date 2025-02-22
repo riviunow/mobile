@@ -59,7 +59,18 @@ class TranslationService with ChangeNotifier {
           onDeviceTranslator == null) {
         return text;
       }
-      return await onDeviceTranslator.translateText(text);
+
+      String cacheKey = 'translate_${getUserLang}_${text}';
+      String? cachedTranslation = prefs.getString(cacheKey);
+
+      if (cachedTranslation != null) {
+        return cachedTranslation;
+      }
+
+      String translatedText = await onDeviceTranslator.translateText(text);
+      prefs.setString(cacheKey, translatedText);
+
+      return translatedText;
     } catch (e) {
       print('Translation error: $e');
       return text;
@@ -69,6 +80,8 @@ class TranslationService with ChangeNotifier {
   Future<void> downloadModel(String language) async {
     final modelManager = OnDeviceTranslatorModelManager();
     await modelManager.downloadModel(language);
+
+    print("downloaded $language");
   }
 
   Future<void> deleteModel(BuildContext context, String language) async {

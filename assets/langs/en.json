@@ -126,6 +126,7 @@
     "memorized": "Memorized",
     "score": "Score",
     "level": "Level",
+    "all_levels": "All Levels",
     "game_not_found": "Game not found",
     "unsupported_game": "Unsupported game",
     "arrange_the_words": "Arrange the words or phrases in the correct order",
@@ -247,7 +248,7 @@
     "search_knowledge_type": "Search knowledge type",
     "search_knowledge_topic": "Search topic",
     "order": "Order",
-    "order_by": "Order by",
+    "sort": "Sort",
     "delete_account": "Delete Account",
     "delete_account_confirmation": "Are you sure you want to delete your account?",
     "explore_app": "Explore the app",
@@ -257,5 +258,6 @@
     "seconds": "Seconds",
     "day": "Day",
     "click_to_arrange": "Click on a word",
-    "all_are_choosen": "All words are choosen"
+    "all_are_choosen": "All words are choosen",
+    "version": "Version"
 }

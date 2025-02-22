@@ -86,9 +86,9 @@ class _FlashCardState extends State<FlashCard> {
             right: 0,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-              ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  backgroundColor: AppColors.secondary),
               onPressed: isFlipped
                   ? () {
                       context.read<GameBloc>().add(
@@ -96,7 +96,7 @@ class _FlashCardState extends State<FlashCard> {
                           );
                     }
                   : null,
-              child: Text('next'.tr()),
+              child: Text('next'.tr(), style: const TextStyle(fontSize: 22)),
             ))
       ],
     );

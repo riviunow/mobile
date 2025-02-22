@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:rvnow/features/auth/bloc/auth_bloc.dart';
 import 'package:rvnow/features/auth/screens/login_screen.dart';
@@ -77,6 +78,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var packageInfo = getIt<PackageInfo>();
+    var appName = packageInfo.appName;
+    var version = packageInfo.version;
+
     return Scaffold(
       body: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
@@ -169,6 +174,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         style: const TextStyle(color: AppColors.error)),
                     onTap: () => _confirmDeleteAccount(context),
                   ),
+                  const Divider(),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      '$appName v$version',
+                      style: const TextStyle(fontSize: 16, color: Colors.grey),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ],
               ),
             );
@@ -207,6 +221,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   title: Text("language_settings".tr()),
                   onTap: () =>
                       Navigator.push(context, LanguageSettingsScreen.route()),
+                ),
+                const Divider(),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    '$appName v$version',
+                    style: const TextStyle(fontSize: 16, color: Colors.grey),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ],
             );

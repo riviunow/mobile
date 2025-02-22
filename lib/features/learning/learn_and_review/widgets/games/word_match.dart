@@ -60,80 +60,105 @@ class _WordMatchState extends State<WordMatch> {
   Widget build(BuildContext context) {
     return widget.knowledgeList.length == 1
         ? const Loading()
-        : Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 2),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'match_the_knowledges'.tr(),
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 10),
-                Flexible(
-                  flex: 3,
-                  child: SizedBox(
-                    child: _buildSelectableList(
-                      items: knowledgeTupples.map((pair) => pair.$2).toList(),
-                      isTitle: true,
-                      selectedItem: selectedTitle,
-                      textStyle:
-                          const TextStyle(fontSize: 18, color: Colors.white),
-                    ),
-                  ),
-                ),
-                const SpacedDivider(
-                  spacing: 12,
-                ),
-                Flexible(
-                  flex: 4,
-                  child: SizedBox(
-                    child: _buildSelectableList(
-                      items: shuffledInterpretations,
-                      isTitle: false,
-                      selectedItem: selectedInterpretation,
-                      textStyle:
-                          const TextStyle(fontSize: 16, color: Colors.white),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Row(
+        : Stack(
+            children: [
+              SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Row(
-                      children: [
-                        Switch(
-                          value: showTranslation,
-                          onChanged: (value) {
-                            setState(() {
-                              showTranslation = value;
-                            });
-                          },
-                        ),
-                        Icon(Icons.translate,
-                            color: showTranslation
-                                ? Theme.of(context).primaryColor
-                                : AppColors.hint),
-                      ],
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: Text(
+                        'match_the_knowledges'.tr(),
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed:
-                            matchedPairs.length == knowledgeTupples.length
-                                ? () => _submitResults(context)
-                                : null,
-                        child: isLoading
-                            ? const LoadingSmall()
-                            : Text('submit_results'.tr(),
-                                style: const TextStyle(fontSize: 20)),
+                    const SizedBox(height: 10),
+                    Container(
+                      width: double.infinity,
+                      constraints: const BoxConstraints(
+                        minHeight: 220,
+                      ),
+                      alignment: Alignment.bottomCenter,
+                      child: _buildSelectableList(
+                        items: knowledgeTupples.map((pair) => pair.$2).toList(),
+                        isTitle: true,
+                        selectedItem: selectedTitle,
+                        textStyle:
+                            const TextStyle(fontSize: 18, color: Colors.white),
+                      ),
+                    ),
+                    const SpacedDivider(
+                      spacing: 12,
+                    ),
+                    Container(
+                      width: double.infinity,
+                      constraints: const BoxConstraints(
+                        minHeight: 270,
+                      ),
+                      alignment: Alignment.topCenter,
+                      child: _buildSelectableList(
+                        items: shuffledInterpretations,
+                        isTitle: false,
+                        selectedItem: selectedInterpretation,
+                        textStyle:
+                            const TextStyle(fontSize: 16, color: Colors.white),
                       ),
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+              Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      children: [
+                        Row(
+                          children: [
+                            Switch(
+                              value: showTranslation,
+                              onChanged: (value) {
+                                setState(() {
+                                  showTranslation = value;
+                                });
+                              },
+                            ),
+                            Icon(Icons.translate,
+                                color: showTranslation
+                                    ? Theme.of(context).primaryColor
+                                    : AppColors.hint),
+                          ],
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed:
+                                matchedPairs.length == knowledgeTupples.length
+                                    ? () => _submitResults(context)
+                                    : null,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.secondary,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(32.0),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8.0, horizontal: 20.0),
+                            ),
+                            child: isLoading
+                                ? const LoadingSmall()
+                                : Text('submit_results'.tr(),
+                                    style: const TextStyle(fontSize: 24)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )),
+            ],
           );
   }
 
@@ -224,18 +249,27 @@ class _WordMatchState extends State<WordMatch> {
       }
 
       if (selectedTitle != null && selectedInterpretation != null) {
-        matchedPairs[selectedTitle!] = selectedInterpretation;
-
         bool matchFound = widget.knowledgeList.any(
           (k) =>
               k.title == selectedTitle &&
               k.distinctInterpretation == selectedInterpretation,
         );
 
-        matchResults[selectedTitle!] = matchFound;
-        var interpretationOfSelectedTitle =
-            knowledgeTupples.firstWhere((pair) => pair.$2 == selectedTitle).$3;
-        matchResults[interpretationOfSelectedTitle] = matchFound;
+        if (isTitle) {
+          matchResults[selectedInterpretation!] = matchFound;
+          var titleOfSelectedInterpretation = knowledgeTupples
+              .firstWhere((pair) => pair.$3 == selectedInterpretation)
+              .$2;
+          matchResults[titleOfSelectedInterpretation] = matchFound;
+          matchedPairs[titleOfSelectedInterpretation] = selectedInterpretation;
+        } else {
+          matchResults[selectedTitle!] = matchFound;
+          var interpretationOfSelectedTitle = knowledgeTupples
+              .firstWhere((pair) => pair.$2 == selectedTitle)
+              .$3;
+          matchResults[interpretationOfSelectedTitle] = matchFound;
+          matchedPairs[selectedTitle!] = interpretationOfSelectedTitle;
+        }
 
         selectedTitle = null;
         selectedInterpretation = null;
