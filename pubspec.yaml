@@ -1,7 +1,7 @@
 name: rvnow
 description: "A new Flutter project."
 publish_to: 'none'
-version: 1.0.1
+version: 1.1.0
 
 environment:
   sdk: ^3.5.0
@@ -27,6 +27,7 @@ dependencies:
   flutter_dotenv: ^5.2.1
   flutter_timer_countdown: ^1.0.7
   reorderables: ^0.6.0
+  package_info_plus: ^8.2.1
 
 dev_dependencies:
   flutter_test:
@@ -37,5 +38,6 @@ flutter:
   uses-material-design: true
   assets:
     - assets/langs/
+    - assets/images/
     - .env.development
     - .env.production

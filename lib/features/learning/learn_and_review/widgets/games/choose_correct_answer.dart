@@ -183,6 +183,7 @@ class _ChooseCorrectAnswerState extends State<ChooseCorrectAnswer> {
                     ),
                   ],
                 ),
+                const SizedBox(width: 10),
                 Expanded(
                   child: ElevatedButton(
                     onPressed: selectedOption != null
@@ -192,7 +193,16 @@ class _ChooseCorrectAnswerState extends State<ChooseCorrectAnswer> {
                             });
                           }
                         : null,
-                    child: Text('submit'.tr()),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.secondary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32.0),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 50.0),
+                    ),
+                    child: Text('submit'.tr(),
+                        style: const TextStyle(fontSize: 24)),
                   ),
                 ),
               ],
@@ -202,7 +212,15 @@ class _ChooseCorrectAnswerState extends State<ChooseCorrectAnswer> {
               onPressed: selectedOption == null
                   ? null
                   : () => widget.onAnswerSubmitted(selectedOption!.value),
-              child: Text('next'.tr()),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.secondary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(32.0),
+                ),
+                padding: const EdgeInsets.symmetric(
+                    vertical: 10.0, horizontal: 50.0),
+              ),
+              child: Text('next'.tr(), style: const TextStyle(fontSize: 24)),
             )
         ],
       ),

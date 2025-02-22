@@ -126,6 +126,7 @@
     "memorized": "Đã ghi nhớ",
     "score": "Điểm",
     "level": "Cấp độ",
+    "all_levels": "Tất cả cấp độ",
     "game_not_found": "Không tìm thấy trò chơi",
     "unsupported_game": "Trò chơi không được hỗ trợ",
     "arrange_the_words": "Sắp xếp các từ hoặc cụm từ theo thứ tự đúng",
@@ -246,8 +247,8 @@
     "need_to_review": "Kiến thức cần ôn tập",
     "search_knowledge_type": "Tìm loại kiến thức",
     "search_knowledge_topic": "Tìm chủ đề",
-    "order": "Sắp xếp",
-    "order_by": "Sắp xếp theo",
+    "order": "Thứ tự",
+    "sort": "Sắp xếp",
     "delete_account": "Xóa tài khoản",
     "delete_account_confirmation": "Xác nhận xóa tài khoản?",
     "explore_app": "Khám phá ứng dụng",
@@ -257,5 +258,6 @@
     "seconds": "Giây",
     "day": "Ngày",
     "click_to_arrange": "Nhấp vào một từ",
-    "all_are_choosen": "Tất cả các từ đã được chọn"
+    "all_are_choosen": "Tất cả các từ đã được chọn",
+    "version": "Phiên bản"
 }

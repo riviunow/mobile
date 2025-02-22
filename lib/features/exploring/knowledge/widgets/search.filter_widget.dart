@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rvnow/shared/config/theme/colors.dart';
+import 'package:rvnow/shared/models/enums/knowledge_level.dart';
 import 'package:rvnow/shared/widgets/spaced_divider.dart';
 import '../blocs/knowledge_topic_bloc.dart';
 import '../blocs/knowledge_type_bloc.dart';
@@ -74,8 +75,7 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                                 _request = _request.copyWith(orderBy: value);
                               });
                             },
-                            decoration:
-                                InputDecoration(labelText: 'sort_by'.tr()),
+                            decoration: InputDecoration(labelText: 'sort'.tr()),
                           ),
                         ),
                         const SizedBox(width: 5),
@@ -102,6 +102,28 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
                           ),
                         ),
                       ],
+                    ),
+                    const SpacedDivider(spacing: 10),
+                    DropdownButtonFormField<KnowledgeLevel?>(
+                      value: _request.level,
+                      items: [
+                        DropdownMenuItem<KnowledgeLevel?>(
+                          value: null,
+                          child: Text('all_levels'.tr()),
+                        ),
+                        ...KnowledgeLevel.values.map((KnowledgeLevel level) {
+                          return DropdownMenuItem<KnowledgeLevel?>(
+                            value: level,
+                            child: Text(level.toStr()),
+                          );
+                        }),
+                      ],
+                      onChanged: (value) {
+                        setState(() {
+                          _request = _request.copyWith(level: value);
+                        });
+                      },
+                      decoration: InputDecoration(labelText: 'level'.tr()),
                     ),
                     const SpacedDivider(spacing: 10),
                     KnowledgeTypeFilter(
@@ -135,10 +157,13 @@ class _SearchFilterWidgetState extends State<SearchFilterWidget> {
               children: [
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    setState(() {
+                      _request = _request.clearFilter();
+                      Navigator.of(context).pop(_request);
+                    });
                   },
                   child: Text(
-                    'cancel'.tr(),
+                    'reset'.tr(),
                     style: const TextStyle(color: AppColors.error),
                   ),
                 ),

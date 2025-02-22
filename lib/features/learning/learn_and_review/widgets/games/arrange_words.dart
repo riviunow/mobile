@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:reorderables/reorderables.dart';
+import 'package:rvnow/shared/config/theme/colors.dart';
 import 'package:rvnow/shared/models/enums/game_option_type.dart';
 import 'package:rvnow/shared/models/index.dart';
 
@@ -23,8 +24,8 @@ class ArrangeWords extends StatefulWidget {
 }
 
 class _ArrangeWordsState extends State<ArrangeWords> {
-  late List<String> shuffledWords;
-  late List<String> arrangedWords;
+  late List<(String, bool, int)> shuffledWords;
+  late List<(String, int)> arrangedWords;
   bool isAnswered = false;
   late bool hasSpace;
 
@@ -35,7 +36,11 @@ class _ArrangeWordsState extends State<ArrangeWords> {
         .firstWhere((option) => option.type == GameOptionType.question)
         .value;
     hasSpace = question.contains(' ');
-    shuffledWords = hasSpace ? question.split(" ") : question.split('');
+    shuffledWords = (hasSpace ? question.split(" ") : question.split(''))
+        .asMap()
+        .entries
+        .map((entry) => (entry.value, false, entry.key))
+        .toList();
     arrangedWords = [];
   }
 
@@ -44,39 +49,171 @@ class _ArrangeWordsState extends State<ArrangeWords> {
     return Stack(
       children: [
         SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text("arrange_the_words".tr(),
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                      fontSize: 22, fontWeight: FontWeight.bold)),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Text("arrange_the_words".tr(),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        fontSize: 22, fontWeight: FontWeight.bold)),
+              ),
               const SizedBox(height: 5),
               KnowledgeInfo(knowledge: widget.knowledge, imageHeight: 150),
-              _buildWordCard(
-                arrangedWords,
-                (String word) => setState(() {
-                  shuffledWords.add(word);
-                  arrangedWords.remove(word);
-                }),
-                (int oldIndex, int newIndex) => setState(() {
-                  final word = arrangedWords.removeAt(oldIndex);
-                  arrangedWords.insert(newIndex, word);
-                }),
-                isAnswer: true,
+              const SizedBox(height: 5),
+              Container(
+                width: double.infinity,
+                constraints: const BoxConstraints(
+                  minHeight: 200,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        border:
+                            Border.all(color: Theme.of(context).primaryColor),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      margin: const EdgeInsets.only(top: 8),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 4),
+                      child: arrangedWords.isEmpty
+                          ? Text(
+                              "click_to_arrange".tr(),
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Theme.of(context).hintColor,
+                              ),
+                            )
+                          : SingleChildScrollView(
+                              child: ReorderableWrap(
+                                alignment: WrapAlignment.center,
+                                runAlignment: WrapAlignment.center,
+                                spacing: 2.0,
+                                runSpacing: 2.0,
+                                onReorder: (int oldIndex, int newIndex) =>
+                                    setState(() {
+                                  final word = arrangedWords.removeAt(oldIndex);
+                                  arrangedWords.insert(newIndex, word);
+                                }),
+                                needsLongPressDraggable: true,
+                                children: arrangedWords
+                                    .map((tupple) => GestureDetector(
+                                          onTap: () => setState(() {
+                                            shuffledWords = shuffledWords
+                                                .map((t) => t.$3 == tupple.$2
+                                                    ? (t.$1, false, t.$3)
+                                                    : t)
+                                                .toList();
+                                            arrangedWords.removeWhere(
+                                                (e) => e.$2 == tupple.$2);
+                                          }),
+                                          child: Card(
+                                            key: ValueKey(tupple.$1),
+                                            elevation: 4,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            color: Theme.of(context)
+                                                .primaryColor
+                                                .withOpacity(0.8),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 22.0,
+                                                      vertical: 10),
+                                              child: Text(tupple.$1,
+                                                  style: TextStyle(
+                                                      fontSize: 22,
+                                                      color: Theme.of(context)
+                                                          .scaffoldBackgroundColor)),
+                                            ),
+                                          ),
+                                        ))
+                                    .toList(),
+                              ),
+                            ),
+                    ),
+                  ],
+                ),
               ),
-              _buildWordCard(
-                  shuffledWords,
-                  (String word) => setState(() {
-                        arrangedWords.add(word);
-                        shuffledWords.remove(word);
-                      }),
-                  (int oldIndex, int newIndex) => setState(() {
-                        final word = shuffledWords.removeAt(oldIndex);
-                        shuffledWords.insert(newIndex, word);
-                      })),
+              Container(
+                width: double.infinity,
+                constraints: const BoxConstraints(
+                  minHeight: 200,
+                ),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Theme.of(context).primaryColor),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                margin: const EdgeInsets.only(top: 8),
+                padding: const EdgeInsets.all(6),
+                alignment: Alignment.center,
+                child: shuffledWords.isEmpty
+                    ? Center(
+                        child: Text(
+                          'all_are_choosen'.tr(),
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Theme.of(context).hintColor,
+                          ),
+                        ),
+                      )
+                    : SingleChildScrollView(
+                        child: Wrap(
+                          alignment: WrapAlignment.center,
+                          runAlignment: WrapAlignment.center,
+                          spacing: 10.0,
+                          runSpacing: 10.0,
+                          children: shuffledWords
+                              .map((tupple) => GestureDetector(
+                                    onTap: tupple.$2
+                                        ? null
+                                        : () => setState(() {
+                                              arrangedWords
+                                                  .add((tupple.$1, tupple.$3));
+                                              shuffledWords = shuffledWords
+                                                  .map((t) => t.$3 == tupple.$3
+                                                      ? (t.$1, true, t.$3)
+                                                      : t)
+                                                  .toList();
+                                            }),
+                                    child: Container(
+                                      key: ValueKey(tupple.$1),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        border: Border.all(
+                                            color: tupple.$2
+                                                ? Theme.of(context)
+                                                    .scaffoldBackgroundColor
+                                                : Theme.of(context)
+                                                    .primaryColor),
+                                        color: tupple.$2
+                                            ? Theme.of(context)
+                                                .scaffoldBackgroundColor
+                                            : Theme.of(context)
+                                                .primaryColor
+                                                .withOpacity(0.8),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 22.0, vertical: 10),
+                                        child: Text(tupple.$1,
+                                            style: TextStyle(
+                                                fontSize: 22,
+                                                color: Theme.of(context)
+                                                    .scaffoldBackgroundColor)),
+                                      ),
+                                    ),
+                                  ))
+                              .toList(),
+                        ),
+                      ),
+              ),
               const SizedBox(height: 8),
             ],
           ),
@@ -85,13 +222,14 @@ class _ArrangeWordsState extends State<ArrangeWords> {
             bottom: 0,
             left: 0,
             right: 0,
-            child: SizedBox(
-              width: double.infinity,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: ElevatedButton(
-                onPressed: shuffledWords.isEmpty
+                onPressed: shuffledWords.length == arrangedWords.length
                     ? () {
-                        final userAnswer =
-                            arrangedWords.join(hasSpace ? ' ' : "");
+                        final userAnswer = arrangedWords
+                            .map((t) => t.$1)
+                            .join(hasSpace ? ' ' : "");
                         setState(() {
                           isAnswered = true;
                         });
@@ -99,78 +237,19 @@ class _ArrangeWordsState extends State<ArrangeWords> {
                       }
                     : null,
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(32),
+                    ),
+                    backgroundColor: AppColors.secondary),
                 child: Text(
                   'submit'.tr(),
-                  style: const TextStyle(fontSize: 18),
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
             )),
       ],
-    );
-  }
-
-  Widget _buildWordCard(List<String> words, void Function(String word) onTap,
-      void Function(int oldIndex, int newIndex) onReorder,
-      {bool isAnswer = false}) {
-    return Container(
-      width: double.infinity,
-      constraints: words.isEmpty
-          ? const BoxConstraints(minHeight: 80)
-          : const BoxConstraints(
-              minHeight: 200,
-            ),
-      decoration: BoxDecoration(
-        border: Border.all(color: Theme.of(context).primaryColor),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      margin: const EdgeInsets.only(top: 8),
-      padding: const EdgeInsets.all(8),
-      child: words.isEmpty
-          ? Center(
-              child: Text(
-                isAnswer ? "click_to_arrange".tr() : 'all_are_choosen'.tr(),
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Theme.of(context).hintColor,
-                ),
-              ),
-            )
-          : SingleChildScrollView(
-              child: ReorderableWrap(
-                spacing: 4.0,
-                runSpacing: 4.0,
-                onReorder: onReorder,
-                needsLongPressDraggable: true,
-                children: words
-                    .map((word) => GestureDetector(
-                          onTap: () => onTap(word),
-                          child: Card(
-                            key: ValueKey(word),
-                            elevation: 4,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            color:
-                                Theme.of(context).primaryColor.withOpacity(0.8),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 24.0, vertical: 8),
-                              child: Text(word,
-                                  style: TextStyle(
-                                      fontSize: 26,
-                                      color: Theme.of(context)
-                                          .scaffoldBackgroundColor)),
-                            ),
-                          ),
-                        ))
-                    .toList(),
-              ),
-            ),
     );
   }
 }

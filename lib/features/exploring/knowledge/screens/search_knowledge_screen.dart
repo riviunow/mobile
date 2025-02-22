@@ -157,8 +157,11 @@ class _SearchKnowledgeScreenState extends State<SearchKnowledgeScreen> {
                             size: 28,
                           ),
                           onPressed: () {
-                            _searchController.clear();
-                            _searchFocusNode.unfocus();
+                            if (_searchController.value.text.isEmpty) {
+                              _searchFocusNode.unfocus();
+                            } else {
+                              _searchController.clear();
+                            }
                           },
                         ),
                       Expanded(
@@ -178,43 +181,62 @@ class _SearchKnowledgeScreenState extends State<SearchKnowledgeScreen> {
                           ),
                           onSubmitted: (value) {
                             setState(() {
-                              _searchRequest = _searchRequest.copyWith(
-                                  searchTerm: value, page: 1);
-                              context
-                                  .read<SearchKnowledgesBloc>()
-                                  .add(SearchKnowledges(_searchRequest));
+                              if (value != _searchRequest.searchTerm) {
+                                _searchRequest = _searchRequest.clearFilter(
+                                    searchTerm: value, page: 1);
+                                context
+                                    .read<SearchKnowledgesBloc>()
+                                    .add(SearchKnowledges(_searchRequest));
+                              }
                             });
                           },
                         ),
                       ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.filter_list,
-                          color: Theme.of(context).primaryColor,
-                          size: 28,
-                        ),
-                        onPressed: () async {
-                          final result =
-                              await showDialog<SearchKnowledgesRequest>(
-                            barrierColor:
-                                Theme.of(context).primaryColor.withOpacity(0.5),
-                            context: context,
-                            builder: (context) =>
-                                SearchFilterWidget(request: _searchRequest),
-                          );
-                          if (result != null) {
-                            setState(() {
-                              _searchRequest = result.copyWith(page: 1);
-                              context
-                                  .read<SearchKnowledgesBloc>()
-                                  .add(SearchKnowledges(_searchRequest));
-                            });
-                          } else {
-                            setState(() {
-                              _searchRequest = _searchRequest.copyWith(page: 1);
-                            });
-                          }
-                        },
+                      Stack(
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              Icons.filter_list,
+                              color: _searchRequest.hasFilters
+                                  ? AppColors.warning
+                                  : Theme.of(context).primaryColor,
+                              size: 28,
+                            ),
+                            onPressed: () async {
+                              final result =
+                                  await showDialog<SearchKnowledgesRequest>(
+                                barrierColor: Theme.of(context)
+                                    .primaryColor
+                                    .withOpacity(0.5),
+                                context: context,
+                                builder: (context) =>
+                                    SearchFilterWidget(request: _searchRequest),
+                              );
+                              if (result != null &&
+                                  _searchRequest.hasSimilarFilter(result) ==
+                                      false) {
+                                setState(() {
+                                  _searchRequest = result.copyWith(
+                                      page: 1,
+                                      searchTerm: _searchController.text);
+                                  context
+                                      .read<SearchKnowledgesBloc>()
+                                      .add(SearchKnowledges(_searchRequest));
+                                });
+                              }
+                            },
+                          ),
+                          if (_searchRequest.hasFilters)
+                            const Positioned(
+                              bottom: 6,
+                              right: 6,
+                              child: Icon(
+                                Icons.check,
+                                color: AppColors.warning,
+                                size: 14,
+                              ),
+                            ),
+                        ],
                       ),
                       if (profileState is! UnauthenticatedProfile)
                         IconButton(

@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:rvnow/shared/config/theme/colors.dart';
 import 'package:rvnow/shared/services/translation_service.dart';
 
-class LanguageSettingsScreen extends StatelessWidget {
+class LanguageSettingsScreen extends StatefulWidget {
   static route() {
     return MaterialPageRoute<void>(
       builder: (_) => getInstance(),
@@ -16,6 +16,16 @@ class LanguageSettingsScreen extends StatelessWidget {
   }
 
   const LanguageSettingsScreen({super.key});
+
+  @override
+  State<LanguageSettingsScreen> createState() => _LanguageSettingsScreenState();
+}
+
+class _LanguageSettingsScreenState extends State<LanguageSettingsScreen> {
+  bool isDownloading = false;
+  List<String> downloadingModels = [];
+  bool isDeleting = false;
+  List<String> deletingModels = [];
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +59,7 @@ class LanguageSettingsScreen extends StatelessWidget {
               future: translationService.getModels(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const SizedBox();
+                  return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
                 } else {
@@ -70,30 +80,44 @@ class LanguageSettingsScreen extends StatelessWidget {
                             margin: const EdgeInsets.symmetric(vertical: 4),
                             child: ListTile(
                               title: Text("${model.$2} - ${model.$1}"),
-                              trailing: PopupMenuButton<String>(
-                                onSelected: (String result) {
-                                  if (result == 'set_as_default') {
-                                    translationService.saveUserLang(
-                                        context, model.$2);
-                                  } else if (result == 'delete') {
-                                    translationService.deleteModel(
-                                        context, model.$2);
-                                  }
-                                },
-                                itemBuilder: (BuildContext context) =>
-                                    <PopupMenuEntry<String>>[
-                                  PopupMenuItem<String>(
-                                    value: 'set_as_default',
-                                    enabled: model.$2 !=
-                                        translationService.getUserLang,
-                                    child: Text('set_as_default'.tr()),
-                                  ),
-                                  PopupMenuItem<String>(
-                                    value: 'delete',
-                                    child: Text('delete'.tr()),
-                                  ),
-                                ],
-                              ),
+                              trailing: isDeleting &&
+                                      deletingModels.contains(model.$2)
+                                  ? const CircularProgressIndicator()
+                                  : PopupMenuButton<String>(
+                                      onSelected: (String result) {
+                                        if (result == 'set_as_default') {
+                                          translationService.saveUserLang(
+                                              context, model.$2);
+                                        } else if (result == 'delete') {
+                                          setState(() {
+                                            isDeleting = true;
+                                            deletingModels.add(model.$2);
+                                          });
+                                          translationService
+                                              .deleteModel(context, model.$2)
+                                              .then((_) {
+                                            setState(() {
+                                              isDeleting = false;
+                                              deletingModels.remove(model.$2);
+                                            });
+                                          });
+                                        }
+                                      },
+                                      itemBuilder: (BuildContext context) =>
+                                          <PopupMenuEntry<String>>[
+                                        PopupMenuItem<String>(
+                                          value: 'set_as_default',
+                                          enabled: model.$2 !=
+                                              translationService.getUserLang,
+                                          child: Text('set_as_default'.tr()),
+                                        ),
+                                        if (model.$2 != 'en')
+                                          PopupMenuItem<String>(
+                                            value: 'delete',
+                                            child: Text('delete'.tr()),
+                                          ),
+                                      ],
+                                    ),
                             ),
                           )),
                       const SizedBox(height: 16),
@@ -105,25 +129,40 @@ class LanguageSettingsScreen extends StatelessWidget {
                             margin: const EdgeInsets.symmetric(vertical: 4),
                             child: ListTile(
                               title: Text("${model.$2} - ${model.$1}"),
-                              trailing: PopupMenuButton<String>(
-                                onSelected: (String result) {
-                                  if (result == 'download') {
-                                    translationService.downloadModel(model.$2);
-                                  }
-                                },
-                                itemBuilder: (BuildContext context) =>
-                                    <PopupMenuEntry<String>>[
-                                  PopupMenuItem<String>(
-                                    value: 'set_as_default',
-                                    enabled: false,
-                                    child: Text('set_as_default'.tr()),
-                                  ),
-                                  PopupMenuItem<String>(
-                                    value: 'download',
-                                    child: Text('download'.tr()),
-                                  ),
-                                ],
-                              ),
+                              trailing: isDownloading &&
+                                      downloadingModels.contains(model.$2)
+                                  ? const CircularProgressIndicator()
+                                  : PopupMenuButton<String>(
+                                      onSelected: (String result) {
+                                        if (result == 'download') {
+                                          setState(() {
+                                            isDownloading = true;
+                                            downloadingModels.add(model.$2);
+                                          });
+                                          translationService
+                                              .downloadModel(model.$2)
+                                              .then((_) {
+                                            setState(() {
+                                              isDownloading = false;
+                                              downloadingModels
+                                                  .remove(model.$2);
+                                            });
+                                          });
+                                        }
+                                      },
+                                      itemBuilder: (BuildContext context) =>
+                                          <PopupMenuEntry<String>>[
+                                        PopupMenuItem<String>(
+                                          value: 'set_as_default',
+                                          enabled: false,
+                                          child: Text('set_as_default'.tr()),
+                                        ),
+                                        PopupMenuItem<String>(
+                                          value: 'download',
+                                          child: Text('download'.tr()),
+                                        ),
+                                      ],
+                                    ),
                             ),
                           )),
                     ],

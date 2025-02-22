@@ -88,71 +88,93 @@ class _FillInBlankState extends State<FillInBlank> {
             children: List.generate(question.value.length, (index) {
               return SizedBox(
                 width: 40,
-                child: TextField(
-                  controller: controllers[index],
-                  focusNode: focusNodes[index],
-                  decoration: InputDecoration(
-                    hintText: question.value[index],
-                    hintStyle: TextStyle(
-                        color: AppColors.hint.withOpacity(0.5), fontSize: 18),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                child: Stack(
+                  children: [
+                    TextField(
+                      controller: controllers[index],
+                      focusNode: focusNodes[index],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        filled: true,
+                      ),
+                      enabled: !isAnswered,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 18),
+                      onChanged: (value) {
+                        var isValued = hasValue[index];
+
+                        if (value.isEmpty || value == zeroWidthSpace) {
+                          controllers[index].text = zeroWidthSpace;
+                          hasValue[index] = false;
+                        } else if (value.length > 1) {
+                          String changedValue = value;
+                          if (isValued) {
+                            changedValue = changedValue.substring(
+                                changedValue.length - 2,
+                                changedValue.length - 1);
+                          }
+                          controllers[index].text =
+                              changedValue.characters.last;
+                          hasValue[index] = true;
+                        }
+
+                        controllers[index].selection =
+                            TextSelection.fromPosition(TextPosition(
+                                offset: controllers[index].text.length));
+
+                        if (value.isNotEmpty && index < focusNodes.length - 1) {
+                          FocusScope.of(context)
+                              .requestFocus(focusNodes[index + 1]);
+                        } else if (value.trim().isEmpty &&
+                            index > 0 &&
+                            !isValued) {
+                          FocusScope.of(context)
+                              .requestFocus(focusNodes[index - 1]);
+                          if (controllers[index - 1].text.isNotEmpty) {
+                            controllers[index - 1].text = zeroWidthSpace;
+                            hasValue[index - 1] = false;
+                          }
+                        }
+                        setState(() {});
+                      },
+                      textInputAction: index == focusNodes.length - 1
+                          ? TextInputAction.done
+                          : TextInputAction.next,
+                      onSubmitted: (value) {
+                        if (index == focusNodes.length - 1) {
+                          if (value.isEmpty || value == zeroWidthSpace) {
+                            FocusScope.of(context)
+                                .requestFocus(focusNodes[index]);
+                          } else {
+                            final userAnswer = controllers
+                                .map((controller) => controller.text.trim())
+                                .join();
+                            setState(() {
+                              isAnswered = true;
+                            });
+                            widget.onAnswerSubmitted(userAnswer);
+                          }
+                        }
+                      },
                     ),
-                    filled: true,
-                  ),
-                  enabled: !isAnswered,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 18),
-                  onChanged: (value) {
-                    var isValued = hasValue[index];
-
-                    if (value.isEmpty || value == zeroWidthSpace) {
-                      controllers[index].text = zeroWidthSpace;
-                      hasValue[index] = false;
-                    } else if (value.length > 1) {
-                      String changedValue = value;
-                      if (isValued) {
-                        changedValue = changedValue.substring(
-                            changedValue.length - 2, changedValue.length - 1);
-                      }
-                      controllers[index].text = changedValue.characters.last;
-                      hasValue[index] = true;
-                    }
-
-                    controllers[index].selection = TextSelection.fromPosition(
-                        TextPosition(offset: controllers[index].text.length));
-
-                    if (value.isNotEmpty && index < focusNodes.length - 1) {
-                      FocusScope.of(context)
-                          .requestFocus(focusNodes[index + 1]);
-                    } else if (value.trim().isEmpty && index > 0 && !isValued) {
-                      FocusScope.of(context)
-                          .requestFocus(focusNodes[index - 1]);
-                      if (controllers[index - 1].text.isNotEmpty) {
-                        controllers[index - 1].text = zeroWidthSpace;
-                        hasValue[index - 1] = false;
-                      }
-                    }
-                    setState(() {});
-                  },
-                  textInputAction: index == focusNodes.length - 1
-                      ? TextInputAction.done
-                      : TextInputAction.next,
-                  onSubmitted: (value) {
-                    if (index == focusNodes.length - 1) {
-                      if (value.isEmpty || value == zeroWidthSpace) {
-                        FocusScope.of(context).requestFocus(focusNodes[index]);
-                      } else {
-                        final userAnswer = controllers
-                            .map((controller) => controller.text.trim())
-                            .join();
-                        setState(() {
-                          isAnswered = true;
-                        });
-                        widget.onAnswerSubmitted(userAnswer);
-                      }
-                    }
-                  },
+                    if (controllers[index].text.isEmpty ||
+                        controllers[index].text == zeroWidthSpace)
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        bottom: 12,
+                        child: Text(
+                          question.value[index],
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: AppColors.primaryDark.withOpacity(0.5),
+                            fontSize: 22,
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
               );
             }),
@@ -177,7 +199,7 @@ class _FillInBlankState extends State<FillInBlank> {
                   : null,
               child: Text(
                 'next'.tr(),
-                style: const TextStyle(fontSize: 18),
+                style: const TextStyle(fontSize: 22),
               ),
             ),
           ),
