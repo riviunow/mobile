@@ -42,5 +42,6 @@ flutter:
   assets:
     - assets/langs/
     - assets/images/
+    - assets/sounds/
     - .env.development
     - .env.production

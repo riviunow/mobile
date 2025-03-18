@@ -1,8 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:rvnow/shared/config/service_locator.dart';
 import 'package:rvnow/shared/config/theme/colors.dart';
 import 'package:rvnow/shared/models/enums/game_option_type.dart';
 import 'package:rvnow/shared/models/index.dart';
+import 'package:rvnow/shared/services/sound_service.dart';
 
 import '../knowledge_info.dart';
 
@@ -57,6 +59,20 @@ class _FillInBlankState extends State<FillInBlank> {
       focusNode.dispose();
     }
     super.dispose();
+  }
+
+  void _handleAnswer() {
+    final userAnswer = controllers.map((controller) => controller.text).join();
+    setState(() {
+      isAnswered = true;
+    });
+    widget.onAnswerSubmitted(userAnswer);
+    if (widget.gameOptions.any(
+        (op) => op.type == GameOptionType.answer && op.value == userAnswer)) {
+      getIt<SoundService>().playCorrectSound();
+    } else {
+      getIt<SoundService>().playWrongSound();
+    }
   }
 
   @override
@@ -148,13 +164,7 @@ class _FillInBlankState extends State<FillInBlank> {
                             FocusScope.of(context)
                                 .requestFocus(focusNodes[index]);
                           } else {
-                            final userAnswer = controllers
-                                .map((controller) => controller.text.trim())
-                                .join();
-                            setState(() {
-                              isAnswered = true;
-                            });
-                            widget.onAnswerSubmitted(userAnswer);
+                            _handleAnswer();
                           }
                         }
                       },
@@ -187,15 +197,7 @@ class _FillInBlankState extends State<FillInBlank> {
               onPressed: controllers.every(
                           (controller) => controller.text.trim().isNotEmpty) &&
                       controllers.length == correctAnswer.value.length
-                  ? () {
-                      final userAnswer = controllers
-                          .map((controller) => controller.text)
-                          .join();
-                      setState(() {
-                        isAnswered = true;
-                      });
-                      widget.onAnswerSubmitted(userAnswer);
-                    }
+                  ? () => _handleAnswer()
                   : null,
               child: Text(
                 'next'.tr(),

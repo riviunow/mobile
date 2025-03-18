@@ -1,8 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rvnow/shared/config/service_locator.dart';
 import 'package:rvnow/shared/config/theme/colors.dart';
 import 'package:rvnow/shared/models/index.dart';
+import 'package:rvnow/shared/services/sound_service.dart';
 import 'package:rvnow/shared/services/translation_service.dart';
 import 'package:rvnow/shared/widgets/loader.dart';
 import 'package:rvnow/shared/widgets/spaced_divider.dart';
@@ -31,6 +33,7 @@ class _WordMatchState extends State<WordMatch> {
   bool showTranslation = false;
   bool isLoading = false;
   late TranslationService translationService;
+  late SoundService soundService;
 
   @override
   void initState() {
@@ -38,6 +41,7 @@ class _WordMatchState extends State<WordMatch> {
 
     translationService =
         Provider.of<TranslationService>(context, listen: false);
+    soundService = getIt<SoundService>();
 
     if (widget.knowledgeList.length == 1) {
       final knowledgeToAnswers = <String, WordMatchAnswer>{
@@ -239,12 +243,18 @@ class _WordMatchState extends State<WordMatch> {
           selectedTitle = null;
         } else {
           selectedTitle = item;
+          if (selectedInterpretation == null) {
+            soundService.playClickSound();
+          }
         }
       } else {
         if (selectedInterpretation == item) {
           selectedInterpretation = null;
         } else {
           selectedInterpretation = item;
+          if (selectedTitle == null) {
+            soundService.playClickSound();
+          }
         }
       }
 
@@ -273,6 +283,12 @@ class _WordMatchState extends State<WordMatch> {
 
         selectedTitle = null;
         selectedInterpretation = null;
+
+        if (matchFound) {
+          soundService.playCorrectSound();
+        } else {
+          soundService.playWrongSound();
+        }
       }
     });
   }

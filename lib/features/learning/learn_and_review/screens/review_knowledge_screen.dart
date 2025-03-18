@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rvnow/shared/config/service_locator.dart';
+import 'package:rvnow/shared/services/sound_service.dart';
 
 import '../blocs/game_bloc.dart';
 import '../blocs/get_to_review_bloc.dart';
@@ -36,6 +38,7 @@ class _ReviewKnowledgeScreenState extends State<ReviewKnowledgeScreen> {
         .add(GetToReviewRequested(GetLearningToReviewRequest(
           knowledgeIds: widget.knowledgeIds,
         )));
+    getIt<SoundService>().pauseBackgroundMusic();
   }
 
   @override
@@ -49,6 +52,7 @@ class _ReviewKnowledgeScreenState extends State<ReviewKnowledgeScreen> {
                 SnackBar(content: Text(state.messages.join(', '))),
               );
               Navigator.of(context).pop(false);
+              getIt<SoundService>().resumeBackgroundMusic();
             }
           },
           builder: (context, state) {
@@ -59,9 +63,12 @@ class _ReviewKnowledgeScreenState extends State<ReviewKnowledgeScreen> {
             } else if (state is GetToReviewSuccess) {
               return BlocConsumer<GameBloc, GameState>(
                 listener: (context, state) {
-                  if (state is GameEnded && state.learnings.isEmpty) {
-                    context.read<GameBloc>().add(OutGameRequested());
-                    Navigator.pop(context, true);
+                  if (state is GameEnded) {
+                    if (state.learnings.isEmpty) {
+                      context.read<GameBloc>().add(OutGameRequested());
+                      Navigator.pop(context, true);
+                    }
+                    getIt<SoundService>().resumeBackgroundMusic();
                   }
                 },
                 builder: (context, state) {
@@ -82,11 +89,11 @@ class _ReviewKnowledgeScreenState extends State<ReviewKnowledgeScreen> {
                       child: CircularProgressIndicator(),
                     );
                   }
-                   return Center(child: Text('no_data_available'.tr()));
+                  return Center(child: Text('no_data_available'.tr()));
                 },
               );
             }
-             return Center(child: Text('no_data_available'.tr()));
+            return Center(child: Text('no_data_available'.tr()));
           },
         ),
       ),

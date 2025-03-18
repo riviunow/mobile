@@ -259,5 +259,17 @@
     "days": "Ngày",
     "click_to_arrange": "Nhấp vào một từ",
     "all_are_choosen": "Tất cả các từ đã được chọn",
-    "version": "Phiên bản"
+    "version": "Phiên bản",
+    "status_fresh": "Kiến thức mới",
+    "status_fading": "Kiến thức đang phai mờ",
+    "status_forgetting": "Kiến thức đang phai mờ nhanh",
+    "status_critical": "Kiến thức gần như biến mất",
+    "status_almost_lost": "Kiến thức có nguy cơ mất",
+    "remind_review_now": "Hãy ôn tập nhanh để nhớ kiến thức vững chắc!",
+    "remind_review_soon": "Một lần ôn tập nhanh sẽ giúp bạn nhớ kiến thức!",
+    "remind_review_before_lost": "Ôn tập ngay trước khi kiến thức phai mờ!",
+    "remind_review_last_chance": "Cơ hội cuối cùng để lưu giữ những ký ức này!",
+    "remind_review_immediately": "Nhanh lên! Cần ôn tập ngay bây giờ!",
+    "background_music": "Nhạc nền",
+    "unlisted_learnings": "Đã học chưa lên danh sách"
 }

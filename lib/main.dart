@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
+import 'package:rvnow/shared/services/sound_service.dart';
 import 'features/creating/publication_request/services/publication_request_service.dart';
 import 'features/exploring/knowledge/blocs/knowledge_detail_bloc.dart';
 import 'features/learning/knowledge_learning/blocs/unlisted_learnings_bloc.dart';
@@ -87,7 +88,7 @@ class MainApp extends StatelessWidget {
         providers: [
           BlocProvider(create: (context) {
             return ProfileBloc(getIt<ProfileService>(), getIt<JwtService>(),
-                getIt<BackgroundService>());
+                getIt<BackgroundService>(), getIt<SoundService>());
           }),
           BlocProvider(
             create: (context) {

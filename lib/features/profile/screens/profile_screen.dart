@@ -11,6 +11,7 @@ import 'package:rvnow/features/profile/screens/update_profile_screen.dart';
 import 'package:rvnow/shared/config/service_locator.dart';
 import 'package:rvnow/shared/config/theme/colors.dart';
 import 'package:rvnow/shared/constants/urls.dart';
+import 'package:rvnow/shared/services/sound_service.dart';
 import 'package:rvnow/shared/services/theme_service.dart';
 import 'package:rvnow/shared/widgets/layouts/authenticated_layout.dart';
 import 'package:rvnow/shared/widgets/loader.dart';
@@ -159,6 +160,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     onTap: () =>
                         Navigator.push(context, LanguageSettingsScreen.route()),
                   ),
+                  ListTile(
+                    leading: const Icon(Icons.music_note),
+                    title: Text('background_music'.tr()),
+                    trailing: Switch(
+                      value: getIt<SoundService>().playBgm,
+                      onChanged: (value) {
+                        setState(() {
+                          getIt<SoundService>().toggleBgPlayMode(value);
+                        });
+                      },
+                    ),
+                  ),
+                  if (getIt<SoundService>().playBgm)
+                    Slider(
+                      value: getIt<SoundService>().bgmVolume,
+                      onChanged: (value) {
+                        setState(() {
+                          getIt<SoundService>().setBackgroundMusicVolume(value);
+                        });
+                      },
+                      min: 0.0,
+                      max: 1.0,
+                    ),
                   ListTile(
                     leading: const Icon(Icons.logout),
                     title: Text('logout'.tr()),

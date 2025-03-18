@@ -6,6 +6,7 @@ import 'package:rvnow/features/profile/models/update_profile.dart';
 import 'package:rvnow/features/profile/services/profile_service.dart';
 import 'package:rvnow/shared/models/index.dart';
 import 'package:rvnow/shared/services/background_service.dart';
+import 'package:rvnow/shared/services/sound_service.dart';
 
 abstract class ProfileEvent {}
 
@@ -54,8 +55,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final ProfileService profileService;
   final JwtService jwtService;
   final BackgroundService backgroundService;
+  final SoundService soundService;
 
-  ProfileBloc(this.profileService, this.jwtService, this.backgroundService)
+  ProfileBloc(this.profileService, this.jwtService, this.backgroundService,
+      this.soundService)
       : super(ProfileInitial()) {
     on<LoadProfile>((event, emit) async {
       emit(ProfileLoading());
@@ -65,6 +68,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         if (token != null) {
           backgroundService.connectHubStartBackground(event.user!.id, token);
         }
+        soundService.playBackgroundMusic();
         return;
       }
       var response = await profileService.getUser();
@@ -74,11 +78,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         jwtService.removeRefreshToken();
       }, onSuccess: (data) {
         emit(ProfileLoaded(data));
-
         var token = jwtService.accessToken;
         if (token != null) {
           backgroundService.connectHubStartBackground(data.id, token);
         }
+        soundService.playBackgroundMusic();
       });
     });
 
@@ -114,6 +118,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(UnauthenticatedProfile());
       await backgroundService.disconnectHub(userId);
       await backgroundService.stopBackgroundFetch();
+      soundService.stopBackgroundMusic();
     });
   }
 }

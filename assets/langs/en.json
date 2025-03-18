@@ -259,5 +259,17 @@
     "days": "Days",
     "click_to_arrange": "Click on a word",
     "all_are_choosen": "All words are choosen",
-    "version": "Version"
+    "version": "Version",
+    "status_fresh": "Knowledge fresh",
+    "status_fading": "Knowledge fading",
+    "status_forgetting": "Knowledge fading fast",
+    "status_critical": "Knowledge almost gone",
+    "status_almost_lost": "Knowledge at risk",
+    "remind_review_now": "Take a quick review to keep knowledge strong!",
+    "remind_review_soon": "A quick refresh will help you remember knowledge!",
+    "remind_review_before_lost": "Review now before knowledge fade away!",
+    "remind_review_last_chance": "One last chance to save these memories!",
+    "remind_review_immediately": "Quick! A review is needed right now!",
+    "background_music": "Background Music",
+    "unlisted_learnings": "Unlisted Learnings"
 }

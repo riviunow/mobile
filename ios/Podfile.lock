@@ -7,8 +7,6 @@ PODS:
     - Flutter
     - FlutterMacOS
   - Flutter (1.0.0)
-  - flutter_background_service_ios (0.0.3):
-    - Flutter
   - flutter_local_notifications (0.0.1):
     - Flutter
   - google_mlkit_commons (0.8.1):
@@ -99,7 +97,6 @@ DEPENDENCIES:
   - background_fetch (from `.symlinks/plugins/background_fetch/ios`)
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/darwin`)
   - Flutter (from `Flutter`)
-  - flutter_background_service_ios (from `.symlinks/plugins/flutter_background_service_ios/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - google_mlkit_commons (from `.symlinks/plugins/google_mlkit_commons/ios`)
   - google_mlkit_translation (from `.symlinks/plugins/google_mlkit_translation/ios`)
@@ -137,8 +134,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/connectivity_plus/darwin"
   Flutter:
     :path: Flutter
-  flutter_background_service_ios:
-    :path: ".symlinks/plugins/flutter_background_service_ios/ios"
   flutter_local_notifications:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
   google_mlkit_commons:
@@ -163,7 +158,6 @@ SPEC CHECKSUMS:
   background_fetch: 39f11371c0dce04b001c4bfd5e782bcccb0a85e2
   connectivity_plus: ddd7f30999e1faaef5967c23d5b6d503d10434db
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_background_service_ios: e30e0d3ee69e4cee66272d0c78eacd48c2e94aac
   flutter_local_notifications: 4cde75091f6327eb8517fa068a0a5950212d2086
   google_mlkit_commons: 242b715c38863e1ca5e732c909a1545ba52f1375
   google_mlkit_translation: 123a621b48b517b5f91cb76214b8a6f95fe61440

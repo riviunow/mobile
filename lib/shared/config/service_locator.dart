@@ -27,6 +27,7 @@ import 'package:rvnow/shared/services/connectivity_service.dart';
 import 'package:rvnow/shared/services/theme_service.dart';
 import '../services/background_service.dart';
 import '../services/notification_service.dart';
+import '../services/sound_service.dart';
 import '../services/translation_service.dart';
 import '../widgets/layouts/authenticated_layout.dart';
 
@@ -44,6 +45,9 @@ Future<void> setupLocator() async {
 
   getIt.registerSingleton<BackgroundService>(BackgroundService(
       getIt<NotificationService>(), getIt<SharedPreferences>()));
+
+  getIt.registerSingleton<SoundService>(
+      SoundService(getIt<SharedPreferences>()));
 
   getIt.registerSingleton<ConnectivityService>(
       ConnectivityService(Connectivity()));

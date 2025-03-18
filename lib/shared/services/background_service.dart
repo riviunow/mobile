@@ -263,27 +263,33 @@ class BackgroundService {
 
     Future<void> sendNotificationIfNeeded(
         ForgettingLevel level, Duration minInterval) async {
-      if (learningsMap[level]!.isNotEmpty) {
-        DateTime? lastNotified = lastNotifiedMap[level];
-
-        if (lastNotified != null &&
-            now.difference(lastNotified) >= minInterval) {
-          await _notificationService.showNotification(
-            title: _getReminderMsg(level),
-            body: learningsMap[level]!.map((e) => '- $e').join('\n'),
-          );
-        }
-        await db.insert(
-            _getNotificationTableName(userId),
-            {
-              'level': level.index,
-              'timestamp': now.millisecondsSinceEpoch,
-            },
-            conflictAlgorithm: ConflictAlgorithm.replace);
+      if (learningsMap[level]!.isEmpty) {
+        return;
       }
+
+      DateTime? lastNotified = lastNotifiedMap[level];
+
+      if ((lastNotified != null &&
+              now.difference(lastNotified) >= minInterval) ||
+          (lastNotified == null && level == ForgettingLevel.levelFive)) {
+        var (status, message) = _getReminderMsg(level);
+        await _notificationService.showNotification(
+          title: status,
+          body:
+              "$message ${"\n...\n"} ${learningsMap[level]!.map((e) => '${e[0].toUpperCase()}${e.substring(1)}').join('  |  ')}",
+        );
+      }
+      await db.insert(
+          _getNotificationTableName(userId),
+          {
+            'level': level.index,
+            'timestamp': now.millisecondsSinceEpoch,
+          },
+          conflictAlgorithm: ConflictAlgorithm.replace);
     }
 
-    await sendNotificationIfNeeded(ForgettingLevel.levelFive, Duration.zero);
+    await sendNotificationIfNeeded(
+        ForgettingLevel.levelFive, const Duration(hours: 1));
     await sendNotificationIfNeeded(
         ForgettingLevel.levelFour, const Duration(hours: 3));
     await sendNotificationIfNeeded(
@@ -308,18 +314,18 @@ class BackgroundService {
     return (forgettingScore > 1.0) ? 0.0 : (1 - forgettingScore);
   }
 
-  String _getReminderMsg(ForgettingLevel level) {
+  (String, String) _getReminderMsg(ForgettingLevel level) {
     switch (level) {
       case ForgettingLevel.levelOne:
-        return "It's time to review knowledge!".tr();
+        return ('status_fresh'.tr(), 'remind_review_now'.tr());
       case ForgettingLevel.levelTwo:
-        return "Don't forget to review recent learnings.".tr();
+        return ('status_fading'.tr(), 'remind_review_soon'.tr());
       case ForgettingLevel.levelThree:
-        return "Knowledge needs a quick refresh.".tr();
+        return ('status_forgetting'.tr(), 'remind_review_before_lost'.tr());
       case ForgettingLevel.levelFour:
-        return "Consider revisiting studies soon.".tr();
+        return ('status_critical'.tr(), 'remind_review_last_chance'.tr());
       default:
-        return "Urgent! Review knowledge immediately.".tr();
+        return ('status_almost_lost'.tr(), 'remind_review_immediately'.tr());
     }
   }
 

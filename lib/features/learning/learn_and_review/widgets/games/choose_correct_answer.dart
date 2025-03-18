@@ -1,9 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rvnow/shared/config/service_locator.dart';
 import 'package:rvnow/shared/config/theme/colors.dart';
 import 'package:rvnow/shared/models/enums/game_option_type.dart';
 import 'package:rvnow/shared/models/index.dart';
+import 'package:rvnow/shared/services/sound_service.dart';
 import 'package:rvnow/shared/services/translation_service.dart';
 
 class ChooseCorrectAnswer extends StatefulWidget {
@@ -38,6 +40,7 @@ class _ChooseCorrectAnswerState extends State<ChooseCorrectAnswer> {
     final answers = widget.gameOptions
         .where((option) => option.type == GameOptionType.answer)
         .toList();
+    final SoundService soundService = getIt<SoundService>();
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -85,9 +88,15 @@ class _ChooseCorrectAnswerState extends State<ChooseCorrectAnswer> {
                         onTap: isAnswered
                             ? null
                             : () {
-                                setState(() {
-                                  selectedOption = answer;
-                                });
+                                if (selectedOption == null ||
+                                    (selectedOption != null &&
+                                        selectedOption != answer)) {
+                                  setState(() {
+                                    selectedOption = answer;
+                                  });
+
+                                  soundService.playClickSound();
+                                }
                               },
                         child: Container(
                           padding: const EdgeInsets.all(16.0),
@@ -191,6 +200,11 @@ class _ChooseCorrectAnswerState extends State<ChooseCorrectAnswer> {
                             setState(() {
                               isAnswered = true;
                             });
+                            if (selectedOption?.isCorrect == true) {
+                              soundService.playCorrectSound();
+                            } else {
+                              soundService.playWrongSound();
+                            }
                           }
                         : null,
                     style: ElevatedButton.styleFrom(

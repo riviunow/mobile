@@ -1,9 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:reorderables/reorderables.dart';
+import 'package:rvnow/shared/config/service_locator.dart';
 import 'package:rvnow/shared/config/theme/colors.dart';
 import 'package:rvnow/shared/models/enums/game_option_type.dart';
 import 'package:rvnow/shared/models/index.dart';
+import 'package:rvnow/shared/services/sound_service.dart';
 
 import '../knowledge_info.dart';
 
@@ -234,6 +236,13 @@ class _ArrangeWordsState extends State<ArrangeWords> {
                           isAnswered = true;
                         });
                         widget.onAnswerSubmitted(userAnswer);
+                        if (widget.gameOptions.any((op) =>
+                            op.type == GameOptionType.answer &&
+                            op.value == userAnswer)) {
+                          getIt<SoundService>().playCorrectSound();
+                        } else {
+                          getIt<SoundService>().playWrongSound();
+                        }
                       }
                     : null,
                 style: ElevatedButton.styleFrom(
