@@ -25,6 +25,7 @@ import 'package:rvnow/features/migration/services/knowledge_service.dart'
     as migration;
 import 'package:rvnow/shared/services/connectivity_service.dart';
 import 'package:rvnow/shared/services/theme_service.dart';
+import '../services/background_service.dart';
 import '../services/notification_service.dart';
 import '../services/translation_service.dart';
 import '../widgets/layouts/authenticated_layout.dart';
@@ -38,11 +39,11 @@ Future<void> setupLocator() async {
   final sharedPreferences = await SharedPreferences.getInstance();
   getIt.registerSingleton<SharedPreferences>(sharedPreferences);
 
-  getIt.registerSingleton<FlutterLocalNotificationsPlugin>(
-      FlutterLocalNotificationsPlugin());
-
   getIt.registerSingleton<NotificationService>(
-      NotificationService(getIt<FlutterLocalNotificationsPlugin>()));
+      NotificationService(FlutterLocalNotificationsPlugin()));
+
+  getIt.registerSingleton<BackgroundService>(BackgroundService(
+      getIt<NotificationService>(), getIt<SharedPreferences>()));
 
   getIt.registerSingleton<ConnectivityService>(
       ConnectivityService(Connectivity()));
