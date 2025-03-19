@@ -5,6 +5,8 @@ import 'package:rvnow/features/auth/services/jwt_service.dart';
 import 'package:rvnow/features/profile/models/update_profile.dart';
 import 'package:rvnow/features/profile/services/profile_service.dart';
 import 'package:rvnow/shared/models/index.dart';
+import 'package:rvnow/shared/services/background_service.dart';
+import 'package:rvnow/shared/services/sound_service.dart';
 
 abstract class ProfileEvent {}
 
@@ -52,22 +54,36 @@ class UnauthenticatedProfile extends ProfileState {}
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final ProfileService profileService;
   final JwtService jwtService;
+  final BackgroundService backgroundService;
+  final SoundService soundService;
 
-  ProfileBloc(this.profileService, this.jwtService) : super(ProfileInitial()) {
+  ProfileBloc(this.profileService, this.jwtService, this.backgroundService,
+      this.soundService)
+      : super(ProfileInitial()) {
     on<LoadProfile>((event, emit) async {
       emit(ProfileLoading());
       if (event.user != null) {
         emit(ProfileLoaded(event.user!));
+        var token = jwtService.accessToken;
+        if (token != null) {
+          backgroundService.connectHubStartBackground(event.user!.id, token);
+        }
+        soundService.playBackgroundMusic();
         return;
       }
       var response = await profileService.getUser();
-      await response.on(
-          onFailure: (errors, fieldErrors) {
-            emit(UnauthenticatedProfile());
-            jwtService.removeAccessToken();
-            jwtService.removeRefreshToken();
-          },
-          onSuccess: (data) => emit(ProfileLoaded(data)));
+      await response.on(onFailure: (errors, fieldErrors) {
+        emit(UnauthenticatedProfile());
+        jwtService.removeAccessToken();
+        jwtService.removeRefreshToken();
+      }, onSuccess: (data) {
+        emit(ProfileLoaded(data));
+        var token = jwtService.accessToken;
+        if (token != null) {
+          backgroundService.connectHubStartBackground(data.id, token);
+        }
+        soundService.playBackgroundMusic();
+      });
     });
 
     on<UpdateProfile>((event, emit) async {
@@ -95,7 +111,14 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     });
 
     on<RemoveProfile>((event, emit) async {
+      String? userId;
+      if (state is ProfileLoaded) {
+        userId = (state as ProfileLoaded).user.id;
+      }
       emit(UnauthenticatedProfile());
+      await backgroundService.disconnectHub(userId);
+      await backgroundService.stopBackgroundFetch();
+      soundService.stopBackgroundMusic();
     });
   }
 }

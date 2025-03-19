@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rvnow/features/exploring/knowledge/widgets/knowledge.material_list.dart';
 import 'package:rvnow/features/exploring/knowledge/widgets/knowledge.media_widget.dart';
+import 'package:rvnow/shared/config/service_locator.dart';
 import 'package:rvnow/shared/config/theme/colors.dart';
 import 'package:rvnow/shared/models/index.dart' as models;
+import 'package:rvnow/shared/services/sound_service.dart';
 import 'package:rvnow/shared/services/translation_service.dart';
 
 import '../blocs/game_bloc.dart';
@@ -35,6 +37,7 @@ class _FlashCardState extends State<FlashCard> {
 
   @override
   Widget build(BuildContext context) {
+    final SoundService soundService = getIt<SoundService>();
     return Stack(
       children: [
         GestureDetector(
@@ -42,6 +45,7 @@ class _FlashCardState extends State<FlashCard> {
             setState(() {
               isFront = !isFront;
               isFlipped = true;
+              soundService.playFlipSound();
             });
           },
           child: Card(

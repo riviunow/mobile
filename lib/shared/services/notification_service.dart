@@ -9,8 +9,22 @@ class NotificationService {
     playSound: true,
     enableVibration: true,
   );
+  final android = const AndroidNotificationDetails(
+    'channel_id',
+    'channel_name',
+    importance: Importance.max,
+    priority: Priority.high,
+  );
+  final ios = const DarwinNotificationDetails(
+    presentAlert: true,
+    presentBadge: true,
+    presentSound: true,
+  );
+  late final NotificationDetails platform;
 
-  NotificationService(this.flutterLocalNotificationsPlugin);
+  NotificationService(this.flutterLocalNotificationsPlugin) {
+    platform = NotificationDetails(android: android, iOS: ios);
+  }
 
   Future<void> initialize() async {
     await _initializeLocal();
@@ -21,14 +35,6 @@ class NotificationService {
     required String body,
     String? payload,
   }) async {
-    const android = AndroidNotificationDetails(
-      'channel_id',
-      'channel_name',
-      importance: Importance.max,
-      priority: Priority.high,
-    );
-    const ios = DarwinNotificationDetails();
-    const platform = NotificationDetails(android: android, iOS: ios);
     await flutterLocalNotificationsPlugin.show(
       0,
       title,
@@ -40,14 +46,31 @@ class NotificationService {
 
   Future<void> _initializeLocal() async {
     const android = AndroidInitializationSettings('@mipmap/ic_launcher');
-    const ios = DarwinInitializationSettings();
-    const settings = InitializationSettings(android: android, iOS: ios);
+    final ios = DarwinInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+      onDidReceiveLocalNotification: (id, title, body, payload) async {
+        // print('Notification received in foreground: $title $body');
+      },
+    );
 
+    final settings = InitializationSettings(android: android, iOS: ios);
     await flutterLocalNotificationsPlugin.initialize(
       settings,
       onDidReceiveNotificationResponse: (details) {
-        print('Notification Received: ${details.payload}');
+        // print('Notification Clicked: ${details.payload}');
       },
+    );
+
+    // Request iOS notification permissions at runtime
+    final iosPlatform =
+        flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>();
+    await iosPlatform?.requestPermissions(
+      alert: true,
+      badge: true,
+      sound: true,
     );
 
     final androidPlatform =

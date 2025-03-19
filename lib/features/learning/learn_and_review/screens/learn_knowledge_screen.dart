@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rvnow/shared/config/service_locator.dart';
+import 'package:rvnow/shared/services/sound_service.dart';
 import 'package:rvnow/shared/widgets/loader.dart';
 
 import '../blocs/game_bloc.dart';
@@ -42,6 +44,7 @@ class _LearnKnowledgeScreenState extends State<LearnKnowledgeScreen> {
           knowledgeIds: widget.knowledgeIds,
           newLearningListTitle: widget.newLearningListTitle,
         )));
+    getIt<SoundService>().pauseBackgroundMusic();
   }
 
   @override
@@ -55,6 +58,7 @@ class _LearnKnowledgeScreenState extends State<LearnKnowledgeScreen> {
                 SnackBar(content: Text(state.messages.join(', '))),
               );
               Navigator.of(context).pop(false);
+              getIt<SoundService>().resumeBackgroundMusic();
             }
           },
           builder: (context, state) {
@@ -65,9 +69,12 @@ class _LearnKnowledgeScreenState extends State<LearnKnowledgeScreen> {
             } else if (state is GetToLearnSuccess) {
               return BlocConsumer<GameBloc, GameState>(
                 listener: (context, state) {
-                  if (state is GameEnded && state.learnings.isEmpty) {
-                    context.read<GameBloc>().add(OutGameRequested());
-                    Navigator.pop(context, true);
+                  if (state is GameEnded) {
+                    if (state.learnings.isEmpty) {
+                      context.read<GameBloc>().add(OutGameRequested());
+                      Navigator.pop(context, true);
+                    }
+                    getIt<SoundService>().resumeBackgroundMusic();
                   }
                 },
                 builder: (context, state) {

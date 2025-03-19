@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
+import 'package:rvnow/shared/services/sound_service.dart';
 import 'features/creating/publication_request/services/publication_request_service.dart';
 import 'features/exploring/knowledge/blocs/knowledge_detail_bloc.dart';
 import 'features/learning/knowledge_learning/blocs/unlisted_learnings_bloc.dart';
@@ -14,7 +15,6 @@ import 'features/learning/learning_list/blocs/remove_learning_list_bloc.dart';
 import 'features/learning/learning_list/blocs/update_learning_list_bloc.dart';
 import 'features/migration/blocs/get_for_migration_bloc.dart';
 import 'features/migration/blocs/migrate_bloc.dart';
-import 'shared/services/translation_service.dart';
 import 'features/auth/bloc/auth_bloc.dart';
 import 'features/auth/services/jwt_service.dart';
 import 'features/creating/knowledge/services/knowledge_service.dart'
@@ -47,9 +47,11 @@ import 'features/learning/learning_list/services/learning_list_service.dart';
 import 'features/profile/bloc/profile_bloc.dart';
 import 'features/migration/services/knowledge_topic_service.dart' as migration;
 import 'features/migration/services/knowledge_service.dart' as migration;
-import 'shared/widgets/splash_screen.dart';
 import 'features/auth/services/auth_service.dart';
 import 'features/profile/services/profile_service.dart';
+import 'shared/widgets/splash_screen.dart';
+import 'shared/services/background_service.dart';
+import 'shared/services/translation_service.dart';
 import 'shared/config/theme/app_theme.dart';
 import 'shared/config/initializer.dart';
 import 'shared/config/service_locator.dart';
@@ -85,7 +87,8 @@ class MainApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) {
-            return ProfileBloc(getIt<ProfileService>(), getIt<JwtService>());
+            return ProfileBloc(getIt<ProfileService>(), getIt<JwtService>(),
+                getIt<BackgroundService>(), getIt<SoundService>());
           }),
           BlocProvider(
             create: (context) {
@@ -204,6 +207,7 @@ class MainApp extends StatelessWidget {
               BlocProvider.of<UnlistedLearningsBloc>(context),
               BlocProvider.of<GetLearningListByIdBloc>(context),
               BlocProvider.of<GetLearningListsBloc>(context),
+              getIt<BackgroundService>(),
             ),
           ),
           BlocProvider(

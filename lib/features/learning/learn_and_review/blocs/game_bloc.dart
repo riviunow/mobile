@@ -9,6 +9,7 @@ import 'package:rvnow/features/learning/learn_and_review/models/review_learning.
 import 'package:rvnow/features/learning/learning_list/blocs/get_learning_list_by_id_bloc.dart';
 import 'package:rvnow/features/learning/learning_list/blocs/get_learning_lists_bloc.dart';
 import 'package:rvnow/shared/models/index.dart';
+import 'package:rvnow/shared/services/background_service.dart';
 
 import '../models/learn_knowledge.dart';
 import '../services/learn_and_review_service.dart';
@@ -83,6 +84,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   final UnlistedLearningsBloc _unlistedLearningsBloc;
   final GetLearningListByIdBloc _getLearningListByIdBloc;
   final GetLearningListsBloc _getLearningListsBloc;
+  final BackgroundService _backgroundService;
 
   late Task task;
   late Queue<PlayingWidget> widgets;
@@ -102,7 +104,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       this._getCurrentUserLearningsBloc,
       this._unlistedLearningsBloc,
       this._getLearningListByIdBloc,
-      this._getLearningListsBloc)
+      this._getLearningListsBloc,
+      this._backgroundService)
       : super(GameInitial()) {
     on<InitWidgetQueue>((event, emit) {
       widgets = event.widgets;
@@ -191,6 +194,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
             updateCurrentUserLearningsBloc(learnings, false);
             updateUnlistedLearningsBloc(learnings, false);
             updateGetLearningListByIdBloc(learnings, false);
+            updateLocalLearnings(learnings);
           },
           onFailure: (errors, _) => emit(GameFailure(errors)),
         );
@@ -225,6 +229,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
             updateGetLearningListByIdBloc(learnings, true);
             _getLearningListsBloc
                 .add(GetLearningListsRequested(learningLists: null));
+            updateLocalLearnings(learnings);
           },
           onFailure: (errors, _) => emit(GameFailure(errors)),
         );
@@ -393,5 +398,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
                           .toList(),
                     )));
     }
+  }
+
+  void updateLocalLearnings(List<Learning> learnings) {
+    _backgroundService.updateLearnings(learnings);
   }
 }

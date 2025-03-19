@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
 
 import '../config/service_locator.dart';
 import '../constants/pref_keys.dart';
@@ -12,6 +13,8 @@ class TranslationService with ChangeNotifier {
     TranslateLanguage.vietnamese,
   ];
   final prefs = getIt<SharedPreferences>();
+  late Database db;
+
   late OnDeviceTranslator onDeviceTranslator;
 
   Future<void> initialize() async {
@@ -26,6 +29,10 @@ class TranslationService with ChangeNotifier {
     if (!isEnglishModelDownloaded) {
       await modelManager.downloadModel(TranslateLanguage.english.bcpCode);
     }
+    db = await openDatabase('translations.db');
+    db.execute(
+      'CREATE TABLE IF NOT EXISTS translations (cacheKey TEXT PRIMARY KEY, translation TEXT)',
+    );
   }
 
   String get getUserLang =>
@@ -60,21 +67,40 @@ class TranslationService with ChangeNotifier {
         return text;
       }
 
-      String cacheKey = 'translate_${getUserLang}_${text}';
-      String? cachedTranslation = prefs.getString(cacheKey);
+      String cacheKey = 'translate_${getUserLang}_$text';
+      String? cachedTranslation = await _getTranslation(cacheKey);
 
       if (cachedTranslation != null) {
         return cachedTranslation;
       }
 
       String translatedText = await onDeviceTranslator.translateText(text);
-      prefs.setString(cacheKey, translatedText);
+      await _insertTranslation(cacheKey, translatedText);
 
       return translatedText;
     } catch (e) {
-      print('Translation error: $e');
       return text;
     }
+  }
+
+  Future<void> _insertTranslation(String cacheKey, String translation) async {
+    await db.insert(
+      'translations',
+      {'cacheKey': cacheKey, 'translation': translation},
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<String?> _getTranslation(String cacheKey) async {
+    final result = await db.query(
+      'translations',
+      where: 'cacheKey = ?',
+      whereArgs: [cacheKey],
+    );
+    if (result.isNotEmpty) {
+      return result.first['translation'] as String;
+    }
+    return null;
   }
 
   Future<void> downloadModel(String language) async {

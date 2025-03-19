@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rvnow/features/exploring/knowledge/widgets/learning_list_dialog.dart';
 import 'package:rvnow/features/learning/learn_and_review/blocs/game_bloc.dart';
+import 'package:rvnow/shared/config/service_locator.dart';
 import 'package:rvnow/shared/config/theme/colors.dart';
 import 'package:rvnow/shared/models/enums/learning_level.dart';
 import 'package:rvnow/shared/models/index.dart';
+import 'package:rvnow/shared/services/sound_service.dart';
 import 'package:rvnow/shared/widgets/spaced_divider.dart';
 import 'package:fl_chart/fl_chart.dart';
 
@@ -21,6 +23,32 @@ class GameOverBoard extends StatefulWidget {
 class _GameOverBoardState extends State<GameOverBoard> {
   final Set<Learning> _selectedLearnings = {};
   bool _isSelectionMode = false;
+  int totalScore = 0;
+  int memorizedCount = 0;
+  double percentage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    for (var learning in widget.learnings) {
+      final latestHistory = learning.latestLearningHistory;
+      if (latestHistory != null) {
+        totalScore += latestHistory.score;
+        if (latestHistory.isMemorized) {
+          memorizedCount++;
+        }
+      }
+    }
+    percentage = memorizedCount / widget.learnings.length * 100;
+
+    if (widget.learnings.isNotEmpty) {
+      if (percentage < 35) {
+        getIt<SoundService>().playLoseSound();
+      } else {
+        getIt<SoundService>().playWinSound();
+      }
+    }
+  }
 
   void _toggleSelectionMode() {
     setState(() {
@@ -194,19 +222,6 @@ class _GameOverBoardState extends State<GameOverBoard> {
   }
 
   Widget _buildOverallResult() {
-    int totalScore = 0;
-    int memorizedCount = 0;
-
-    for (var learning in widget.learnings) {
-      final latestHistory = learning.latestLearningHistory;
-      if (latestHistory != null) {
-        totalScore += latestHistory.score;
-        if (latestHistory.isMemorized) {
-          memorizedCount++;
-        }
-      }
-    }
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -229,8 +244,7 @@ class _GameOverBoardState extends State<GameOverBoard> {
                     PieChartSectionData(
                       value: memorizedCount.toDouble(),
                       color: Colors.green,
-                      title:
-                          '${(memorizedCount / widget.learnings.length * 100).toStringAsFixed(0)}%',
+                      title: '${percentage.toStringAsFixed(0)}%',
                       radius: 50,
                       titleStyle: const TextStyle(
                         fontSize: 16,
